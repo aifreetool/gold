@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>🏸 羽毛球局费用结算系统 | 精准分摊</title>
+    <title>🏸 羽毛球局费用结算系统 | 精准分摊 + 球费明细</title>
     <!-- Element UI 样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
-    <!-- html2canvas 最新稳定版 -->
+    <!-- html2canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -27,7 +27,7 @@
         /* 护眼模式 */
         body.eye-care-mode {
             font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
-            background: #f0f9e8; /* 柔和的浅绿色背景 */
+            background: #f0f9e8;
             min-height: 100vh;
             padding: 20px;
             color: #5c7a5c;
@@ -177,7 +177,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* 简化结算界面样式（与截图一致） */
+        /* 简化结算界面样式 */
         .simple-result {
             background: #f8f9fa;
             border-radius: 12px;
@@ -213,6 +213,55 @@
             font-weight: 600;
         }
         
+        /* 羽毛球明细区域样式 */
+        .ball-detail-block {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 8px 0 12px 0;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        
+        .ball-detail-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #409eff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .ball-detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 6px 0;
+            color: #4a5568;
+            border-bottom: 1px dashed #edf2f7;
+        }
+        
+        .ball-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ball-detail-brand {
+            font-weight: 500;
+        }
+        
+        .ball-detail-sum {
+            color: #f56565;
+            font-weight: 500;
+        }
+        
+        .ball-empty-tip {
+            font-size: 12px;
+            color: #a0aec0;
+            text-align: center;
+            padding: 8px 0;
+        }
+        
         .split-section-simple {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -227,7 +276,6 @@
             padding: 24px;
             text-align: center;
             font-weight: 600;
-            position: relative;
         }
         
         .split-card-simple.female {
@@ -322,7 +370,7 @@
     <div class="container">
         <div class="header">
             <h1><span>🏸</span> 羽毛球局费用结算系统</h1>
-            <p>专业 · 精准 · 高效</p>
+            <p>专业 · 精准 · 高效 · 球费明细一目了然</p>
         </div>
         
         <!-- 费用录入卡片 -->
@@ -401,7 +449,7 @@
             <button id="calculateBtn" class="el-button el-button--success" style="width: 100%; height: 50px; font-size: 18px; font-weight: 600; margin-top: 20px;">⚡ 立即生成账单</button>
         </div>
         
-        <!-- 结算结果卡片（与截图样式完全匹配） -->
+        <!-- 结算结果卡片（新增羽毛球明细模块） -->
         <div class="card result-section" id="resultSection">
             <div class="card-title">🧾 结算详情</div>
             <div class="simple-result" id="simpleResultContainer">
@@ -409,6 +457,8 @@
                     <div class="detail-row"><span class="detail-label">组局日期</span><span class="detail-value" id="resGameDate">—</span></div>
                     <div class="detail-row"><span class="detail-label">场地费</span><span class="detail-value" id="resVenueCost">¥0.00</span></div>
                     <div class="detail-row"><span class="detail-label">球费总计</span><span class="detail-value" id="resBallTotal">¥0.00</span></div>
+                    <!-- 羽毛球明细将动态插入到此位置下方 -->
+                    <div id="ballDetailContainer"></div>
                     <div class="detail-row"><span class="detail-label">其他费用</span><span class="detail-value" id="resOtherCost">¥0.00</span></div>
                     <div class="detail-row"><span class="detail-label">总计</span><span class="detail-value" id="resGrandTotal">¥0.00</span></div>
                     <div class="detail-row"><span class="detail-label">计费模式</span><span class="detail-value" id="resPayMode">全员均摊</span></div>
@@ -441,7 +491,6 @@
         let isResultVisible = false;
         let eyeCareMode = localStorage.getItem('eyeCareMode') === 'true';
         
-        // DOM 元素快捷引用
         const dom = {
             gameDate: () => document.getElementById('gameDate'),
             venueCost: () => document.getElementById('venueCost'),
@@ -452,6 +501,7 @@
             ballTotal: () => document.getElementById('ballTotal'),
             grandTotalPreview: () => document.getElementById('grandTotalPreview'),
             resultSection: () => document.getElementById('resultSection'),
+            ballDetailContainer: () => document.getElementById('ballDetailContainer')
         };
         
         // 初始化默认日期
@@ -465,13 +515,11 @@
         });
         
         function bindGlobalEvents() {
-            // 输入触发更新并隐藏结果
             const inputIds = ['venueCost', 'otherCost', 'maleCount', 'femaleCount', 'subsidyAmount'];
             inputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', () => { validateNumberInput(el); updateAndHideResult(); });
             });
-            // 球品输入预览
             ['ballBrand', 'ballPrice', 'ballCount'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', updateDraftPreview);
@@ -505,7 +553,7 @@
             const draftTotal = price * count;
             const previewDiv = document.getElementById('draftPreview');
             if (brand && price > 0 && count > 0) {
-                previewDiv.innerHTML = `<strong>${brand}</strong> × ${count}个 × ¥${price.toFixed(2)}/个 = ¥${draftTotal.toFixed(2)}`;
+                previewDiv.innerHTML = `<strong>${escapeHtml(brand)}</strong> × ${count}个 × ¥${price.toFixed(2)}/个 = ¥${draftTotal.toFixed(2)}`;
             } else {
                 previewDiv.textContent = '暂无有效输入';
             }
@@ -558,9 +606,9 @@
             if (val < 0) val = 0;
             const idx = ballItems.findIndex(i => i.id === id);
             if (idx !== -1) {
+                if (field === 'count' && val === 0) val = 1;
+                if (field === 'price' && val === 0) val = 0.01;
                 ballItems[idx][field] = val;
-                if (field === 'count' && val === 0) ballItems[idx].count = 1;
-                if (field === 'price' && val === 0) ballItems[idx].price = 0.01;
                 renderBallList();
                 updateAndHideResult();
             }
@@ -600,7 +648,7 @@
             updateAndHideResult();
         }
         
-        // 核心计算逻辑，返回详细分摊数据（用于显示和导出）
+        // 核心计算逻辑
         function computeSplit() {
             const venue = parseFloat(dom.venueCost()?.value) || 0;
             const other = parseFloat(dom.otherCost()?.value) || 0;
@@ -626,6 +674,37 @@
             return { malePay, femalePay, maleCount, femaleCount, grandTotal, totalCount, venue, ballTotal, other };
         }
         
+        // 渲染羽毛球明细区域 (在结算详情内)
+        function renderBallDetailInResult() {
+            const container = dom.ballDetailContainer();
+            if (!container) return;
+            if (ballItems.length === 0) {
+                container.innerHTML = `<div class="ball-detail-block"><div class="ball-empty-tip">📭 本次无羽毛球消耗</div></div>`;
+                return;
+            }
+            let itemsHtml = '';
+            ballItems.forEach(item => {
+                const subtotal = item.price * item.count;
+                itemsHtml += `
+                    <div class="ball-detail-item">
+                        <span class="ball-detail-brand">🏸 ${escapeHtml(item.brand)}</span>
+                        <span>${item.count}个 × ¥${item.price.toFixed(2)} = <span class="ball-detail-sum">¥${subtotal.toFixed(2)}</span></span>
+                    </div>
+                `;
+            });
+            const totalBallFee = ballItems.reduce((s, i) => s + i.price * i.count, 0);
+            container.innerHTML = `
+                <div class="ball-detail-block">
+                    <div class="ball-detail-title">📋 羽毛球明细</div>
+                    ${itemsHtml}
+                    <div class="ball-detail-item" style="margin-top: 6px; border-top: 1px solid #e2e8f0; padding-top: 8px; font-weight: 600;">
+                        <span>合计</span>
+                        <span>¥${totalBallFee.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
         function calculateAndShow() {
             const gameDate = dom.gameDate()?.value;
             if (!gameDate) { showToast('⚠️ 请选择组局日期！'); return; }
@@ -635,7 +714,6 @@
             
             const { malePay, femalePay, maleCount: mCnt, femaleCount: fCnt, grandTotal, venue, ballTotal, other } = computeSplit();
             
-            // 更新所有结果显示字段
             document.getElementById('resGameDate').textContent = formatDate(gameDate);
             document.getElementById('resVenueCost').textContent = `¥ ${venue.toFixed(2)}`;
             document.getElementById('resBallTotal').textContent = `¥ ${ballTotal.toFixed(2)}`;
@@ -647,20 +725,45 @@
             document.getElementById('resMaleCount').textContent = `${mCnt}人`;
             document.getElementById('resFemaleCount').textContent = `${fCnt}人`;
             
+            // 渲染羽毛球明细
+            renderBallDetailInResult();
+            
             dom.resultSection().style.display = 'block';
             isResultVisible = true;
             dom.resultSection().scrollIntoView({ behavior: 'smooth' });
         }
         
-        // ----- 导出图片 (修复人数缺失问题) -----
+        // 生成明细文本 (用于复制)
+        function getBallDetailText() {
+            if (ballItems.length === 0) return '  无羽毛球消耗';
+            let lines = ballItems.map(item => `  ${item.brand}: ${item.count}个 × ¥${item.price.toFixed(2)}/个 = ¥${(item.price * item.count).toFixed(2)}`);
+            lines.push(`  球费合计: ¥${ballItems.reduce((s,i)=>s+i.price*i.count,0).toFixed(2)}`);
+            return lines.join('\n');
+        }
+        
+        function copyBill() {
+            if (!isResultVisible) { showToast('请先生成账单'); return; }
+            const gameDate = document.getElementById('resGameDate').innerText;
+            const venue = document.getElementById('resVenueCost').innerText;
+            const ballTotalTxt = document.getElementById('resBallTotal').innerText;
+            const other = document.getElementById('resOtherCost').innerText;
+            const grand = document.getElementById('resGrandTotal').innerText;
+            const mode = document.getElementById('resPayMode').innerText;
+            const malePay = document.getElementById('resMalePay').innerText;
+            const femalePay = document.getElementById('resFemalePay').innerText;
+            const maleCnt = document.getElementById('resMaleCount').innerText;
+            const femaleCnt = document.getElementById('resFemaleCount').innerText;
+            const detailText = getBallDetailText();
+            
+            const billText = `【羽毛球局结算 - ${gameDate}】\n${venue} 场地费\n球费明细:\n${detailText}\n${other} 其他费用\n总计 ${grand}\n计费模式: ${mode}\n👨 ${maleCnt} 人均 ${malePay}\n👩 ${femaleCnt} 人均 ${femalePay}\n感谢参与！`;
+            navigator.clipboard.writeText(billText).then(() => showToast('✅ 账单已复制 (含球费明细)')).catch(() => { alert('手动复制失败'); });
+        }
+        
+        // 导出图片 (完整包含明细)
         async function exportAsImage() {
-            if (!isResultVisible) {
-                showToast('请先生成账单');
-                return;
-            }
+            if (!isResultVisible) { showToast('请先生成账单'); return; }
             try {
                 showToast('正在生成图片...');
-                // 获取当前显示的所有数据 (确保与屏幕上一致)
                 const gameDate = document.getElementById('resGameDate').innerText;
                 const venueCost = document.getElementById('resVenueCost').innerText;
                 const ballTotalTxt = document.getElementById('resBallTotal').innerText;
@@ -669,89 +772,81 @@
                 const payMode = document.getElementById('resPayMode').innerText;
                 const malePay = document.getElementById('resMalePay').innerText;
                 const femalePay = document.getElementById('resFemalePay').innerText;
-                const maleCountText = document.getElementById('resMaleCount').innerText;   // 类似 "3人"
+                const maleCountText = document.getElementById('resMaleCount').innerText;
                 const femaleCountText = document.getElementById('resFemaleCount').innerText;
                 
-                // 构建干净独立的图片容器（完全复制当前结算卡片样式，确保包含人数标识）
+                // 构造明细HTML
+                let detailHtml = '';
+                if (ballItems.length === 0) {
+                    detailHtml = '<div style="background:#f1f5f9; border-radius:12px; padding:12px; margin:8px 0; text-align:center; color:#64748b;">📭 无羽毛球消耗</div>';
+                } else {
+                    let rows = '';
+                    ballItems.forEach(item => {
+                        rows += `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #e2e8f0; font-size:13px;">
+                                    <span>🏸 ${escapeHtml(item.brand)}</span>
+                                    <span>${item.count}个 × ¥${item.price.toFixed(2)} = <strong>¥${(item.price * item.count).toFixed(2)}</strong></span>
+                                </div>`;
+                    });
+                    const totalBall = ballItems.reduce((s,i)=>s+i.price*i.count,0);
+                    detailHtml = `
+                        <div style="background:#f8fafc; border-radius:14px; padding:12px 16px; margin:10px 0;">
+                            <div style="font-weight:700; margin-bottom:10px; color:#2c3e66;">📋 羽毛球明细</div>
+                            ${rows}
+                            <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:8px; border-top:2px solid #cbd5e1; font-weight:800;">合计<span>¥${totalBall.toFixed(2)}</span></div>
+                        </div>
+                    `;
+                }
+                
                 const exportContainer = document.createElement('div');
                 exportContainer.style.cssText = `
                     width: 580px;
                     background: white;
-                    border-radius: 20px;
-                    padding: 24px;
-                    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
+                    border-radius: 24px;
+                    padding: 28px;
+                    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', Arial, sans-serif;
                     box-shadow: 0 12px 28px rgba(0,0,0,0.1);
                     border: 1px solid #e9ecef;
                 `;
-                
-                // 内部完全按照截图风格构建，特别注意展示人数卡片
                 exportContainer.innerHTML = `
-                    <div style="font-size: 20px; font-weight: 700; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eef2f6; padding-bottom: 12px;">
-                        🧾 羽毛球局结算单
+                    <div style="font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eef2ff; padding-bottom: 14px;">
+                        🏸 羽毛球局结算单
                     </div>
-                    <div style="background: #f8fafc; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">组局日期</span><span style="font-weight:600;">${gameDate}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">场地费</span><span style="font-weight:600;">${venueCost}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">球费总计</span><span style="font-weight:600;">${ballTotalTxt}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">其他费用</span><span style="font-weight:600;">${otherCostTxt}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin: 16px 0 8px 0; padding-top: 12px; border-top: 2px solid #e2e8f0; font-size: 18px; font-weight: 800; color:#2d3748;"><span>总计</span><span style="color:#f56565;">${grandTotalTxt}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 8px;"><span style="color:#4a5568;">计费模式</span><span style="font-weight:500;">${payMode}</span></div>
+                    <div style="background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">组局日期</span><span style="font-weight:600;">${gameDate}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">场地费</span><span style="font-weight:600;">${venueCost}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="color:#334155;">球费总计</span><span style="font-weight:600;">${ballTotalTxt}</span></div>
+                        ${detailHtml}
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">其他费用</span><span style="font-weight:600;">${otherCostTxt}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin: 16px 0 8px 0; padding-top: 12px; border-top: 2px solid #e2e8f0; font-size: 18px; font-weight: 800;"><span>总计</span><span style="color:#ef4444;">${grandTotalTxt}</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:#334155;">计费模式</span><span style="font-weight:500;">${payMode}</span></div>
                     </div>
-                    
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="background: linear-gradient(135deg, #409eff, #2c6bff); border-radius: 20px; padding: 24px; text-align: center; color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.08);">
-                            <div style="font-size: 14px; opacity: 0.85; letter-spacing: 1px;">👨 男生人均</div>
-                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0 6px;">¥ ${malePay}</div>
-                            <div style="font-size: 15px; font-weight: 500; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${maleCountText}</div>
+                        <div style="background: linear-gradient(135deg, #409eff, #2c6bff); border-radius: 20px; padding: 24px; text-align: center; color: white;">
+                            <div style="font-size: 14px; opacity:0.9;">👨 男生人均</div>
+                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0;">¥ ${malePay}</div>
+                            <div style="font-size: 15px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${maleCountText}</div>
                         </div>
-                        <div style="background: linear-gradient(135deg, #ff7e9e, #f64b7a); border-radius: 20px; padding: 24px; text-align: center; color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.08);">
-                            <div style="font-size: 14px; opacity: 0.85; letter-spacing: 1px;">👩 女生人均</div>
-                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0 6px;">¥ ${femalePay}</div>
-                            <div style="font-size: 15px; font-weight: 500; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${femaleCountText}</div>
+                        <div style="background: linear-gradient(135deg, #ff7e9e, #f64b7a); border-radius: 20px; padding: 24px; text-align: center; color: white;">
+                            <div style="font-size: 14px; opacity:0.9;">👩 女生人均</div>
+                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0;">¥ ${femalePay}</div>
+                            <div style="font-size: 15px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${femaleCountText}</div>
                         </div>
                     </div>
-                    
-                    <div style="margin-top: 28px; text-align: center; font-size: 12px; color: #a0aec0; border-top: 1px solid #edf2f7; padding-top: 16px;">
-                        羽毛球局费用结算系统 · 自动生成
-                    </div>
+                    <div style="margin-top: 28px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #eef2ff; padding-top: 16px;">羽毛球局费用结算系统 · 明细包含品牌及数量</div>
                 `;
-                
                 document.body.appendChild(exportContainer);
-                // 确保任何渐变/背景正确渲染
-                const canvas = await html2canvas(exportContainer, {
-                    backgroundColor: '#ffffff',
-                    scale: 2.5,
-                    useCORS: false,
-                    logging: false,
-                    allowTaint: false
-                });
+                const canvas = await html2canvas(exportContainer, { backgroundColor: '#ffffff', scale: 2.5, logging: false });
                 document.body.removeChild(exportContainer);
-                
                 const link = document.createElement('a');
-                const dateLabel = document.getElementById('resGameDate').innerText.replace(/\//g, '-');
+                const dateLabel = gameDate.replace(/\//g, '-');
                 link.download = `羽毛球结算_${dateLabel}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                showToast('✅ 账单图片已保存 (包含人数信息)');
+                showToast('✅ 图片已保存 (含羽毛球明细)');
             } catch (err) {
                 console.error(err);
-                showToast('❌ 导出失败，可刷新页面重试');
+                showToast('❌ 导出失败，可重试');
             }
-        }
-        
-        function copyBill() {
-            const gameDate = document.getElementById('resGameDate').innerText;
-            const venue = document.getElementById('resVenueCost').innerText;
-            const ballTotal = document.getElementById('resBallTotal').innerText;
-            const other = document.getElementById('resOtherCost').innerText;
-            const grand = document.getElementById('resGrandTotal').innerText;
-            const mode = document.getElementById('resPayMode').innerText;
-            const malePay = document.getElementById('resMalePay').innerText;
-            const femalePay = document.getElementById('resFemalePay').innerText;
-            const maleCnt = document.getElementById('resMaleCount').innerText;
-            const femaleCnt = document.getElementById('resFemaleCount').innerText;
-            const billText = `【羽毛球局结算 - ${gameDate}】\n${venue} 场地费\n${ballTotal} 球费\n${other} 其他\n总计 ${grand}\n计费: ${mode}\n男生 ${maleCnt} 人均 ${malePay}\n女生 ${femaleCnt} 人均 ${femalePay}\n感谢参与！`;
-            navigator.clipboard.writeText(billText).then(() => showToast('✅ 账单已复制')).catch(() => { alert('手动复制失败'); });
         }
         
         function formatDate(dateString) {
