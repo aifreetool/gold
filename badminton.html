@@ -6,16 +6,99 @@
     <title>🏸 羽毛球局结算助手 (多品牌版)</title>
     <style>
         :root {
+            /* Light Theme Colors */
+            --bg-color: #f0f4f0;
+            --card-bg: white;
+            --text-dark: #333333;
+            --text-gray: #666666;
+            --text-light: #999999;
+            --border-color: #ddd;
+            --input-bg: #fafafa;
+            --input-focus-bg: white;
+            --input-focus-border: #4CAF50;
+            --input-focus-shadow: rgba(76, 175, 80, 0.1);
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --delete-red: #ef5350;
+            --edit-blue: #42a5f5;
             --court-green: #2E7D32;
             --court-light: #4CAF50;
             --shuttle-white: #F5F5F5;
             --accent-orange: #FF6F00;
-            --text-dark: #333333;
-            --text-gray: #666666;
-            --bg-color: #f0f4f0;
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --delete-red: #ef5350;
-            --edit-blue: #42a5f5;
+            --toast-bg: #333;
+            --toast-text: white;
+            --ball-item-bg: #f9f9f9;
+            --ball-draft-bg: #e8f5e9;
+            --ball-draft-border: var(--court-green);
+            --result-summary-bg: #f9f9f9;
+            --readonly-field-bg: #e8f5e9;
+            --readonly-field-color: var(--court-green);
+            --readonly-field-border: #c8e6c9;
+            --mode-btn-bg: #e0e0e0;
+            --mode-btn-color: var(--text-dark);
+            --mode-btn-border: #ccc;
+            --mode-btn-active-bg: linear-gradient(135deg, #42a5f5, #1976d2);
+            --mode-btn-active-color: white;
+            --mode-btn-active-border: #1565c0;
+            --mode-btn-sub-active-bg: linear-gradient(135deg, #ec407a, #c2185b);
+            --mode-btn-sub-active-border: #ad1457;
+            --btn-calc-bg: var(--accent-orange);
+            --btn-calc-hover-bg: #e65100;
+            --btn-copy-bg: white;
+            --btn-copy-color: var(--text-dark);
+            --btn-copy-border: #ddd;
+            --btn-copy-hover-border: var(--court-green);
+            --btn-copy-hover-color: var(--court-green);
+            --btn-copy-hover-bg: #f0f9f0;
+            --split-male-bg: linear-gradient(135deg, #42a5f5, #1976d2);
+            --split-female-bg: linear-gradient(135deg, #ec407a, #c2185b);
+        }
+
+        /* Dark Theme Colors */
+        .dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-dark: #e0e0e0;
+            --text-gray: #aaaaaa;
+            --text-light: #888888;
+            --border-color: #444444;
+            --input-bg: #2a2a2a;
+            --input-focus-bg: #333333;
+            --input-focus-border: #66bb6a;
+            --input-focus-shadow: rgba(102, 187, 106, 0.2);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --delete-red: #f44336;
+            --edit-blue: #2196f3;
+            --court-green: #4caf50;
+            --court-light: #66bb6a;
+            --shuttle-white: #333333;
+            --accent-orange: #ffb74d;
+            --toast-bg: #444444;
+            --toast-text: #ffffff;
+            --ball-item-bg: #2a2a2a;
+            --ball-draft-bg: #2a3a2a;
+            --ball-draft-border: var(--court-green);
+            --result-summary-bg: #2a2a2a;
+            --readonly-field-bg: #2a3a2a;
+            --readonly-field-color: var(--court-green);
+            --readonly-field-border: #4a6a4a;
+            --mode-btn-bg: #2a2a2a;
+            --mode-btn-color: var(--text-dark);
+            --mode-btn-border: #444444;
+            --mode-btn-active-bg: linear-gradient(135deg, #2196f3, #1976d2);
+            --mode-btn-active-color: white;
+            --mode-btn-active-border: #1565c0;
+            --mode-btn-sub-active-bg: linear-gradient(135deg, #ec407a, #c2185b);
+            --mode-btn-sub-active-border: #ad1457;
+            --btn-calc-bg: var(--accent-orange);
+            --btn-calc-hover-bg: #ffa726;
+            --btn-copy-bg: #2a2a2a;
+            --btn-copy-color: var(--text-dark);
+            --btn-copy-border: #444444;
+            --btn-copy-hover-border: var(--court-green);
+            --btn-copy-hover-color: var(--court-green);
+            --btn-copy-hover-bg: #2a3a2a;
+            --split-male-bg: linear-gradient(135deg, #2196f3, #1976d2);
+            --split-female-bg: linear-gradient(135deg, #ec407a, #c2185b);
         }
 
         * {
@@ -27,7 +110,7 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: radial-gradient(#c8e6c9 1px, transparent 1px);
+            background-image: radial-gradient(var(--court-light) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text-dark);
             line-height: 1.6;
@@ -45,19 +128,23 @@
             box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
             position: relative;
             overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         header h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem; /* 调整字体大小适应图标 */
             margin-bottom: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            flex: 1;
         }
 
         .shuttle-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             animation: float 3s ease-in-out infinite;
         }
 
@@ -69,6 +156,26 @@
         header p {
             opacity: 0.9;
             font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .container {
@@ -80,12 +187,12 @@
         }
 
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
         }
 
         .card-title {
@@ -96,7 +203,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
 
@@ -116,25 +223,26 @@
         input[type="number"], select, input[type="text"] {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s;
-            background: #fafafa;
+            background: var(--input-bg);
+            color: var(--text-dark);
         }
 
         input[type="number"]:focus, select:focus, input[type="text"]:focus {
             outline: none;
-            border-color: var(--court-light);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            border-color: var(--input-focus-border);
+            background: var(--input-focus-bg);
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
         }
 
         .readonly-field {
-            background-color: #e8f5e9;
-            color: var(--court-green);
+            background-color: var(--readonly-field-bg);
+            color: var(--readonly-field-color);
             font-weight: bold;
-            border-color: #c8e6c9;
+            border-color: var(--readonly-field-border);
         }
 
         /* Multi-Ball Section */
@@ -153,7 +261,7 @@
         .ball-input-group label {
             font-size: 0.75rem;
             margin-bottom: 3px;
-            color: #555;
+            color: var(--text-light);
         }
 
         .ball-input-group input {
@@ -162,7 +270,7 @@
         }
 
         .ball-draft-preview {
-            background: #e8f5e9;
+            background: var(--ball-draft-bg);
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 15px;
@@ -170,7 +278,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 4px solid var(--court-green);
+            border-left: 4px solid var(--ball-draft-border);
         }
 
         .ball-draft-preview span {
@@ -182,7 +290,7 @@
             gap: 8px;
             margin-bottom: 10px;
             padding: 10px;
-            background: #f9f9f9;
+            background: var(--ball-item-bg);
             border-radius: 8px;
             border-left: 4px solid var(--court-green);
             align-items: center;
@@ -206,6 +314,16 @@
             padding: 5px;
             font-size: 0.9rem;
             text-align: center;
+            background: var(--input-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .ball-item .edit-price:focus, .ball-item .edit-count:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            background: var(--input-focus-bg);
         }
 
         .add-ball-btn {
@@ -230,11 +348,11 @@
             transform: translateY(-1px);
         }
 
-        /* === 修复关键：确保按钮是真实可点击元素 === */
+        /* Mode Buttons */
         .mode-btn {
-            background: #e0e0e0;
-            color: var(--text-dark);
-            border: 2px solid #ccc;
+            background: var(--mode-btn-bg);
+            color: var(--mode-btn-color);
+            border: 2px solid var(--mode-btn-border);
             border-radius: 12px;
             padding: 20px 15px;
             font-size: 1.1rem;
@@ -247,17 +365,14 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             text-align: center;
-            cursor: pointer; /* 明确指针样式 */
-            user-select: none; /* 防止误选中文字 */
-            /* ⚠️ 关键：避免被当作文本渲染 */
-            white-space: normal;
-            word-break: break-word;
+            cursor: pointer;
+            user-select: none;
         }
 
         .mode-btn.active {
-            background: linear-gradient(135deg, #42a5f5, #1976d2);
-            color: white;
-            border-color: #1565c0;
+            background: var(--mode-btn-active-bg);
+            color: var(--mode-btn-active-color);
+            border-color: var(--mode-btn-active-border);
             box-shadow: 0 6px 12px rgba(66, 165, 245, 0.3);
             transform: translateY(-2px);
         }
@@ -267,8 +382,8 @@
         }
 
         .mode-btn:nth-child(2).active {
-            background: linear-gradient(135deg, #ec407a, #c2185b);
-            border-color: #ad1457;
+            background: var(--mode-btn-sub-active-bg);
+            border-color: var(--mode-btn-sub-active-border);
         }
 
         .mode-btn small {
@@ -281,7 +396,7 @@
         .btn-calc {
             width: 100%;
             padding: 16px;
-            background: var(--accent-orange);
+            background: var(--btn-calc-bg);
             color: white;
             border: none;
             border-radius: 12px;
@@ -294,7 +409,7 @@
         }
 
         .btn-calc:hover {
-            background: #e65100;
+            background: var(--btn-calc-hover-bg);
             transform: translateY(-3px);
         }
 
@@ -314,7 +429,7 @@
         }
 
         .result-summary {
-            background: #f9f9f9;
+            background: var(--result-summary-bg);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
@@ -325,7 +440,7 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px dashed var(--border-color);
             padding-bottom: 4px;
         }
 
@@ -336,17 +451,7 @@
             font-size: 1.1rem;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 2px solid #ddd;
-        }
-
-        .price-tag {
-            display: inline-block;
-            background: var(--court-green);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-left: 5px;
+            border-top: 2px solid var(--border-color);
         }
 
         .final-split {
@@ -365,11 +470,11 @@
         }
 
         .split-male {
-            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            background: var(--split-male-bg);
         }
 
         .split-female {
-            background: linear-gradient(135deg, #ec407a, #c2185b);
+            background: var(--split-female-bg);
         }
 
         .split-amount {
@@ -391,9 +496,9 @@
 
         .btn-copy {
             margin-top: 20px;
-            background: white;
-            color: var(--text-dark);
-            border: 2px solid #ddd;
+            background: var(--btn-copy-bg);
+            color: var(--btn-copy-color);
+            border: 2px solid var(--btn-copy-border);
             padding: 14px;
             width: 100%;
             border-radius: 12px;
@@ -408,9 +513,9 @@
         }
 
         .btn-copy:hover {
-            border-color: var(--court-green);
-            color: var(--court-green);
-            background: #f0f9f0;
+            border-color: var(--btn-copy-hover-border);
+            color: var(--btn-copy-hover-color);
+            background: var(--btn-copy-hover-bg);
         }
 
         /* Toast Notification */
@@ -419,8 +524,8 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #333;
-            color: white;
+            background: var(--toast-bg);
+            color: var(--toast-text);
             padding: 12px 24px;
             border-radius: 50px;
             font-size: 0.9rem;
@@ -440,6 +545,7 @@
     <header>
         <h1><span class="shuttle-icon">🏸</span> 羽球局结算 (多品牌版)</h1>
         <p>简单输入 · 自动算账 · 透明公开</p>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
     </header>
     <div class="container">
         <!-- Input Card -->
@@ -448,11 +554,11 @@
             
             <div class="form-group">
                 <label>场地费 (元)</label>
-                <input type="number" id="venueCost" placeholder="例如：200" step="0.01" oninput="updateTotals()">
+                <input type="number" id="venueCost" placeholder="例如：200" step="0.01" oninput="updateAndHideResult()">
             </div>
 
             <!-- Multi Brand Input Section -->
-            <div class="card-title" style="font-size: 0.9rem; color: #999; margin: 15px 0 5px;">🏸 羽毛球消耗 (多品牌)</div>
+            <div class="card-title" style="font-size: 0.9rem; color: var(--text-light); margin: 15px 0 5px;">🏸 羽毛球消耗 (多品牌)</div>
             
             <!-- Input Row with Labels -->
             <div class="ball-input-row">
@@ -493,10 +599,10 @@
 
             <div class="form-group">
                 <label>其他费用 (水/停车等)</label>
-                <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" oninput="updateTotals()">
+                <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" oninput="updateAndHideResult()">
             </div>
 
-            <div class="form-group" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+            <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <label style="color: var(--court-green); font-weight: bold;">总费用预览</label>
                 <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-orange);" id="grandTotalPreview">0.00 元</div>
             </div>
@@ -510,15 +616,15 @@
             <div class="form-row" style="display: flex; gap: 15px; margin-bottom: 20px;">
                 <div class="form-col" style="flex: 1;">
                     <label>男生人数</label>
-                    <input type="number" id="maleCount" value="0" min="0" oninput="updateTotals()" style="font-size: 1.1rem; padding: 14px;">
+                    <input type="number" id="maleCount" value="0" min="0" oninput="updateAndHideResult()" style="font-size: 1.1rem; padding: 14px;">
                 </div>
                 <div class="form-col" style="flex: 1;">
                     <label>女生人数</label>
-                    <input type="number" id="femaleCount" value="0" min="0" oninput="updateTotals()" style="font-size: 1.1rem; padding: 14px;">
+                    <input type="number" id="femaleCount" value="0" min="0" oninput="updateAndHideResult()" style="font-size: 1.1rem; padding: 14px;">
                 </div>
             </div>
 
-            <!-- 计费模式 - 修复后：确保是真实按钮 -->
+            <!-- 计费模式 -->
             <div class="form-group" style="margin-bottom: 25px;">
                 <label style="display: block; font-size: 1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 12px;">计费模式</label>
                 
@@ -555,10 +661,10 @@
                 <div style="display: flex; gap: 12px;">
                     <div style="flex: 1;">
                         <label>女生每人少付 (元)</label>
-                        <input type="number" id="subsidyAmount" value="10" step="1" min="0" oninput="updateTotals()" style="width: 100%; font-size: 1.1rem; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                        <input type="number" id="subsidyAmount" value="10" step="1" min="0" oninput="updateAndHideResult()" style="width: 100%; font-size: 1.1rem; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
                     </div>
                     <div style="flex: 1; display: flex; flex-direction: column; justify-content: end;">
-                        <small style="color: #999; font-size: 0.8rem;">*男生将分摊这部分差额</small>
+                        <small style="color: var(--text-light); font-size: 0.8rem;">*男生将分摊这部分差额</small>
                     </div>
                 </div>
             </div>
@@ -596,13 +702,33 @@
         // === 全局变量 ===
         let ballItems = [];
         let nextId = 1;
-        let selectedPayMode = 'AA'; // 纯 JS 状态管理
+        let selectedPayMode = 'AA';
+        let isResultVisible = false; // 新增：标记结果是否可见
 
-        // === 初始化 ===
+        // === 主题切换逻辑 ===
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            // 更新按钮图标
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+        }
+
+        // === 初始化主题 ===
         document.addEventListener('DOMContentLoaded', () => {
+            // 检查本地存储的偏好
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            } else {
+                document.querySelector('.theme-toggle').textContent = '🌙';
+            }
+
             updateTotals();
             updateDraftPreview();
-            updateModeButtonStates(); // 确保初始状态正确
+            updateModeButtonStates();
         });
 
         // === 实时预览草稿 ===
@@ -620,12 +746,16 @@
                     <span>预览：<strong>${brand}</strong> × ${count}个 × ¥${price.toFixed(2)}/个</span>
                     <span>¥ ${draftTotal.toFixed(2)}</span>
                 `;
-                draftPreview.style.background = '#e8f5e9';
-                draftPreview.style.borderLeftColor = 'var(--court-green)';
+                draftPreview.style.background = 'var(--ball-draft-bg)';
+                draftPreview.style.borderLeftColor = 'var(--ball-draft-border)';
             } else {
                 draftPreview.innerHTML = `<span>预览：暂无有效输入</span><span>¥ 0.00</span>`;
                 draftPreview.style.background = '#f9f9f9';
-                draftPreview.style.borderLeftColor = '#ccc';
+                if (!document.body.classList.contains('dark-mode')) {
+                    draftPreview.style.borderLeftColor = '#ccc';
+                } else {
+                     draftPreview.style.borderLeftColor = '#4a6a4a';
+                }
             }
         }
 
@@ -664,7 +794,7 @@
             countInput.value = '';
             updateDraftPreview();
             renderBallList();
-            updateTotals();
+            updateAndHideResult(); // 球品变化也应隐藏结果
             brandInput.focus();
         }
 
@@ -672,7 +802,7 @@
         function renderBallList() {
             const container = document.getElementById('ballListContainer');
             if (ballItems.length === 0) {
-                container.innerHTML = '<div style="color: #999; font-size: 0.9rem; text-align: center; padding: 10px;">暂无球品记录</div>';
+                container.innerHTML = '<div style="color: var(--text-light); font-size: 0.9rem; text-align: center; padding: 10px;">暂无球品记录</div>';
                 return;
             }
 
@@ -684,7 +814,7 @@
                     <button class="delete-btn" onclick="removeBallItem(${item.id})">-</button>
                     <div style="flex: 1;">
                         <strong>${item.brand}</strong> 
-                        <span style="color: #666;">
+                        <span style="color: var(--text-gray);">
                             单价 <input type="number" class="edit-price" value="${item.price}" data-id="${item.id}" step="0.01" oninput="updateBallItem(this)" style="width: 50px; padding: 2px 4px; margin: 0 2px; font-size: 0.9rem;"> 元/个 
                             × 数量 <input type="number" class="edit-count" value="${item.count}" data-id="${item.id}" oninput="updateBallItem(this)" style="width: 50px; padding: 2px 4px; margin: 0 2px; font-size: 0.9rem;"> 个
                         </span>
@@ -708,14 +838,14 @@
                 ballItems[index][field] = value;
             }
             renderBallList();
-            updateTotals();
+            updateAndHideResult(); // 球品变化也应隐藏结果
         }
 
         // === 删除球品 ===
         function removeBallItem(id) {
             ballItems = ballItems.filter(item => item.id !== id);
             renderBallList();
-            updateTotals();
+            updateAndHideResult(); // 球品变化也应隐藏结果
         }
 
         // === 更新总计 ===
@@ -729,12 +859,22 @@
             document.getElementById('grandTotalPreview').textContent = grandTotal.toFixed(2) + ' 元';
         }
 
-        // === ✅ 修复核心：确保按钮可点击 ===
+        // === 新增核心：更新总计并隐藏结果 ===
+        function updateAndHideResult() {
+            updateTotals();
+            if (isResultVisible) {
+                document.getElementById('resultSection').style.display = 'none';
+                isResultVisible = false;
+                showToast('人数、模式或费用已更改，请重新生成账单');
+            }
+        }
+
+        // === 模式选择逻辑 ===
         function selectPayMode(mode) {
-            console.log("模式切换至:", mode); // 调试用
+            console.log("模式切换至:", mode);
             selectedPayMode = mode;
             updateModeButtonStates();
-            updateTotals(); // 触发重算
+            updateAndHideResult(); // 模式变化也应隐藏结果
         }
 
         function updateModeButtonStates() {
@@ -797,6 +937,7 @@
             document.getElementById('billDetails').innerHTML = detailsHTML;
 
             document.getElementById('resultSection').style.display = 'block';
+            isResultVisible = true; // 标记结果已显示
             document.querySelector('#resultSection').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -830,10 +971,11 @@
                 .catch(err => alert('复制失败，请手动选择文本复制。'));
         }
 
-        function showToast() {
+        function showToast(message = '✅ 已复制到剪贴板') {
             const toast = document.getElementById('toast');
+            toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
     </script>
 </body>
