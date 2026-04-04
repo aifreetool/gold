@@ -14,11 +14,91 @@
             box-sizing: border-box;
         }
         
-        body {
+        /* 默认主题 - 浅色模式 */
+        body:not(.eye-care-mode) {
             font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
+        }
+        
+        /* 护眼模式 */
+        body.eye-care-mode {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
+            background: #f0f9e8; /* 柔和的浅绿色背景 */
+            min-height: 100vh;
+            padding: 20px;
+            color: #5c7a5c; /* 柔和的深绿色文字 */
+        }
+        
+        .eye-care-mode .header {
+            background: linear-gradient(135deg, #8bc34a 0%, #4caf50 100%);
+            color: #333;
+        }
+        
+        .eye-care-mode .card {
+            background: #f5fbf0;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .eye-care-mode .card-title {
+            color: #4caf50;
+            border-bottom-color: #c8e6c9;
+        }
+        
+        .eye-care-mode .preview-section {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+        }
+        
+        .eye-care-mode .preview-section h4 {
+            color: #4caf50;
+        }
+        
+        .eye-care-mode .ball-item {
+            background: #e8f5e9;
+        }
+        
+        .eye-care-mode .result-details {
+            background: #e8f5e9;
+        }
+        
+        .eye-care-mode .result-row {
+            border-bottom-color: #c8e6c9;
+        }
+        
+        .eye-care-mode .ball-detail-header {
+            color: #4caf50;
+        }
+        
+        .eye-care-mode .ball-detail-item {
+            color: #757575;
+        }
+        
+        .eye-care-mode .total-preview {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+            color: #4caf50;
+        }
+        
+        .eye-care-mode .mode-btn.active {
+            background: linear-gradient(135deg, #8bc34a 0%, #4caf50 100%);
+            color: #333;
+        }
+        
+        .eye-care-mode input[type="text"],
+        .eye-care-mode input[type="number"],
+        .eye-care-mode input[type="date"] {
+            background-color: #f5fbf0;
+            border-color: #c8e6c9;
+            color: #5c7a5c;
+        }
+        
+        .eye-care-mode input[type="text"]:focus,
+        .eye-care-mode input[type="number"]:focus,
+        .eye-care-mode input[type="date"]:focus {
+            border-color: #4caf50;
         }
         
         .container {
@@ -280,6 +360,30 @@
             transform: translateX(0);
         }
         
+        /* 护眼模式开关按钮 */
+        .eye-care-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: #fff;
+            border: 1px solid #dcdfe6;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .eye-care-toggle.eye-care-mode-active {
+            background: #8bc34a;
+            color: white;
+            border-color: #4caf50;
+        }
+        
         @media (max-width: 600px) {
             .form-row, .mode-buttons, .split-section, .action-buttons {
                 grid-template-columns: 1fr;
@@ -292,10 +396,23 @@
             .total-preview {
                 font-size: 20px;
             }
+            
+            .eye-care-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 护眼模式开关按钮 -->
+    <button class="eye-care-toggle" id="eyeCareToggle">
+        <span>🌿</span>
+        <span>护眼模式</span>
+    </button>
+    
     <div class="container">
         <div class="header">
             <h1><span>🏸</span> 羽毛球局费用结算系统</h1>
@@ -445,11 +562,15 @@
         let nextId = 1;
         let selectedPayMode = 'AA';
         let isResultVisible = false;
+        let eyeCareMode = localStorage.getItem('eyeCareMode') === 'true';
         
         // 设置默认日期
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('gameDate').value = today;
+            
+            // 应用护眼模式
+            applyEyeCareMode(eyeCareMode);
             
             // 绑定事件
             bindEvents();
@@ -482,6 +603,7 @@
             document.getElementById('calculateBtn').addEventListener('click', calculate);
             document.getElementById('copyBtn').addEventListener('click', copyBill);
             document.getElementById('exportBtn').addEventListener('click', exportAsImage);
+            document.getElementById('eyeCareToggle').addEventListener('click', toggleEyeCareMode);
             
             // 模式切换
             document.getElementById('btnModeAA').addEventListener('click', () => selectPayMode('AA'));
@@ -797,7 +919,7 @@
                 });
         }
         
-        // 导出图片
+        // 导出图片 - 改进版，避免遮罩层问题
         async function exportAsImage() {
             if (!isResultVisible) {
                 showToast('请先生成账单');
@@ -807,19 +929,123 @@
             try {
                 showToast('正在生成图片...');
                 
-                const resultSection = document.getElementById('resultSection');
-                const canvas = await html2canvas(resultSection, {
-                    backgroundColor: '#ffffff',
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
+                // 创建一个临时的纯净DOM元素，用于渲染，避免各种CSS干扰
+                const originalResultSection = document.getElementById('resultSection');
+                
+                // 创建一个全新的纯净容器
+                const cleanContainer = document.createElement('div');
+                cleanContainer.style.cssText = `
+                    width: ${originalResultSection.offsetWidth}px;
+                    background: white !important;
+                    padding: 24px;
+                    box-sizing: border-box;
+                    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
+                    position: absolute;
+                    left: -9999px;
+                    top: 0;
+                    z-index: -1;
+                    border-radius: 12px;
+                    box-shadow: none;
+                    border: 1px solid #ebeef5;
+                `;
+                
+                // 获取当前结果内容
+                const gameDate = document.getElementById('gameDate').value;
+                const venue = parseFloat(document.getElementById('venueCost').value) || 0;
+                const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
+                const other = parseFloat(document.getElementById('otherCost').value) || 0;
+                const grandTotal = venue + ballTotal + other;
+                const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
+                const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
+                const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
+                const malePay = parseFloat(document.getElementById('resMalePay').textContent) || 0;
+                const femalePay = parseFloat(document.getElementById('resFemalePay').textContent) || 0;
+                
+                // 构建纯净的HTML内容
+                let ballDetailsHTML = '';
+                if (ballItems.length > 0) {
+                    ballDetailsHTML += '<div style="font-weight: bold; color: #409eff; margin: 10px 0 8px 20px; font-size: 14px;">羽毛球明细:</div>';
+                    ballItems.forEach(item => {
+                        ballDetailsHTML += `<div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding-left: 20px; color: #606266; font-size: 14px;"><span>${item.brand}</span><span>¥${(item.price * item.count).toFixed(2)} (${item.count}个 × ¥${item.price.toFixed(2)}/个)</span></div>`;
+                    });
+                    ballDetailsHTML += `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>球费总计</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
+                } else {
+                    ballDetailsHTML = `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>球费</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
+                }
+                
+                const detailsHTML = `
+                    <div style="font-size: 18px; font-weight: 600; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid #f0f2f5;">
+                        🧾 结算详情
+                    </div>
+                    
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
+                            <span>组局日期</span>
+                            <span>${formatDate(gameDate)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
+                            <span>场地费</span>
+                            <span>¥ ${venue.toFixed(2)}</span>
+                        </div>
+                        ${ballDetailsHTML}
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
+                            <span>其他费用</span>
+                            <span>¥ ${other.toFixed(2)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 2px solid #ebeef5; font-weight: bold; color: #667eea; font-size: 18px;">
+                            <span>总计</span>
+                            <span>¥ ${grandTotal.toFixed(2)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
+                            <span>计费模式</span>
+                            <span>${selectedPayMode === 'AA' ? '全员均摊' : '女生优惠'}</span>
+                        </div>
+                        ${selectedPayMode === 'SUB' ? `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>` : ''}
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #409eff 0%, #1890ff 100%);">
+                            <div style="font-size: 16px; opacity: 0.95;">男生应付</div>
+                            <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${malePay.toFixed(2)}</div>
+                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${maleCount}人</div>
+                        </div>
+                        <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #ff6b9d 0%, #ec407a 100%);">
+                            <div style="font-size: 16px; opacity: 0.95;">女生应付</div>
+                            <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${femalePay.toFixed(2)}</div>
+                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${femaleCount}人</div>
+                        </div>
+                    </div>
+                `;
+                
+                cleanContainer.innerHTML = detailsHTML;
+                document.body.appendChild(cleanContainer);
+                
+                // 使用html2canvas渲染纯净容器
+                const canvas = await html2canvas(cleanContainer, {
+                    backgroundColor: '#ffffff',  // 明确设置背景色为白色
+                    scale: 2,                   // 提高清晰度
+                    useCORS: true,              // 处理跨域
+                    logging: false,             // 关闭日志
+                    // 忽略可能有问题的元素
+                    ignoreElements: (element) => {
+                        // 忽略任何透明度小于1的元素（除了文字相关的）
+                        const style = window.getComputedStyle(element);
+                        const opacity = parseFloat(style.opacity) || 1;
+                        if (opacity < 1 && element.tagName !== 'INPUT' && element.tagName !== 'TEXTAREA') {
+                            return true;
+                        }
+                        return false;
+                    }
                 });
+                
+                // 移除临时容器
+                document.body.removeChild(cleanContainer);
                 
                 canvas.toBlob(function(blob) {
                     if (blob) {
                         const link = document.createElement('a');
-                        const gameDate = document.getElementById('gameDate').value;
-                        link.download = `羽毛球局结算单_${formatDate(gameDate).replace(/\//g, '-')}.png`;
+                        const formattedDate = formatDate(gameDate).replace(/\//g, '-');
+                        link.download = `羽毛球局结算单_${formattedDate}.png`;
                         link.href = URL.createObjectURL(blob);
                         link.click();
                         URL.revokeObjectURL(link.href);
@@ -832,6 +1058,25 @@
             } catch (error) {
                 console.error('导出图片失败:', error);
                 showToast('❌ 导出失败，请重试');
+            }
+        }
+        
+        // 切换护眼模式
+        function toggleEyeCareMode() {
+            eyeCareMode = !eyeCareMode;
+            localStorage.setItem('eyeCareMode', eyeCareMode);
+            applyEyeCareMode(eyeCareMode);
+        }
+        
+        // 应用护眼模式
+        function applyEyeCareMode(isEnabled) {
+            const body = document.body;
+            if (isEnabled) {
+                body.classList.add('eye-care-mode');
+                document.getElementById('eyeCareToggle').classList.add('eye-care-mode-active');
+            } else {
+                body.classList.remove('eye-care-mode');
+                document.getElementById('eyeCareToggle').classList.remove('eye-care-mode-active');
             }
         }
         
