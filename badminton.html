@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🏸 羽毛球局结算助手 (多品牌版)</title>
+    <!-- 引入 html2canvas 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         :root {
             /* Light Theme Colors */
@@ -494,11 +496,8 @@
             margin-top: 4px;
         }
 
-        .btn-copy {
-            margin-top: 20px;
-            background: var(--btn-copy-bg);
-            color: var(--btn-copy-color);
-            border: 2px solid var(--btn-copy-border);
+        .btn-copy, .btn-export {
+            margin-top: 15px;
             padding: 14px;
             width: 100%;
             border-radius: 12px;
@@ -510,11 +509,29 @@
             gap: 8px;
             transition: all 0.3s;
             font-size: 1.05rem;
+            border: 2px solid var(--btn-copy-border);
+        }
+
+        .btn-copy {
+            background: var(--btn-copy-bg);
+            color: var(--btn-copy-color);
         }
 
         .btn-copy:hover {
             border-color: var(--btn-copy-hover-border);
             color: var(--btn-copy-hover-color);
+            background: var(--btn-copy-hover-bg);
+        }
+
+        .btn-export {
+            background: var(--btn-copy-bg);
+            color: var(--btn-copy-color);
+            margin-top: 10px;
+        }
+
+        .btn-export:hover {
+            border-color: var(--court-green);
+            color: var(--court-green);
             background: var(--btn-copy-hover-bg);
         }
 
@@ -693,6 +710,10 @@
             <button class="btn-copy" onclick="copyBill()">
                 <span>📋 复制账单到微信群</span>
             </button>
+            <!-- 新增导出图片按钮 -->
+            <button class="btn-export" onclick="exportAsImage()">
+                <span>🖼️ 导出为图片</span>
+            </button>
         </div>
     </div>
 
@@ -703,21 +724,19 @@
         let ballItems = [];
         let nextId = 1;
         let selectedPayMode = 'AA';
-        let isResultVisible = false; // 新增：标记结果是否可见
+        let isResultVisible = false;
 
         // === 主题切换逻辑 ===
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            // 更新按钮图标
             const themeToggle = document.querySelector('.theme-toggle');
             themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
         }
 
         // === 初始化主题 ===
         document.addEventListener('DOMContentLoaded', () => {
-            // 检查本地存储的偏好
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-mode');
@@ -739,7 +758,6 @@
 
             const draftTotal = price * count;
             const draftPreview = document.getElementById('draftPreview');
-            const draftTotalSpan = document.getElementById('draftTotal');
 
             if (brand && price > 0 && count > 0) {
                 draftPreview.innerHTML = `
@@ -794,7 +812,7 @@
             countInput.value = '';
             updateDraftPreview();
             renderBallList();
-            updateAndHideResult(); // 球品变化也应隐藏结果
+            updateAndHideResult();
             brandInput.focus();
         }
 
@@ -838,14 +856,14 @@
                 ballItems[index][field] = value;
             }
             renderBallList();
-            updateAndHideResult(); // 球品变化也应隐藏结果
+            updateAndHideResult();
         }
 
         // === 删除球品 ===
         function removeBallItem(id) {
             ballItems = ballItems.filter(item => item.id !== id);
             renderBallList();
-            updateAndHideResult(); // 球品变化也应隐藏结果
+            updateAndHideResult();
         }
 
         // === 更新总计 ===
@@ -874,7 +892,7 @@
             console.log("模式切换至:", mode);
             selectedPayMode = mode;
             updateModeButtonStates();
-            updateAndHideResult(); // 模式变化也应隐藏结果
+            updateAndHideResult();
         }
 
         function updateModeButtonStates() {
@@ -937,7 +955,7 @@
             document.getElementById('billDetails').innerHTML = detailsHTML;
 
             document.getElementById('resultSection').style.display = 'block';
-            isResultVisible = true; // 标记结果已显示
+            isResultVisible = true;
             document.querySelector('#resultSection').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -969,6 +987,41 @@
             navigator.clipboard.writeText(billText)
                 .then(() => showToast())
                 .catch(err => alert('复制失败，请手动选择文本复制。'));
+        }
+
+        // === 🆕 新增：导出为图片 ===
+        async function exportAsImage() {
+            const resultSection = document.getElementById('resultSection');
+            if (!resultSection) return;
+
+            try {
+                showToast('正在生成图片...');
+                // 使用 html2canvas 将 DOM 元素转换为 canvas
+                const canvas = await html2canvas(resultSection, {
+                    backgroundColor: null, // 保持透明背景
+                    scale: 2, // 提高分辨率
+                    useCORS: true, // 处理跨域图片
+                    logging: false // 关闭日志
+                });
+
+                // 将 canvas 转换为 Blob
+                canvas.toBlob(function(blob) {
+                    if (blob) {
+                        // 创建一个临时链接用于下载
+                        const link = document.createElement('a');
+                        link.download = 'badminton_bill.png';
+                        link.href = URL.createObjectURL(blob);
+                        link.click();
+                        URL.revokeObjectURL(link.href); // 清理内存
+                        showToast('✅ 账单图片已下载');
+                    } else {
+                        showToast('❌ 图片生成失败');
+                    }
+                }, 'image/png');
+            } catch (error) {
+                console.error('导出图片失败:', error);
+                showToast('❌ 导出失败，请重试');
+            }
         }
 
         function showToast(message = '✅ 已复制到剪贴板') {
