@@ -3,12 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🏸 羽毛球局结算助手 (多品牌版)</title>
-    <!-- 引入 html2canvas 库 -->
+    <title>🏸 羽毛球局结算助手 (360兼容版)</title>
+    <!-- 引入 html2canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- ✅ 360浏览器专用修复：强制禁用所有滤镜 -->
+    <style>
+        * {
+            -webkit-filter: none !important;
+            filter: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            text-shadow: none !important;
+        }
+        body, .container, #resultSection {
+            -webkit-filter: none !important;
+            filter: none !important;
+            background: white !important;
+        }
+    </style>
+
     <style>
         :root {
-            /* Light Theme Colors */
             --bg-color: #f0f4f0;
             --card-bg: white;
             --text-dark: #333333;
@@ -55,7 +71,6 @@
             --split-female-bg: linear-gradient(135deg, #ec407a, #c2185b);
         }
 
-        /* Dark Theme Colors */
         .dark-mode {
             --bg-color: #121212;
             --card-bg: #1e1e1e;
@@ -188,7 +203,6 @@
             z-index: 10;
         }
 
-        /* ✅ 关键修复：强制卡片背景不透明 */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -196,7 +210,6 @@
             margin-bottom: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
-            /* 👇 确保背景不透明，防止导出时透出 body 背景 */
             background-color: var(--card-bg) !important;
         }
 
@@ -212,7 +225,6 @@
             padding-bottom: 10px;
         }
 
-        /* Form Elements */
         .form-group {
             margin-bottom: 15px;
         }
@@ -225,7 +237,7 @@
             font-weight: 500;
         }
 
-        input[type="number"], select, input[type="text"] {
+        input[type="number"], select, input[type="text"], input[type="date"] {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border-color);
@@ -236,7 +248,7 @@
             color: var(--text-dark);
         }
 
-        input[type="number"]:focus, select:focus, input[type="text"]:focus {
+        input[type="number"]:focus, select:focus, input[type="text"]:focus, input[type="date"]:focus {
             outline: none;
             border-color: var(--input-focus-border);
             background: var(--input-focus-bg);
@@ -250,7 +262,6 @@
             border-color: var(--readonly-field-border);
         }
 
-        /* Multi-Ball Section */
         .ball-input-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -353,7 +364,6 @@
             transform: translateY(-1px);
         }
 
-        /* Mode Buttons */
         .mode-btn {
             background: var(--mode-btn-bg);
             color: var(--mode-btn-color);
@@ -397,7 +407,6 @@
             line-height: 1.4;
         }
 
-        /* Button */
         .btn-calc {
             width: 100%;
             padding: 16px;
@@ -422,11 +431,9 @@
             transform: translateY(0);
         }
 
-        /* Result Section - ✅ 关键修复：强制白色背景 */
         #resultSection {
             display: none;
             animation: slideUp 0.4s ease-out;
-            /* 👇 强制纯白背景，防止透出 body 灰色 */
             background-color: white !important;
             box-shadow: none !important;
             border: none !important;
@@ -542,7 +549,6 @@
             background: var(--btn-copy-hover-bg);
         }
 
-        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -567,7 +573,7 @@
 </head>
 <body>
     <header>
-        <h1><span class="shuttle-icon">🏸</span> 羽球局结算 (多品牌版)</h1>
+        <h1><span class="shuttle-icon">🏸</span> 羽球局结算 (360兼容版)</h1>
         <p>简单输入 · 自动算账 · 透明公开</p>
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">🌙</button>
     </header>
@@ -575,10 +581,16 @@
         <!-- Input Card -->
         <div class="card">
             <div class="card-title">💰 费用录入</div>
-            
+
+            <!-- 新增：组局日期 -->
+            <div class="form-group">
+                <label>组局日期</label>
+                <input type="date" id="gameDate" value="">
+            </div>
+
             <div class="form-group">
                 <label>场地费 (元)</label>
-                <input type="number" id="venueCost" placeholder="例如：200" step="0.01" oninput="updateAndHideResult()">
+                <input type="number" id="venueCost" placeholder="例如：200" step="0.01" oninput="updateAndHideResult(); formatNumberInput(this)">
             </div>
 
             <!-- Multi Brand Input Section -->
@@ -592,15 +604,15 @@
                 </div>
                 <div class="ball-input-group">
                     <label>单价 (元/个)</label>
-                    <input type="number" id="ballPrice" placeholder="如: 2.5" step="0.01" oninput="updateDraftPreview()">
+                    <input type="number" id="ballPrice" placeholder="如: 2.5" step="0.01" oninput="updateDraftPreview(); formatNumberInput(this)">
                 </div>
                 <div class="ball-input-group">
                     <label>数量 (个)</label>
-                    <input type="number" id="ballCount" placeholder="如: 2" oninput="updateDraftPreview()">
+                    <input type="number" id="ballCount" placeholder="如: 2" oninput="updateDraftPreview(); formatNumberInput(this)">
                 </div>
             </div>
 
-            <!-- Draft Preview (Real-time Calculation) -->
+            <!-- Draft Preview -->
             <div class="ball-draft-preview" id="draftPreview">
                 <span>预览：暂无有效输入</span>
                 <span id="draftTotal">¥ 0.00</span>
@@ -610,12 +622,9 @@
                 ➕ 添加球品
             </button>
 
-            <!-- List of Added Balls -->
-            <div id="ballListContainer">
-                <!-- Dynamic items will be inserted here -->
-            </div>
+            <!-- Ball List -->
+            <div id="ballListContainer"></div>
 
-            <!-- Ball Total -->
             <div class="form-group" style="margin-top: 10px;">
                 <label>球费小计 (自动计算)</label>
                 <input type="number" id="ballTotal" class="readonly-field" readonly>
@@ -623,7 +632,7 @@
 
             <div class="form-group">
                 <label>其他费用 (水/停车等)</label>
-                <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" oninput="updateAndHideResult()">
+                <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" oninput="updateAndHideResult(); formatNumberInput(this)">
             </div>
 
             <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
@@ -636,59 +645,35 @@
         <div class="card">
             <div class="card-title">👥 人员与模式</div>
             
-            <!-- 人员输入 -->
             <div class="form-row" style="display: flex; gap: 15px; margin-bottom: 20px;">
                 <div class="form-col" style="flex: 1;">
                     <label>男生人数</label>
-                    <input type="number" id="maleCount" value="0" min="0" oninput="updateAndHideResult()" style="font-size: 1.1rem; padding: 14px;">
+                    <input type="number" id="maleCount" value="0" min="0" oninput="updateAndHideResult(); formatNumberInput(this)" style="font-size: 1.1rem; padding: 14px;">
                 </div>
                 <div class="form-col" style="flex: 1;">
                     <label>女生人数</label>
-                    <input type="number" id="femaleCount" value="0" min="0" oninput="updateAndHideResult()" style="font-size: 1.1rem; padding: 14px;">
+                    <input type="number" id="femaleCount" value="0" min="0" oninput="updateAndHideResult(); formatNumberInput(this)" style="font-size: 1.1rem; padding: 14px;">
                 </div>
             </div>
 
-            <!-- 计费模式 -->
             <div class="form-group" style="margin-bottom: 25px;">
                 <label style="display: block; font-size: 1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 12px;">计费模式</label>
-                
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <!-- 全员均摊按钮 -->
-                    <button 
-                        type="button"
-                        id="btnModeAA"
-                        class="mode-btn active"
-                        onclick="selectPayMode('AA')"
-                    >
-                        <span>👨‍💼</span>
-                        <span>全员均摊</span>
-                        <small>平均分摊所有费用</small>
+                    <button id="btnModeAA" class="mode-btn active" onclick="selectPayMode('AA')">
+                        <span>👨‍💼</span><span>全员均摊</span><small>平均分摊所有费用</small>
                     </button>
-
-                    <!-- 女生优惠按钮 -->
-                    <button 
-                        type="button"
-                        id="btnModeSub"
-                        class="mode-btn"
-                        onclick="selectPayMode('SUB')"
-                    >
-                        <span>👩‍💼</span>
-                        <span>女生优惠</span>
-                        <small>女生少付，差额由男生分摊</small>
+                    <button id="btnModeSub" class="mode-btn" onclick="selectPayMode('SUB')">
+                        <span>👩‍💼</span><span>女生优惠</span><small>女生少付，差额由男生分摊</small>
                     </button>
                 </div>
             </div>
 
-            <!-- 女生优惠参数（仅在选中时显示） -->
             <div id="subsidyGroup" style="display: none; margin-bottom: 20px;">
                 <label style="font-size: 1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">优惠设置</label>
                 <div style="display: flex; gap: 12px;">
                     <div style="flex: 1;">
                         <label>女生每人少付 (元)</label>
-                        <input type="number" id="subsidyAmount" value="10" step="1" min="0" oninput="updateAndHideResult()" style="width: 100%; font-size: 1.1rem; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-                    </div>
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: end;">
-                        <small style="color: var(--text-light); font-size: 0.8rem;">*男生将分摊这部分差额</small>
+                        <input type="number" id="subsidyAmount" value="10" step="1" min="0" oninput="updateAndHideResult(); formatNumberInput(this)" style="width: 100%; font-size: 1.1rem; padding: 12px;">
                     </div>
                 </div>
             </div>
@@ -699,9 +684,7 @@
         <!-- Result Card -->
         <div class="card" id="resultSection">
             <div class="card-title">🧾 结算详情</div>
-            <div class="result-summary" id="billDetails">
-                <!-- Dynamic Content -->
-            </div>
+            <div class="result-summary" id="billDetails"></div>
             <div class="final-split">
                 <div class="split-box split-male">
                     <div class="split-label">男生应付</div>
@@ -717,7 +700,6 @@
             <button class="btn-copy" onclick="copyBill()">
                 <span>📋 复制账单到微信群</span>
             </button>
-            <!-- 新增导出图片按钮 -->
             <button class="btn-export" onclick="exportAsImage()">
                 <span>🖼️ 导出为图片</span>
             </button>
@@ -727,22 +709,24 @@
     <div class="toast" id="toast">✅ 已复制到剪贴板</div>
 
     <script>
-        // === 全局变量 ===
         let ballItems = [];
         let nextId = 1;
         let selectedPayMode = 'AA';
         let isResultVisible = false;
 
-        // === 主题切换逻辑 ===
+        // 设置默认日期为今天
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('gameDate').value = today;
+        });
+
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            const themeToggle = document.querySelector('.theme-toggle');
-            themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+            document.querySelector('.theme-toggle').textContent = isDarkMode ? '☀️' : '🌙';
         }
 
-        // === 初始化主题 ===
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -751,18 +735,15 @@
             } else {
                 document.querySelector('.theme-toggle').textContent = '🌙';
             }
-
             updateTotals();
             updateDraftPreview();
             updateModeButtonStates();
         });
 
-        // === 实时预览草稿 ===
         function updateDraftPreview() {
             const brand = document.getElementById('ballBrand').value.trim();
             const price = parseFloat(document.getElementById('ballPrice').value) || 0;
             const count = parseInt(document.getElementById('ballCount').value) || 0;
-
             const draftTotal = price * count;
             const draftPreview = document.getElementById('draftPreview');
 
@@ -776,61 +757,35 @@
             } else {
                 draftPreview.innerHTML = `<span>预览：暂无有效输入</span><span>¥ 0.00</span>`;
                 draftPreview.style.background = '#f9f9f9';
-                if (!document.body.classList.contains('dark-mode')) {
-                    draftPreview.style.borderLeftColor = '#ccc';
-                } else {
-                     draftPreview.style.borderLeftColor = '#4a6a4a';
-                }
+                draftPreview.style.borderLeftColor = '#ccc';
             }
         }
 
-        // === 添加球品 ===
         function addBallItem() {
-            const brandInput = document.getElementById('ballBrand');
-            const priceInput = document.getElementById('ballPrice');
-            const countInput = document.getElementById('ballCount');
+            const brand = document.getElementById('ballBrand').value.trim();
+            const price = parseFloat(document.getElementById('ballPrice').value);
+            const count = parseInt(document.getElementById('ballCount').value);
 
-            const brand = brandInput.value.trim();
-            const price = parseFloat(priceInput.value);
-            const count = parseInt(countInput.value);
+            if (!brand) { alert('请输入品牌名称！'); return; }
+            if (isNaN(price) || price <= 0) { alert('请输入正确的单价！'); return; }
+            if (isNaN(count) || count <= 0) { alert('请输入正确的数量！'); return; }
 
-            if (!brand) {
-                alert('请输入品牌名称！');
-                return;
-            }
-            if (isNaN(price) || price <= 0) {
-                alert('请输入正确的单价！');
-                return;
-            }
-            if (isNaN(count) || count <= 0) {
-                alert('请输入正确的数量！');
-                return;
-            }
-
-            ballItems.push({
-                id: nextId++,
-                brand: brand,
-                price: price,
-                count: count
-            });
-
-            brandInput.value = '';
-            priceInput.value = '';
-            countInput.value = '';
+            ballItems.push({ id: nextId++, brand, price, count });
+            document.getElementById('ballBrand').value = '';
+            document.getElementById('ballPrice').value = '';
+            document.getElementById('ballCount').value = '';
             updateDraftPreview();
             renderBallList();
             updateAndHideResult();
-            brandInput.focus();
+            document.getElementById('ballBrand').focus();
         }
 
-        // === 渲染球品列表 ===
         function renderBallList() {
             const container = document.getElementById('ballListContainer');
             if (ballItems.length === 0) {
                 container.innerHTML = '<div style="color: var(--text-light); font-size: 0.9rem; text-align: center; padding: 10px;">暂无球品记录</div>';
                 return;
             }
-
             container.innerHTML = '';
             ballItems.forEach(item => {
                 const div = document.createElement('div');
@@ -838,53 +793,43 @@
                 div.innerHTML = `
                     <button class="delete-btn" onclick="removeBallItem(${item.id})">-</button>
                     <div style="flex: 1;">
-                        <strong>${item.brand}</strong> 
+                        <strong>${item.brand}</strong>
                         <span style="color: var(--text-gray);">
-                            单价 <input type="number" class="edit-price" value="${item.price}" data-id="${item.id}" step="0.01" oninput="updateBallItem(this)" style="width: 50px; padding: 2px 4px; margin: 0 2px; font-size: 0.9rem;"> 元/个 
-                            × 数量 <input type="number" class="edit-count" value="${item.count}" data-id="${item.id}" oninput="updateBallItem(this)" style="width: 50px; padding: 2px 4px; margin: 0 2px; font-size: 0.9rem;"> 个
+                            单价 <input type="number" class="edit-price" value="${item.price}" data-id="${item.id}" step="0.01" oninput="updateBallItem(this); formatNumberInput(this)" style="width: 50px; padding: 2px 4px;"> 元/个 
+                            × 数量 <input type="number" class="edit-count" value="${item.count}" data-id="${item.id}" oninput="updateBallItem(this); formatNumberInput(this)" style="width: 50px; padding: 2px 4px;"> 个
                         </span>
                     </div>
-                    <div style="text-align: right; white-space: nowrap;">
-                        ¥ ${(item.price * item.count).toFixed(2)}
-                    </div>
+                    <div style="text-align: right;">¥ ${(item.price * item.count).toFixed(2)}</div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        // === 更新单条球品 ===
         function updateBallItem(inputElement) {
             const id = parseInt(inputElement.getAttribute('data-id'));
             const field = inputElement.classList.contains('edit-price') ? 'price' : 'count';
             const value = parseFloat(inputElement.value) || 0;
-
-            const index = ballItems.findIndex(item => item.id === id);
-            if (index !== -1) {
-                ballItems[index][field] = value;
-            }
+            const idx = ballItems.findIndex(i => i.id === id);
+            if (idx !== -1) ballItems[idx][field] = value;
             renderBallList();
             updateAndHideResult();
         }
 
-        // === 删除球品 ===
         function removeBallItem(id) {
-            ballItems = ballItems.filter(item => item.id !== id);
+            ballItems = ballItems.filter(i => i.id !== id);
             renderBallList();
             updateAndHideResult();
         }
 
-        // === 更新总计 ===
         function updateTotals() {
-            const ballTotal = ballItems.reduce((sum, item) => sum + (item.price * item.count), 0);
+            const ballTotal = ballItems.reduce((sum, i) => sum + (i.price * i.count), 0);
             document.getElementById('ballTotal').value = ballTotal > 0 ? ballTotal.toFixed(2) : '';
-
             const venue = parseFloat(document.getElementById('venueCost').value) || 0;
             const other = parseFloat(document.getElementById('otherCost').value) || 0;
             const grandTotal = venue + ballTotal + other;
             document.getElementById('grandTotalPreview').textContent = grandTotal.toFixed(2) + ' 元';
         }
 
-        // === 新增核心：更新总计并隐藏结果 ===
         function updateAndHideResult() {
             updateTotals();
             if (isResultVisible) {
@@ -894,56 +839,41 @@
             }
         }
 
-        // === 模式选择逻辑 ===
         function selectPayMode(mode) {
-            console.log("模式切换至:", mode);
             selectedPayMode = mode;
             updateModeButtonStates();
             updateAndHideResult();
         }
 
         function updateModeButtonStates() {
-            const aaBtn = document.getElementById('btnModeAA');
-            const subBtn = document.getElementById('btnModeSub');
-            if (!aaBtn || !subBtn) {
-                console.error('按钮元素未找到！');
-                return;
-            }
-
-            aaBtn.classList.toggle('active', selectedPayMode === 'AA');
-            subBtn.classList.toggle('active', selectedPayMode === 'SUB');
-            document.getElementById('subsidyGroup').style.display = (selectedPayMode === 'SUB' ? 'block' : 'none');
+            document.getElementById('btnModeAA').classList.toggle('active', selectedPayMode === 'AA');
+            document.getElementById('btnModeSub').classList.toggle('active', selectedPayMode === 'SUB');
+            document.getElementById('subsidyGroup').style.display = selectedPayMode === 'SUB' ? 'block' : 'none';
         }
 
-        // === 核心计算 ===
         function calculate() {
+            const gameDate = document.getElementById('gameDate').value;
             const venue = parseFloat(document.getElementById('venueCost').value) || 0;
             const other = parseFloat(document.getElementById('otherCost').value) || 0;
             const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
             const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
-            const mode = selectedPayMode;
             const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
-
             const totalCount = maleCount + femaleCount;
-            if (totalCount === 0) {
-                alert('⚠️ 请至少输入一名参与人员！');
-                return;
-            }
+            if (totalCount === 0) { alert('⚠️ 请至少输入一名参与人员！'); return; }
 
             const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
             const grandTotal = venue + ballTotal + other;
 
-            let malePay = 0, femalePay = 0;
-
-            if (mode === 'AA' || femaleCount === 0 || maleCount === 0) {
+            let malePay, femalePay;
+            if (selectedPayMode === 'AA' || femaleCount === 0 || maleCount === 0) {
                 const perPerson = grandTotal / totalCount;
                 malePay = perPerson;
                 femalePay = perPerson;
             } else {
                 const numerator = grandTotal + (femaleCount * subsidy);
-                const baseMalePay = numerator / totalCount;
-                malePay = baseMalePay;
-                femalePay = baseMalePay - subsidy;
+                const base = numerator / totalCount;
+                malePay = base;
+                femalePay = base - subsidy;
             }
 
             document.getElementById('resMalePay').textContent = malePay.toFixed(2);
@@ -951,52 +881,52 @@
             document.getElementById('resMaleCount').textContent = `${maleCount}人`;
             document.getElementById('resFemaleCount').textContent = `${femaleCount}人`;
 
-            const detailsHTML = `
+            // 包含日期的详细信息
+            const details = `
+                <div class="result-row"><span>组局日期</span><span>${gameDate}</span></div>
                 <div class="result-row"><span>场地费</span><span>¥ ${venue.toFixed(2)}</span></div>
                 <div class="result-row"><span>球费</span><span>¥ ${ballTotal.toFixed(2)}</span></div>
                 <div class="result-row"><span>其他费用</span><span>¥ ${other.toFixed(2)}</span></div>
                 <div class="result-row total"><span>总计</span><span>¥ ${grandTotal.toFixed(2)}</span></div>
-                <div class="result-row" style="margin-top: 10px;"><span>计费模式</span><span>${mode === 'AA' ? '全员均摊' : '女生优惠'}</span></div>
-                ${mode === 'SUB' ? `<div class="result-row"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>`: ''}
+                <div class="result-row" style="margin-top:10px;"><span>计费模式</span><span>${selectedPayMode==='AA'?'全员均摊':'女生优惠'}</span></div>
+                ${selectedPayMode==='SUB'?`<div class="result-row"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>`:''}
             `;
-            document.getElementById('billDetails').innerHTML = detailsHTML;
+            document.getElementById('billDetails').innerHTML = details;
 
             document.getElementById('resultSection').style.display = 'block';
             isResultVisible = true;
             document.querySelector('#resultSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // === 复制账单 ===
         function copyBill() {
+            const gameDate = document.getElementById('gameDate').value;
             const venue = parseFloat(document.getElementById('venueCost').value) || 0;
             const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
             const other = parseFloat(document.getElementById('otherCost').value) || 0;
             const grandTotal = venue + ballTotal + other;
             const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
             const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
-            const mode = selectedPayMode;
             const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
 
-            let malePay = 0, femalePay = 0;
-            if (mode === 'AA' || femaleCount === 0 || maleCount === 0) {
-                const perPerson = grandTotal / (maleCount + femaleCount);
-                malePay = perPerson;
-                femalePay = perPerson;
+            let malePay, femalePay;
+            if (selectedPayMode === 'AA' || femaleCount === 0 || maleCount === 0) {
+                const per = grandTotal / (maleCount + femaleCount);
+                malePay = per;
+                femalePay = per;
             } else {
-                const numerator = grandTotal + (femaleCount * subsidy);
-                const baseMalePay = numerator / (maleCount + femaleCount);
-                malePay = baseMalePay;
-                femalePay = baseMalePay - subsidy;
+                const num = grandTotal + (femaleCount * subsidy);
+                const base = num / (maleCount + femaleCount);
+                malePay = base;
+                femalePay = base - subsidy;
             }
 
-            const billText = `【羽毛球局结算单】\n\n费用明细:\n场地费: ¥${venue.toFixed(2)}\n球费: ¥${ballTotal.toFixed(2)}\n其他: ¥${other.toFixed(2)}\n总计: ¥${grandTotal.toFixed(2)}\n\n人员与分摊:\n男生 (${maleCount}人): ￥${malePay.toFixed(2)}/人\n女生 (${femaleCount}人): ￥${femalePay.toFixed(2)}/人\n\n计费模式: ${mode === 'AA' ? '全员均摊' : '女生优惠'}\n感谢大家的参与！`;
-
-            navigator.clipboard.writeText(billText)
+            const text = `【羽毛球局结算单 - ${gameDate}】\n\n费用明细:\n场地费: ¥${venue.toFixed(2)}\n球费: ¥${ballTotal.toFixed(2)}\n其他: ¥${other.toFixed(2)}\n总计: ¥${grandTotal.toFixed(2)}\n\n人员与分摊:\n男生 (${maleCount}人): ￥${malePay.toFixed(2)}/人\n女生 (${femaleCount}人): ￥${femalePay.toFixed(2)}/人\n\n计费模式: ${selectedPayMode==='AA'?'全员均摊':'女生优惠'}\n感谢大家的参与！`;
+            navigator.clipboard.writeText(text)
                 .then(() => showToast())
-                .catch(err => alert('复制失败，请手动选择文本复制。'));
+                .catch(() => alert('复制失败，请手动选择文本复制。'));
         }
 
-        // === 🆕 修复版：导出为图片（关键：强制白底 + 临时清理样式）===
+        // ✅ 360浏览器终极修复版导出函数
         async function exportAsImage() {
             const resultSection = document.getElementById('resultSection');
             if (!resultSection || !isResultVisible) {
@@ -1005,68 +935,138 @@
             }
 
             try {
-                showToast('正在生成图片...');
-                
-                // 保存原始样式
-                const originalStyle = {
-                    boxShadow: resultSection.style.boxShadow,
-                    border: resultSection.style.border,
-                    backgroundColor: resultSection.style.backgroundColor
-                };
+                showToast('正在生成高清图片...');
 
-                // 🔑 临时移除干扰样式，确保导出纯净白底
-                resultSection.style.boxShadow = 'none';
-                resultSection.style.border = 'none';
-                resultSection.style.backgroundColor = 'white';
+                // 获取日期
+                const gameDate = document.getElementById('gameDate').value;
 
-                // 使用 html2canvas 渲染，显式指定背景为白色
-                const canvas = await html2canvas(resultSection, {
-                    backgroundColor: '#ffffff', // ✅ 强制白色背景
-                    scale: 2, // 高清
-                    useCORS: true,
-                    logging: false,
-                    // 可选：如果仍有灰色，可尝试以下（但通常不需要）
-                    // foreignObjectRendering: true,
-                    // ignoreElements: (el) => el.classList.contains('toast')
+                // 创建纯净克隆容器（绕过360注入样式）
+                const cloneDiv = document.createElement('div');
+                cloneDiv.id = 'export-clone';
+                cloneDiv.style.cssText = `
+                    position: fixed;
+                    top: -9999px;
+                    left: -9999px;
+                    width: 600px;
+                    background: #ffffff !important;
+                    padding: 20px;
+                    box-sizing: border-box;
+                    font-family: "Microsoft YaHei", sans-serif;
+                    font-size: 14px;
+                    color: #333;
+                    -webkit-filter: none !important;
+                    filter: none !important;
+                    backdrop-filter: none !important;
+                `;
+                document.body.appendChild(cloneDiv);
+
+                // 手动构建纯净 HTML（包含日期）
+                cloneDiv.innerHTML = `
+                    <div style="background:#fff; border:none; padding:20px; border-radius:16px;">
+                        <div style="color:#2E7D32; font-weight:700; margin-bottom:15px; border-bottom:2px solid #ddd; padding-bottom:10px;">
+                            🧾 结算详情
+                        </div>
+                        <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.9rem;">
+                            <div class="result-row" style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dashed #ddd; padding-bottom:4px;"><span>组局日期</span><span>${gameDate}</span></div>
+                            ${document.getElementById('billDetails').innerHTML.replace('<div class="result-row"><span>组局日期</span><span>' + gameDate + '</span></div>', '')}
+                        </div>
+                        <div style="display:flex; gap:15px; margin-top:20px;">
+                            <div style="flex:1; padding:18px; border-radius:12px; text-align:center; color:white; background:linear-gradient(135deg,#42a5f5,#1976d2); font-weight:600;">
+                                <div>男生应付</div>
+                                <div style="font-size:1.9rem;font-weight:800;">${document.getElementById('resMalePay').textContent}</div>
+                                <div>${document.getElementById('resMaleCount').textContent}</div>
+                            </div>
+                            <div style="flex:1; padding:18px; border-radius:12px; text-align:center; color:white; background:linear-gradient(135deg,#ec407a,#c2185b); font-weight:600;">
+                                <div>女生应付</div>
+                                <div style="font-size:1.9rem;font-weight:800;">${document.getElementById('resFemalePay').textContent}</div>
+                                <div>${document.getElementById('resFemaleCount').textContent}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 强制清除所有滤镜（360特供）
+                const els = cloneDiv.querySelectorAll('*');
+                els.forEach(el => {
+                    el.style.webkitFilter = 'none';
+                    el.style.filter = 'none';
+                    el.style.backdropFilter = 'none';
+                    el.style.webkitBackdropFilter = 'none';
+                    el.style.textShadow = 'none';
+                    if (el.style.background && el.style.background.includes('rgba')) {
+                        el.style.background = '#ffffff';
+                    }
                 });
 
-                // 恢复原始样式（重要！）
-                resultSection.style.boxShadow = originalStyle.boxShadow;
-                resultSection.style.border = originalStyle.border;
-                resultSection.style.backgroundColor = originalStyle.backgroundColor;
+                const canvas = await html2canvas(cloneDiv, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    ignoreElements: (el) => {
+                        const op = parseFloat(window.getComputedStyle(el).opacity) || 1;
+                        return op < 1 && el.tagName !== 'IMG';
+                    }
+                });
 
-                // 转换为 Blob 并下载
-                canvas.toBlob(function(blob) {
+                document.body.removeChild(cloneDiv);
+
+                canvas.toBlob(blob => {
                     if (blob) {
-                        const link = document.createElement('a');
-                        link.download = `羽毛球局结算单_${new Date().toLocaleDateString()}.png`;
-                        link.href = URL.createObjectURL(blob);
-                        link.click();
-                        URL.revokeObjectURL(link.href);
-                        showToast('✅ 账单图片已下载');
+                        const a = document.createElement('a');
+                        a.download = `羽毛球局结算单_${gameDate.replace(/\//g, '-')}.png`;
+                        a.href = URL.createObjectURL(blob);
+                        a.click();
+                        URL.revokeObjectURL(a.href);
+                        showToast('✅ 高清账单图片已下载（360兼容版）');
                     } else {
                         showToast('❌ 图片生成失败');
                     }
                 }, 'image/png');
 
-            } catch (error) {
-                console.error('导出图片失败:', error);
-                showToast('❌ 导出失败，请重试');
-                // 恢复样式（防错）
-                const resultSection = document.getElementById('resultSection');
-                if (resultSection) {
-                    resultSection.style.boxShadow = '';
-                    resultSection.style.border = '';
-                    resultSection.style.backgroundColor = '';
-                }
+            } catch (e) {
+                console.error('360导出错误:', e);
+                showToast('❌ 导出失败，请确保使用“极速模式”');
+                const temp = document.getElementById('export-clone');
+                if (temp) document.body.removeChild(temp);
             }
         }
 
-        function showToast(message = '✅ 已复制到剪贴板') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+        // ✅ 新增：自动格式化数字输入，去除光标后的无效0
+        function formatNumberInput(input) {
+            let value = input.value;
+            // 移除所有非数字和小数点的字符
+            value = value.replace(/[^\d.]/g, '');
+            // 防止多个小数点
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            // 如果小数点后超过2位，则截取到2位
+            if (parts.length === 2 && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+            // 如果开头是0，且后面跟着数字（但不是0.），则去掉开头的0
+            if (/^0\d+$/.test(value)) {
+                value = value.substring(1);
+            }
+            // 如果是以 . 开头，则补0
+            if (/^\./.test(value)) {
+                value = '0' + value;
+            }
+            // 避免出现 00, 001 等情况
+            if (/^0\d{2,}$/.test(value)) {
+                value = value.replace(/^0+(\d)/, '$1');
+            }
+            // 设置回输入框
+            input.value = value;
+        }
+
+        function showToast(msg = '✅ 已复制到剪贴板') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
     </script>
 </body>
