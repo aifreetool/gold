@@ -2,11 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏸 羽毛球局费用结算系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🏸 羽毛球局费用结算系统 | 精准分摊</title>
     <!-- Element UI 样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
-    <!-- 自定义样式 -->
+    <!-- html2canvas 最新稳定版 -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -29,76 +30,7 @@
             background: #f0f9e8; /* 柔和的浅绿色背景 */
             min-height: 100vh;
             padding: 20px;
-            color: #5c7a5c; /* 柔和的深绿色文字 */
-        }
-        
-        .eye-care-mode .header {
-            background: linear-gradient(135deg, #8bc34a 0%, #4caf50 100%);
-            color: #333;
-        }
-        
-        .eye-care-mode .card {
-            background: #f5fbf0;
-            border: 1px solid #c8e6c9;
-        }
-        
-        .eye-care-mode .card-title {
-            color: #4caf50;
-            border-bottom-color: #c8e6c9;
-        }
-        
-        .eye-care-mode .preview-section {
-            background: #e8f5e9;
-            border-color: #a5d6a7;
-        }
-        
-        .eye-care-mode .preview-section h4 {
-            color: #4caf50;
-        }
-        
-        .eye-care-mode .ball-item {
-            background: #e8f5e9;
-        }
-        
-        .eye-care-mode .result-details {
-            background: #e8f5e9;
-        }
-        
-        .eye-care-mode .result-row {
-            border-bottom-color: #c8e6c9;
-        }
-        
-        .eye-care-mode .ball-detail-header {
-            color: #4caf50;
-        }
-        
-        .eye-care-mode .ball-detail-item {
-            color: #757575;
-        }
-        
-        .eye-care-mode .total-preview {
-            background: #e8f5e9;
-            border-color: #a5d6a7;
-            color: #4caf50;
-        }
-        
-        .eye-care-mode .mode-btn.active {
-            background: linear-gradient(135deg, #8bc34a 0%, #4caf50 100%);
-            color: #333;
-        }
-        
-        .eye-care-mode input[type="text"],
-        .eye-care-mode input[type="number"],
-        .eye-care-mode input[type="date"] {
-            background-color: #f5fbf0;
-            border-color: #c8e6c9;
             color: #5c7a5c;
-        }
-        
-        .eye-care-mode input[type="text"]:focus,
-        .eye-care-mode input[type="number"]:focus,
-        .eye-care-mode input[type="date"]:focus {
-            border-color: #4caf50;
         }
         
         .container {
@@ -172,19 +104,11 @@
             background: #f8f9fa;
             border-radius: 8px;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .ball-item .el-input {
             width: 120px;
-        }
-        
-        .ball-item .el-button--danger {
-            height: 32px;
-            width: 32px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         .preview-section {
@@ -253,85 +177,72 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .result-details {
+        /* 简化结算界面样式（与截图一致） */
+        .simple-result {
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
         }
         
-        .result-row {
+        .result-details-simple {
+            margin-bottom: 24px;
+        }
+        
+        .detail-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            padding: 12px 0;
             border-bottom: 1px dashed #ebeef5;
         }
         
-        .result-row.total {
+        .detail-row:last-child {
             border-bottom: none;
             font-weight: bold;
             color: #667eea;
             font-size: 18px;
-            margin-top: 12px;
             padding-top: 12px;
             border-top: 2px solid #ebeef5;
         }
         
-        .ball-detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            padding-left: 20px;
+        .detail-label {
             color: #606266;
-            font-size: 14px;
         }
         
-        .ball-detail-header {
-            font-weight: bold;
-            color: #409eff;
-            margin-top: 10px;
-            margin-bottom: 8px;
-            padding-left: 20px;
+        .detail-value {
+            font-weight: 600;
         }
         
-        .split-section {
+        .split-section-simple {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-top: 24px;
         }
         
-        .split-card {
-            text-align: center;
-            padding: 24px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-        }
-        
-        .split-male {
+        .split-card-simple {
             background: linear-gradient(135deg, #409eff 0%, #1890ff 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
         }
         
-        .split-female {
+        .split-card-simple.female {
             background: linear-gradient(135deg, #ff6b9d 0%, #ec407a 100%);
         }
         
-        .split-amount {
-            font-size: 28px;
+        .split-amount-simple {
+            font-size: 32px;
             font-weight: 800;
             margin: 12px 0;
         }
         
-        .split-label {
+        .split-count-simple {
             font-size: 16px;
-            opacity: 0.95;
-        }
-        
-        .split-count {
-            font-size: 14px;
-            opacity: 0.85;
+            opacity: 0.9;
             margin-top: 8px;
         }
         
@@ -360,7 +271,6 @@
             transform: translateX(0);
         }
         
-        /* 护眼模式开关按钮 */
         .eye-care-toggle {
             position: fixed;
             top: 20px;
@@ -385,18 +295,15 @@
         }
         
         @media (max-width: 600px) {
-            .form-row, .mode-buttons, .split-section, .action-buttons {
+            .form-row, .mode-buttons, .split-section-simple, .action-buttons {
                 grid-template-columns: 1fr;
             }
-            
             .header h1 {
                 font-size: 24px;
             }
-            
             .total-preview {
                 font-size: 20px;
             }
-            
             .eye-care-toggle {
                 top: 10px;
                 right: 10px;
@@ -407,7 +314,6 @@
     </style>
 </head>
 <body>
-    <!-- 护眼模式开关按钮 -->
     <button class="eye-care-toggle" id="eyeCareToggle">
         <span>🌿</span>
         <span>护眼模式</span>
@@ -422,7 +328,6 @@
         <!-- 费用录入卡片 -->
         <div class="card">
             <div class="card-title">💰 费用录入</div>
-            
             <div class="form-row">
                 <div>
                     <label>组局日期</label>
@@ -436,7 +341,6 @@
             
             <div class="ball-input-section">
                 <div class="card-title" style="font-size: 16px; margin-bottom: 16px;">🏸 羽毛球消耗 (多品牌)</div>
-                
                 <div class="form-row">
                     <div>
                         <label>品牌名称</label>
@@ -451,18 +355,13 @@
                         <input type="number" id="ballCount" placeholder="如: 2" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
                     </div>
                 </div>
-                
                 <div class="preview-section">
                     <h4>实时预览</h4>
                     <div id="draftPreview">暂无有效输入</div>
                 </div>
-                
-                <button id="addBallBtn" class="el-button el-button--primary" style="width: 100%; height: 40px; font-weight: 600;">
-                    ➕ 添加球品
-                </button>
+                <button id="addBallBtn" class="el-button el-button--primary" style="width: 100%; height: 40px; font-weight: 600;">➕ 添加球品</button>
             </div>
             
-            <!-- 已添加的球品列表 -->
             <div id="ballListContainer" style="margin-top: 20px;"></div>
             
             <div class="form-row" style="margin-top: 20px;">
@@ -475,16 +374,12 @@
                     <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
                 </div>
             </div>
-            
-            <div class="total-preview">
-                总费用预览: <span id="grandTotalPreview">0.00</span> 元
-            </div>
+            <div class="total-preview">总费用预览: <span id="grandTotalPreview">0.00</span> 元</div>
         </div>
         
-        <!-- 人员与模式卡片 -->
+        <!-- 人员与计费模式卡片 -->
         <div class="card">
             <div class="card-title">👥 人员与计费模式</div>
-            
             <div class="form-row">
                 <div>
                     <label>男生人数</label>
@@ -495,332 +390,229 @@
                     <input type="number" id="femaleCount" value="0" min="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 18px; text-align: center;">
                 </div>
             </div>
-            
             <div class="mode-buttons">
-                <button id="btnModeAA" class="el-button mode-btn active">
-                    <span>👨‍💼</span>
-                    <span>全员均摊</span>
-                    <small style="font-size: 12px; opacity: 0.8;">平均分摊所有费用</small>
-                </button>
-                <button id="btnModeSub" class="el-button mode-btn">
-                    <span>👩‍💼</span>
-                    <span>女生优惠</span>
-                    <small style="font-size: 12px; opacity: 0.8;">女生少付，差额由男生分摊</small>
-                </button>
+                <button id="btnModeAA" class="el-button mode-btn active"><span>👨‍💼</span><span>全员均摊</span><small style="font-size: 12px; opacity: 0.8;">平均分摊所有费用</small></button>
+                <button id="btnModeSub" class="el-button mode-btn"><span>👩‍💼</span><span>女生优惠</span><small style="font-size: 12px; opacity: 0.8;">女生少付，差额由男生分摊</small></button>
             </div>
-            
             <div id="subsidySection" class="subsidy-section" style="display: none;">
                 <label>女生每人少付金额 (元)</label>
                 <input type="number" id="subsidyAmount" value="10" step="1" min="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 18px; text-align: center;">
             </div>
-            
-            <button id="calculateBtn" class="el-button el-button--success" style="width: 100%; height: 50px; font-size: 18px; font-weight: 600; margin-top: 20px;">
-                ⚡ 立即生成账单
-            </button>
+            <button id="calculateBtn" class="el-button el-button--success" style="width: 100%; height: 50px; font-size: 18px; font-weight: 600; margin-top: 20px;">⚡ 立即生成账单</button>
         </div>
         
-        <!-- 结果卡片 -->
+        <!-- 结算结果卡片（与截图样式完全匹配） -->
         <div class="card result-section" id="resultSection">
             <div class="card-title">🧾 结算详情</div>
-            
-            <div class="result-details" id="billDetails"></div>
-            
-            <div class="split-section">
-                <div class="split-card split-male">
-                    <div class="split-label">男生应付</div>
-                    <div class="split-amount" id="resMalePay">0.00</div>
-                    <div class="split-count" id="resMaleCount">0人</div>
+            <div class="simple-result" id="simpleResultContainer">
+                <div class="result-details-simple" id="billDetailsSimple">
+                    <div class="detail-row"><span class="detail-label">组局日期</span><span class="detail-value" id="resGameDate">—</span></div>
+                    <div class="detail-row"><span class="detail-label">场地费</span><span class="detail-value" id="resVenueCost">¥0.00</span></div>
+                    <div class="detail-row"><span class="detail-label">球费总计</span><span class="detail-value" id="resBallTotal">¥0.00</span></div>
+                    <div class="detail-row"><span class="detail-label">其他费用</span><span class="detail-value" id="resOtherCost">¥0.00</span></div>
+                    <div class="detail-row"><span class="detail-label">总计</span><span class="detail-value" id="resGrandTotal">¥0.00</span></div>
+                    <div class="detail-row"><span class="detail-label">计费模式</span><span class="detail-value" id="resPayMode">全员均摊</span></div>
                 </div>
-                <div class="split-card split-female">
-                    <div class="split-label">女生应付</div>
-                    <div class="split-amount" id="resFemalePay">0.00</div>
-                    <div class="split-count" id="resFemaleCount">0人</div>
+                <div class="split-section-simple">
+                    <div class="split-card-simple" id="maleResultCard">
+                        <div class="split-amount-simple" id="resMalePay">0.00</div>
+                        <div class="split-count-simple" id="resMaleCount">0人</div>
+                    </div>
+                    <div class="split-card-simple female" id="femaleResultCard">
+                        <div class="split-amount-simple" id="resFemalePay">0.00</div>
+                        <div class="split-count-simple" id="resFemaleCount">0人</div>
+                    </div>
                 </div>
             </div>
-            
             <div class="action-buttons">
-                <button id="copyBtn" class="el-button el-button--info">
-                    📋 复制账单到微信群
-                </button>
-                <button id="exportBtn" class="el-button el-button--warning">
-                    🖼️ 导出为图片
-                </button>
+                <button id="copyBtn" class="el-button el-button--info">📋 复制账单到微信群</button>
+                <button id="exportBtn" class="el-button el-button--warning">🖼️ 导出为图片</button>
             </div>
         </div>
     </div>
     
     <div class="toast" id="toast">✅ 操作成功</div>
 
-    <!-- Element UI JS -->
-    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://unpkg.com/element-ui@2.15.14/lib/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    
     <script>
-        // 初始化数据
+        // ---------- 全局状态 ----------
         let ballItems = [];
         let nextId = 1;
         let selectedPayMode = 'AA';
         let isResultVisible = false;
         let eyeCareMode = localStorage.getItem('eyeCareMode') === 'true';
         
-        // 设置默认日期
-        document.addEventListener('DOMContentLoaded', function() {
+        // DOM 元素快捷引用
+        const dom = {
+            gameDate: () => document.getElementById('gameDate'),
+            venueCost: () => document.getElementById('venueCost'),
+            otherCost: () => document.getElementById('otherCost'),
+            maleCount: () => document.getElementById('maleCount'),
+            femaleCount: () => document.getElementById('femaleCount'),
+            subsidyAmount: () => document.getElementById('subsidyAmount'),
+            ballTotal: () => document.getElementById('ballTotal'),
+            grandTotalPreview: () => document.getElementById('grandTotalPreview'),
+            resultSection: () => document.getElementById('resultSection'),
+        };
+        
+        // 初始化默认日期
+        document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('gameDate').value = today;
-            
-            // 应用护眼模式
+            if (dom.gameDate()) dom.gameDate().value = today;
             applyEyeCareMode(eyeCareMode);
-            
-            // 绑定事件
-            bindEvents();
+            bindGlobalEvents();
             updateTotals();
             updateDraftPreview();
         });
         
-        function bindEvents() {
-            // 输入事件
-            ['venueCost', 'otherCost', 'maleCount', 'femaleCount', 'subsidyAmount'].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', () => {
-                        validateInput(element);
-                        updateAndHideResult();
-                    });
-                }
+        function bindGlobalEvents() {
+            // 输入触发更新并隐藏结果
+            const inputIds = ['venueCost', 'otherCost', 'maleCount', 'femaleCount', 'subsidyAmount'];
+            inputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', () => { validateNumberInput(el); updateAndHideResult(); });
             });
-            
-            // 球品输入事件
+            // 球品输入预览
             ['ballBrand', 'ballPrice', 'ballCount'].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', updateDraftPreview);
-                }
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateDraftPreview);
             });
-            
-            // 按钮事件
             document.getElementById('addBallBtn').addEventListener('click', addBallItem);
-            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            document.getElementById('calculateBtn').addEventListener('click', calculateAndShow);
             document.getElementById('copyBtn').addEventListener('click', copyBill);
             document.getElementById('exportBtn').addEventListener('click', exportAsImage);
             document.getElementById('eyeCareToggle').addEventListener('click', toggleEyeCareMode);
-            
-            // 模式切换
             document.getElementById('btnModeAA').addEventListener('click', () => selectPayMode('AA'));
             document.getElementById('btnModeSub').addEventListener('click', () => selectPayMode('SUB'));
         }
         
-        // 输入验证
-        function validateInput(input) {
+        function validateNumberInput(input) {
             let value = input.value;
             if (input.type === 'number') {
-                // 移除非数字字符（保留小数点）
-                value = value.replace(/[^0-9.]/g, '');
-                // 处理多个小数点
-                const parts = value.split('.');
-                if (parts.length > 2) {
-                    value = parts[0] + '.' + parts.slice(1).join('');
-                }
-                // 限制小数位数
-                if (parts.length === 2 && parts[1].length > 2) {
-                    value = parts[0] + '.' + parts[1].substring(0, 2);
-                }
-                // 处理前导零
-                if (value.startsWith('0') && value.length > 1 && !value.startsWith('0.')) {
-                    value = value.replace(/^0+/, '') || '0';
-                }
-                // 确保不为空
-                if (value === '' || value === '.') {
-                    value = '0';
-                }
-                input.value = value;
+                value = value.replace(/[^0-9.-]/g, '');
+                if ((value.match(/\./g) || []).length > 1) value = value.replace(/(\..*)\./g, '$1');
+                if (value === '' || value === '-') value = '0';
+                let num = parseFloat(value);
+                if (isNaN(num)) num = 0;
+                if (num < 0) num = 0;
+                input.value = num;
             }
         }
         
-        // 实时预览
         function updateDraftPreview() {
             const brand = document.getElementById('ballBrand').value.trim();
             const price = parseFloat(document.getElementById('ballPrice').value) || 0;
             const count = parseInt(document.getElementById('ballCount').value) || 0;
             const draftTotal = price * count;
-            
+            const previewDiv = document.getElementById('draftPreview');
             if (brand && price > 0 && count > 0) {
-                document.getElementById('draftPreview').innerHTML = 
-                    `<strong>${brand}</strong> × ${count}个 × ¥${price.toFixed(2)}/个 = ¥${draftTotal.toFixed(2)}`;
+                previewDiv.innerHTML = `<strong>${brand}</strong> × ${count}个 × ¥${price.toFixed(2)}/个 = ¥${draftTotal.toFixed(2)}`;
             } else {
-                document.getElementById('draftPreview').textContent = '暂无有效输入';
+                previewDiv.textContent = '暂无有效输入';
             }
         }
         
-        // 添加球品
         function addBallItem() {
             const brand = document.getElementById('ballBrand').value.trim();
             const price = parseFloat(document.getElementById('ballPrice').value);
             const count = parseInt(document.getElementById('ballCount').value);
-            
-            if (!brand) {
-                showToast('请输入品牌名称！');
-                return;
-            }
-            if (isNaN(price) || price <= 0) {
-                showToast('请输入正确的单价！');
-                return;
-            }
-            if (isNaN(count) || count <= 0) {
-                showToast('请输入正确的数量！');
-                return;
-            }
-            
-            ballItems.push({
-                id: nextId++,
-                brand: brand,
-                price: price,
-                count: count
-            });
-            
-            // 清空输入框
+            if (!brand) { showToast('请输入品牌名称！'); return; }
+            if (isNaN(price) || price <= 0) { showToast('请输入正确的单价！'); return; }
+            if (isNaN(count) || count <= 0) { showToast('请输入正确的数量！'); return; }
+            ballItems.push({ id: nextId++, brand, price, count });
             document.getElementById('ballBrand').value = '';
             document.getElementById('ballPrice').value = '';
             document.getElementById('ballCount').value = '';
-            
             renderBallList();
             updateAndHideResult();
         }
         
-        // 渲染球品列表
         function renderBallList() {
             const container = document.getElementById('ballListContainer');
-            if (ballItems.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-            
+            if (ballItems.length === 0) { container.innerHTML = ''; return; }
             container.innerHTML = '<div class="card-title" style="font-size: 16px; margin-bottom: 16px;">已添加的球品</div>';
-            
             ballItems.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'ball-item';
                 div.innerHTML = `
-                    <div style="flex: 1;">
-                        <strong>${item.brand}</strong>
+                    <div style="flex:1;">
+                        <strong>${escapeHtml(item.brand)}</strong>
                         <div style="color: #606266; margin-top: 4px;">
-                            单价: <input type="number" class="el-input__inner edit-price" value="${item.price}" data-id="${item.id}" step="0.01" style="width: 80px; padding: 6px;">
-                            元/个 × 
-                            数量: <input type="number" class="el-input__inner edit-count" value="${item.count}" data-id="${item.id}" style="width: 60px; padding: 6px;">
-                            个
+                            单价: <input type="number" class="el-input__inner edit-price" value="${item.price}" data-id="${item.id}" step="0.01" style="width: 80px; padding: 6px;"> 元/个 × 
+                            数量: <input type="number" class="el-input__inner edit-count" value="${item.count}" data-id="${item.id}" style="width: 60px; padding: 6px;"> 个
                         </div>
                     </div>
-                    <div style="text-align: right; min-width: 80px;">
-                        ¥ ${(item.price * item.count).toFixed(2)}
-                    </div>
-                    <button class="el-button el-button--danger el-button--mini delete-btn" data-id="${item.id}">
-                        删除
-                    </button>
+                    <div style="text-align: right; min-width: 80px;">¥ ${(item.price * item.count).toFixed(2)}</div>
+                    <button class="el-button el-button--danger el-button--mini delete-btn" data-id="${item.id}">删除</button>
                 `;
                 container.appendChild(div);
             });
-            
-            // 绑定编辑和删除事件
-            container.querySelectorAll('.edit-price, .edit-count').forEach(input => {
-                input.addEventListener('input', function() {
-                    validateInput(this);
-                    updateBallItem(this);
-                });
-            });
-            
-            container.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = parseInt(this.getAttribute('data-id'));
-                    removeBallItem(id);
-                });
-            });
+            container.querySelectorAll('.edit-price, .edit-count').forEach(inp => inp.addEventListener('input', function() { validateNumberInput(this); updateBallItem(this); }));
+            container.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', function() { removeBallItem(parseInt(this.getAttribute('data-id'))); }));
         }
         
-        // 更新球品
-        function updateBallItem(inputElement) {
-            const id = parseInt(inputElement.getAttribute('data-id'));
-            const field = inputElement.classList.contains('edit-price') ? 'price' : 'count';
-            const value = parseFloat(inputElement.value) || 0;
-            
-            const index = ballItems.findIndex(item => item.id === id);
-            if (index !== -1) {
-                ballItems[index][field] = value;
+        function updateBallItem(inputElem) {
+            const id = parseInt(inputElem.getAttribute('data-id'));
+            const field = inputElem.classList.contains('edit-price') ? 'price' : 'count';
+            let val = parseFloat(inputElem.value);
+            if (isNaN(val)) val = field === 'price' ? 0 : 1;
+            if (val < 0) val = 0;
+            const idx = ballItems.findIndex(i => i.id === id);
+            if (idx !== -1) {
+                ballItems[idx][field] = val;
+                if (field === 'count' && val === 0) ballItems[idx].count = 1;
+                if (field === 'price' && val === 0) ballItems[idx].price = 0.01;
                 renderBallList();
                 updateAndHideResult();
             }
         }
         
-        // 删除球品
         function removeBallItem(id) {
-            ballItems = ballItems.filter(item => item.id !== id);
+            ballItems = ballItems.filter(i => i.id !== id);
             renderBallList();
             updateAndHideResult();
         }
         
-        // 更新总计
         function updateTotals() {
-            const ballTotal = ballItems.reduce((sum, item) => sum + (item.price * item.count), 0);
+            const ballTotal = ballItems.reduce((sum, i) => sum + (i.price * i.count), 0);
             document.getElementById('ballTotal').value = ballTotal > 0 ? ballTotal.toFixed(2) : '0.00';
-            
-            const venue = parseFloat(document.getElementById('venueCost').value) || 0;
-            const other = parseFloat(document.getElementById('otherCost').value) || 0;
+            const venue = parseFloat(dom.venueCost()?.value) || 0;
+            const other = parseFloat(dom.otherCost()?.value) || 0;
             const grandTotal = venue + ballTotal + other;
             document.getElementById('grandTotalPreview').textContent = grandTotal.toFixed(2);
         }
         
-        // 更新并隐藏结果
         function updateAndHideResult() {
             updateTotals();
             if (isResultVisible) {
-                document.getElementById('resultSection').style.display = 'none';
+                dom.resultSection().style.display = 'none';
                 isResultVisible = false;
                 showToast('数据已更新，请重新生成账单');
             }
         }
         
-        // 切换计费模式
         function selectPayMode(mode) {
             selectedPayMode = mode;
-            updateModeButtonStates();
+            const aaBtn = document.getElementById('btnModeAA');
+            const subBtn = document.getElementById('btnModeSub');
+            aaBtn.classList.toggle('active', mode === 'AA');
+            subBtn.classList.toggle('active', mode === 'SUB');
+            document.getElementById('subsidySection').style.display = mode === 'SUB' ? 'block' : 'none';
             updateAndHideResult();
         }
         
-        // 更新模式按钮状态
-        function updateModeButtonStates() {
-            const aaBtn = document.getElementById('btnModeAA');
-            const subBtn = document.getElementById('btnModeSub');
-            
-            aaBtn.classList.toggle('active', selectedPayMode === 'AA');
-            subBtn.classList.toggle('active', selectedPayMode === 'SUB');
-            document.getElementById('subsidySection').style.display = selectedPayMode === 'SUB' ? 'block' : 'none';
-        }
-        
-        // 核心计算
-        function calculate() {
-            const gameDate = document.getElementById('gameDate').value;
-            const venue = parseFloat(document.getElementById('venueCost').value) || 0;
-            const other = parseFloat(document.getElementById('otherCost').value) || 0;
-            const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
-            const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
-            const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
-            const totalCount = maleCount + femaleCount;
-            
-            if (totalCount === 0) {
-                showToast('⚠️ 请至少输入一名参与人员！');
-                return;
-            }
-            
-            // 验证日期
-            if (!gameDate) {
-                showToast('⚠️ 请选择组局日期！');
-                return;
-            }
-            
+        // 核心计算逻辑，返回详细分摊数据（用于显示和导出）
+        function computeSplit() {
+            const venue = parseFloat(dom.venueCost()?.value) || 0;
+            const other = parseFloat(dom.otherCost()?.value) || 0;
             const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
             const grandTotal = venue + ballTotal + other;
+            let maleCount = parseInt(dom.maleCount()?.value) || 0;
+            let femaleCount = parseInt(dom.femaleCount()?.value) || 0;
+            const subsidy = parseFloat(dom.subsidyAmount()?.value) || 0;
+            const totalCount = maleCount + femaleCount;
             
             let malePay = 0, femalePay = 0;
-            
+            if (totalCount === 0) return { malePay, femalePay, maleCount, femaleCount, grandTotal, totalCount:0 };
             if (selectedPayMode === 'AA' || femaleCount === 0 || maleCount === 0) {
                 const perPerson = grandTotal / totalCount;
                 malePay = perPerson;
@@ -829,276 +621,164 @@
                 const numerator = grandTotal + (femaleCount * subsidy);
                 const baseMalePay = numerator / totalCount;
                 malePay = baseMalePay;
-                femalePay = baseMalePay - subsidy;
+                femalePay = Math.max(0, baseMalePay - subsidy);
             }
+            return { malePay, femalePay, maleCount, femaleCount, grandTotal, totalCount, venue, ballTotal, other };
+        }
+        
+        function calculateAndShow() {
+            const gameDate = dom.gameDate()?.value;
+            if (!gameDate) { showToast('⚠️ 请选择组局日期！'); return; }
+            const maleCount = parseInt(dom.maleCount()?.value) || 0;
+            const femaleCount = parseInt(dom.femaleCount()?.value) || 0;
+            if (maleCount + femaleCount === 0) { showToast('⚠️ 请至少输入一名参与人员！'); return; }
             
-            // 更新结果显示
+            const { malePay, femalePay, maleCount: mCnt, femaleCount: fCnt, grandTotal, venue, ballTotal, other } = computeSplit();
+            
+            // 更新所有结果显示字段
+            document.getElementById('resGameDate').textContent = formatDate(gameDate);
+            document.getElementById('resVenueCost').textContent = `¥ ${venue.toFixed(2)}`;
+            document.getElementById('resBallTotal').textContent = `¥ ${ballTotal.toFixed(2)}`;
+            document.getElementById('resOtherCost').textContent = `¥ ${other.toFixed(2)}`;
+            document.getElementById('resGrandTotal').textContent = `¥ ${grandTotal.toFixed(2)}`;
+            document.getElementById('resPayMode').textContent = selectedPayMode === 'AA' ? '全员均摊' : '女生优惠';
             document.getElementById('resMalePay').textContent = malePay.toFixed(2);
             document.getElementById('resFemalePay').textContent = femalePay.toFixed(2);
-            document.getElementById('resMaleCount').textContent = `${maleCount}人`;
-            document.getElementById('resFemaleCount').textContent = `${femaleCount}人`;
+            document.getElementById('resMaleCount').textContent = `${mCnt}人`;
+            document.getElementById('resFemaleCount').textContent = `${fCnt}人`;
             
-            // 构建详细信息 - 包含球品详细信息
-            let ballDetailsHTML = '';
-            if (ballItems.length > 0) {
-                ballDetailsHTML += '<div class="ball-detail-header">羽毛球明细:</div>';
-                ballItems.forEach(item => {
-                    ballDetailsHTML += `<div class="ball-detail-item"><span>${item.brand}</span><span>¥${(item.price * item.count).toFixed(2)} (${item.count}个 × ¥${item.price.toFixed(2)}/个)</span></div>`;
-                });
-                ballDetailsHTML += `<div class="result-row"><span>球费总计</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
-            } else {
-                ballDetailsHTML = `<div class="result-row"><span>球费</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
-            }
-            
-            const detailsHTML = `
-                <div class="result-row"><span>组局日期</span><span>${formatDate(gameDate)}</span></div>
-                <div class="result-row"><span>场地费</span><span>¥ ${venue.toFixed(2)}</span></div>
-                ${ballDetailsHTML}
-                <div class="result-row"><span>其他费用</span><span>¥ ${other.toFixed(2)}</span></div>
-                <div class="result-row total"><span>总计</span><span>¥ ${grandTotal.toFixed(2)}</span></div>
-                <div class="result-row" style="margin-top: 12px;"><span>计费模式</span><span>${selectedPayMode === 'AA' ? '全员均摊' : '女生优惠'}</span></div>
-                ${selectedPayMode === 'SUB' ? `<div class="result-row"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>` : ''}
-            `;
-            document.getElementById('billDetails').innerHTML = detailsHTML;
-            
-            document.getElementById('resultSection').style.display = 'block';
+            dom.resultSection().style.display = 'block';
             isResultVisible = true;
-            
-            // 滚动到结果区域
-            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+            dom.resultSection().scrollIntoView({ behavior: 'smooth' });
         }
         
-        // 复制账单
-        function copyBill() {
-            const gameDate = document.getElementById('gameDate').value;
-            const venue = parseFloat(document.getElementById('venueCost').value) || 0;
-            const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
-            const other = parseFloat(document.getElementById('otherCost').value) || 0;
-            const grandTotal = venue + ballTotal + other;
-            const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
-            const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
-            const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
-            
-            // 构建球品详情文本
-            let ballText = '';
-            if (ballItems.length > 0) {
-                ballText = '\n羽毛球明细:\n';
-                ballItems.forEach(item => {
-                    ballText += `${item.brand}: ${item.count}个 × ¥${item.price.toFixed(2)}/个 = ¥${(item.price * item.count).toFixed(2)}\n`;
-                });
-                ballText += `球费总计: ¥${ballTotal.toFixed(2)}\n`;
-            } else {
-                ballText = `球费: ¥${ballTotal.toFixed(2)}\n`;
-            }
-            
-            let malePay = 0, femalePay = 0;
-            if (selectedPayMode === 'AA' || femaleCount === 0 || maleCount === 0) {
-                const perPerson = grandTotal / (maleCount + femaleCount);
-                malePay = perPerson;
-                femalePay = perPerson;
-            } else {
-                const numerator = grandTotal + (femaleCount * subsidy);
-                const baseMalePay = numerator / (maleCount + femaleCount);
-                malePay = baseMalePay;
-                femalePay = baseMalePay - subsidy;
-            }
-            
-            const billText = `【羽毛球局结算单 - ${formatDate(gameDate)}】\n\n费用明细:\n场地费: ¥${venue.toFixed(2)}${ballText}其他: ¥${other.toFixed(2)}\n总计: ¥${grandTotal.toFixed(2)}\n\n人员与分摊:\n男生 (${maleCount}人): ￥${malePay.toFixed(2)}/人\n女生 (${femaleCount}人): ￥${femalePay.toFixed(2)}/人\n\n计费模式: ${selectedPayMode === 'AA' ? '全员均摊' : '女生优惠'}\n感谢大家的参与！`;
-            
-            navigator.clipboard.writeText(billText)
-                .then(() => showToast('✅ 账单已复制到剪贴板'))
-                .catch(() => {
-                    // 备用复制方法
-                    const textarea = document.createElement('textarea');
-                    textarea.value = billText;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    showToast('✅ 账单已复制到剪贴板');
-                });
-        }
-        
-        // 导出图片 - 改进版，避免遮罩层问题
+        // ----- 导出图片 (修复人数缺失问题) -----
         async function exportAsImage() {
             if (!isResultVisible) {
                 showToast('请先生成账单');
                 return;
             }
-            
             try {
                 showToast('正在生成图片...');
+                // 获取当前显示的所有数据 (确保与屏幕上一致)
+                const gameDate = document.getElementById('resGameDate').innerText;
+                const venueCost = document.getElementById('resVenueCost').innerText;
+                const ballTotalTxt = document.getElementById('resBallTotal').innerText;
+                const otherCostTxt = document.getElementById('resOtherCost').innerText;
+                const grandTotalTxt = document.getElementById('resGrandTotal').innerText;
+                const payMode = document.getElementById('resPayMode').innerText;
+                const malePay = document.getElementById('resMalePay').innerText;
+                const femalePay = document.getElementById('resFemalePay').innerText;
+                const maleCountText = document.getElementById('resMaleCount').innerText;   // 类似 "3人"
+                const femaleCountText = document.getElementById('resFemaleCount').innerText;
                 
-                // 创建一个临时的纯净DOM元素，用于渲染，避免各种CSS干扰
-                const originalResultSection = document.getElementById('resultSection');
-                
-                // 创建一个全新的纯净容器
-                const cleanContainer = document.createElement('div');
-                cleanContainer.style.cssText = `
-                    width: ${originalResultSection.offsetWidth}px;
-                    background: white !important;
+                // 构建干净独立的图片容器（完全复制当前结算卡片样式，确保包含人数标识）
+                const exportContainer = document.createElement('div');
+                exportContainer.style.cssText = `
+                    width: 580px;
+                    background: white;
+                    border-radius: 20px;
                     padding: 24px;
-                    box-sizing: border-box;
                     font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
-                    position: absolute;
-                    left: -9999px;
-                    top: 0;
-                    z-index: -1;
-                    border-radius: 12px;
-                    box-shadow: none;
-                    border: 1px solid #ebeef5;
+                    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+                    border: 1px solid #e9ecef;
                 `;
                 
-                // 获取当前结果内容
-                const gameDate = document.getElementById('gameDate').value;
-                const venue = parseFloat(document.getElementById('venueCost').value) || 0;
-                const ballTotal = parseFloat(document.getElementById('ballTotal').value) || 0;
-                const other = parseFloat(document.getElementById('otherCost').value) || 0;
-                const grandTotal = venue + ballTotal + other;
-                const maleCount = parseInt(document.getElementById('maleCount').value) || 0;
-                const femaleCount = parseInt(document.getElementById('femaleCount').value) || 0;
-                const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
-                const malePay = parseFloat(document.getElementById('resMalePay').textContent) || 0;
-                const femalePay = parseFloat(document.getElementById('resFemalePay').textContent) || 0;
-                // 修复：正确获取人数信息
-                const maleCountText = document.getElementById('resMaleCount').textContent;
-                const femaleCountText = document.getElementById('resFemaleCount').textContent;
-                
-                // 构建纯净的HTML内容
-                let ballDetailsHTML = '';
-                if (ballItems.length > 0) {
-                    ballDetailsHTML += '<div style="font-weight: bold; color: #409eff; margin: 10px 0 8px 20px; font-size: 14px;">羽毛球明细:</div>';
-                    ballItems.forEach(item => {
-                        ballDetailsHTML += `<div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding-left: 20px; color: #606266; font-size: 14px;"><span>${item.brand}</span><span>¥${(item.price * item.count).toFixed(2)} (${item.count}个 × ¥${item.price.toFixed(2)}/个)</span></div>`;
-                    });
-                    ballDetailsHTML += `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>球费总计</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
-                } else {
-                    ballDetailsHTML = `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>球费</span><span>¥${ballTotal.toFixed(2)}</span></div>`;
-                }
-                
-                const detailsHTML = `
-                    <div style="font-size: 18px; font-weight: 600; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid #f0f2f5;">
-                        🧾 结算详情
+                // 内部完全按照截图风格构建，特别注意展示人数卡片
+                exportContainer.innerHTML = `
+                    <div style="font-size: 20px; font-weight: 700; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eef2f6; padding-bottom: 12px;">
+                        🧾 羽毛球局结算单
                     </div>
-                    
-                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
-                            <span>组局日期</span>
-                            <span>${formatDate(gameDate)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
-                            <span>场地费</span>
-                            <span>¥ ${venue.toFixed(2)}</span>
-                        </div>
-                        ${ballDetailsHTML}
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
-                            <span>其他费用</span>
-                            <span>¥ ${other.toFixed(2)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 2px solid #ebeef5; font-weight: bold; color: #667eea; font-size: 18px;">
-                            <span>总计</span>
-                            <span>¥ ${grandTotal.toFixed(2)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;">
-                            <span>计费模式</span>
-                            <span>${selectedPayMode === 'AA' ? '全员均摊' : '女生优惠'}</span>
-                        </div>
-                        ${selectedPayMode === 'SUB' ? `<div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5;"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>` : ''}
+                    <div style="background: #f8fafc; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">组局日期</span><span style="font-weight:600;">${gameDate}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">场地费</span><span style="font-weight:600;">${venueCost}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">球费总计</span><span style="font-weight:600;">${ballTotalTxt}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#4a5568;">其他费用</span><span style="font-weight:600;">${otherCostTxt}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin: 16px 0 8px 0; padding-top: 12px; border-top: 2px solid #e2e8f0; font-size: 18px; font-weight: 800; color:#2d3748;"><span>总计</span><span style="color:#f56565;">${grandTotalTxt}</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px;"><span style="color:#4a5568;">计费模式</span><span style="font-weight:500;">${payMode}</span></div>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #409eff 0%, #1890ff 100%);">
-                            <div style="font-size: 16px; opacity: 0.95;">男生应付</div>
-                            <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${malePay.toFixed(2)}</div>
-                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${maleCountText}</div>
+                        <div style="background: linear-gradient(135deg, #409eff, #2c6bff); border-radius: 20px; padding: 24px; text-align: center; color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.08);">
+                            <div style="font-size: 14px; opacity: 0.85; letter-spacing: 1px;">👨 男生人均</div>
+                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0 6px;">¥ ${malePay}</div>
+                            <div style="font-size: 15px; font-weight: 500; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${maleCountText}</div>
                         </div>
-                        <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #ff6b9d 0%, #ec407a 100%);">
-                            <div style="font-size: 16px; opacity: 0.95;">女生应付</div>
-                            <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${femalePay.toFixed(2)}</div>
-                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${femaleCountText}</div>
+                        <div style="background: linear-gradient(135deg, #ff7e9e, #f64b7a); border-radius: 20px; padding: 24px; text-align: center; color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.08);">
+                            <div style="font-size: 14px; opacity: 0.85; letter-spacing: 1px;">👩 女生人均</div>
+                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0 6px;">¥ ${femalePay}</div>
+                            <div style="font-size: 15px; font-weight: 500; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${femaleCountText}</div>
                         </div>
+                    </div>
+                    
+                    <div style="margin-top: 28px; text-align: center; font-size: 12px; color: #a0aec0; border-top: 1px solid #edf2f7; padding-top: 16px;">
+                        羽毛球局费用结算系统 · 自动生成
                     </div>
                 `;
                 
-                cleanContainer.innerHTML = detailsHTML;
-                document.body.appendChild(cleanContainer);
-                
-                // 使用html2canvas渲染纯净容器
-                const canvas = await html2canvas(cleanContainer, {
-                    backgroundColor: '#ffffff',  // 明确设置背景色为白色
-                    scale: 2,                   // 提高清晰度
-                    useCORS: true,              // 处理跨域
-                    logging: false,             // 关闭日志
-                    // 忽略可能有问题的元素
-                    ignoreElements: (element) => {
-                        // 忽略任何透明度小于1的元素（除了文字相关的）
-                        const style = window.getComputedStyle(element);
-                        const opacity = parseFloat(style.opacity) || 1;
-                        if (opacity < 1 && element.tagName !== 'INPUT' && element.tagName !== 'TEXTAREA') {
-                            return true;
-                        }
-                        return false;
-                    }
+                document.body.appendChild(exportContainer);
+                // 确保任何渐变/背景正确渲染
+                const canvas = await html2canvas(exportContainer, {
+                    backgroundColor: '#ffffff',
+                    scale: 2.5,
+                    useCORS: false,
+                    logging: false,
+                    allowTaint: false
                 });
+                document.body.removeChild(exportContainer);
                 
-                // 移除临时容器
-                document.body.removeChild(cleanContainer);
-                
-                canvas.toBlob(function(blob) {
-                    if (blob) {
-                        const link = document.createElement('a');
-                        const formattedDate = formatDate(gameDate).replace(/\//g, '-');
-                        link.download = `羽毛球局结算单_${formattedDate}.png`;
-                        link.href = URL.createObjectURL(blob);
-                        link.click();
-                        URL.revokeObjectURL(link.href);
-                        showToast('✅ 账单图片已下载');
-                    } else {
-                        showToast('❌ 图片生成失败');
-                    }
-                }, 'image/png');
-                
-            } catch (error) {
-                console.error('导出图片失败:', error);
-                showToast('❌ 导出失败，请重试');
+                const link = document.createElement('a');
+                const dateLabel = document.getElementById('resGameDate').innerText.replace(/\//g, '-');
+                link.download = `羽毛球结算_${dateLabel}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('✅ 账单图片已保存 (包含人数信息)');
+            } catch (err) {
+                console.error(err);
+                showToast('❌ 导出失败，可刷新页面重试');
             }
         }
         
-        // 切换护眼模式
+        function copyBill() {
+            const gameDate = document.getElementById('resGameDate').innerText;
+            const venue = document.getElementById('resVenueCost').innerText;
+            const ballTotal = document.getElementById('resBallTotal').innerText;
+            const other = document.getElementById('resOtherCost').innerText;
+            const grand = document.getElementById('resGrandTotal').innerText;
+            const mode = document.getElementById('resPayMode').innerText;
+            const malePay = document.getElementById('resMalePay').innerText;
+            const femalePay = document.getElementById('resFemalePay').innerText;
+            const maleCnt = document.getElementById('resMaleCount').innerText;
+            const femaleCnt = document.getElementById('resFemaleCount').innerText;
+            const billText = `【羽毛球局结算 - ${gameDate}】\n${venue} 场地费\n${ballTotal} 球费\n${other} 其他\n总计 ${grand}\n计费: ${mode}\n男生 ${maleCnt} 人均 ${malePay}\n女生 ${femaleCnt} 人均 ${femalePay}\n感谢参与！`;
+            navigator.clipboard.writeText(billText).then(() => showToast('✅ 账单已复制')).catch(() => { alert('手动复制失败'); });
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '—';
+            const d = new Date(dateString);
+            return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+        }
+        
         function toggleEyeCareMode() {
             eyeCareMode = !eyeCareMode;
             localStorage.setItem('eyeCareMode', eyeCareMode);
             applyEyeCareMode(eyeCareMode);
         }
         
-        // 应用护眼模式
-        function applyEyeCareMode(isEnabled) {
-            const body = document.body;
-            if (isEnabled) {
-                body.classList.add('eye-care-mode');
-                document.getElementById('eyeCareToggle').classList.add('eye-care-mode-active');
-            } else {
-                body.classList.remove('eye-care-mode');
-                document.getElementById('eyeCareToggle').classList.remove('eye-care-mode-active');
-            }
+        function applyEyeCareMode(on) {
+            if (on) { document.body.classList.add('eye-care-mode'); document.getElementById('eyeCareToggle').classList.add('eye-care-mode-active'); }
+            else { document.body.classList.remove('eye-care-mode'); document.getElementById('eyeCareToggle').classList.remove('eye-care-mode-active'); }
         }
         
-        // 格式化日期显示
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}/${month}/${day}`;
-        }
-        
-        // 显示提示
-        function showToast(message) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(() => toast.classList.remove('show'), 2800);
         }
+        
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     </script>
 </body>
 </html>
