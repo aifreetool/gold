@@ -960,6 +960,9 @@
                 const subsidy = parseFloat(document.getElementById('subsidyAmount').value) || 0;
                 const malePay = parseFloat(document.getElementById('resMalePay').textContent) || 0;
                 const femalePay = parseFloat(document.getElementById('resFemalePay').textContent) || 0;
+                // 修复：正确获取人数信息
+                const maleCountText = document.getElementById('resMaleCount').textContent;
+                const femaleCountText = document.getElementById('resFemaleCount').textContent;
                 
                 // 构建纯净的HTML内容
                 let ballDetailsHTML = '';
@@ -1007,12 +1010,12 @@
                         <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #409eff 0%, #1890ff 100%);">
                             <div style="font-size: 16px; opacity: 0.95;">男生应付</div>
                             <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${malePay.toFixed(2)}</div>
-                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${maleCount}人</div>
+                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${maleCountText}</div>
                         </div>
                         <div style="text-align: center; padding: 24px; border-radius: 12px; color: white; font-weight: 600; background: linear-gradient(135deg, #ff6b9d 0%, #ec407a 100%);">
                             <div style="font-size: 16px; opacity: 0.95;">女生应付</div>
                             <div style="font-size: 28px; font-weight: 800; margin: 12px 0;">${femalePay.toFixed(2)}</div>
-                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${femaleCount}人</div>
+                            <div style="font-size: 14px; opacity: 0.85; margin-top: 8px;">${femaleCountText}</div>
                         </div>
                     </div>
                 `;
