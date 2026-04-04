@@ -136,7 +136,7 @@
         }
 
         header h1 {
-            font-size: 1.5rem; /* 调整字体大小适应图标 */
+            font-size: 1.5rem;
             margin-bottom: 5px;
             display: flex;
             align-items: center;
@@ -188,6 +188,7 @@
             z-index: 10;
         }
 
+        /* ✅ 关键修复：强制卡片背景不透明 */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -195,6 +196,8 @@
             margin-bottom: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
+            /* 👇 确保背景不透明，防止导出时透出 body 背景 */
+            background-color: var(--card-bg) !important;
         }
 
         .card-title {
@@ -419,10 +422,14 @@
             transform: translateY(0);
         }
 
-        /* Result Section */
+        /* Result Section - ✅ 关键修复：强制白色背景 */
         #resultSection {
             display: none;
             animation: slideUp 0.4s ease-out;
+            /* 👇 强制纯白背景，防止透出 body 灰色 */
+            background-color: white !important;
+            box-shadow: none !important;
+            border: none !important;
         }
 
         @keyframes slideUp {
@@ -950,7 +957,7 @@
                 <div class="result-row"><span>其他费用</span><span>¥ ${other.toFixed(2)}</span></div>
                 <div class="result-row total"><span>总计</span><span>¥ ${grandTotal.toFixed(2)}</span></div>
                 <div class="result-row" style="margin-top: 10px;"><span>计费模式</span><span>${mode === 'AA' ? '全员均摊' : '女生优惠'}</span></div>
-                ${mode === 'SUB' ? `<div class="result-row"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>` : ''}
+                ${mode === 'SUB' ? `<div class="result-row"><span>女生优惠</span><span>-¥ ${subsidy.toFixed(2)}/人</span></div>`: ''}
             `;
             document.getElementById('billDetails').innerHTML = detailsHTML;
 
@@ -989,38 +996,69 @@
                 .catch(err => alert('复制失败，请手动选择文本复制。'));
         }
 
-        // === 🆕 新增：导出为图片 ===
+        // === 🆕 修复版：导出为图片（关键：强制白底 + 临时清理样式）===
         async function exportAsImage() {
             const resultSection = document.getElementById('resultSection');
-            if (!resultSection) return;
+            if (!resultSection || !isResultVisible) {
+                showToast('请先生成账单');
+                return;
+            }
 
             try {
                 showToast('正在生成图片...');
-                // 使用 html2canvas 将 DOM 元素转换为 canvas
+                
+                // 保存原始样式
+                const originalStyle = {
+                    boxShadow: resultSection.style.boxShadow,
+                    border: resultSection.style.border,
+                    backgroundColor: resultSection.style.backgroundColor
+                };
+
+                // 🔑 临时移除干扰样式，确保导出纯净白底
+                resultSection.style.boxShadow = 'none';
+                resultSection.style.border = 'none';
+                resultSection.style.backgroundColor = 'white';
+
+                // 使用 html2canvas 渲染，显式指定背景为白色
                 const canvas = await html2canvas(resultSection, {
-                    backgroundColor: null, // 保持透明背景
-                    scale: 2, // 提高分辨率
-                    useCORS: true, // 处理跨域图片
-                    logging: false // 关闭日志
+                    backgroundColor: '#ffffff', // ✅ 强制白色背景
+                    scale: 2, // 高清
+                    useCORS: true,
+                    logging: false,
+                    // 可选：如果仍有灰色，可尝试以下（但通常不需要）
+                    // foreignObjectRendering: true,
+                    // ignoreElements: (el) => el.classList.contains('toast')
                 });
 
-                // 将 canvas 转换为 Blob
+                // 恢复原始样式（重要！）
+                resultSection.style.boxShadow = originalStyle.boxShadow;
+                resultSection.style.border = originalStyle.border;
+                resultSection.style.backgroundColor = originalStyle.backgroundColor;
+
+                // 转换为 Blob 并下载
                 canvas.toBlob(function(blob) {
                     if (blob) {
-                        // 创建一个临时链接用于下载
                         const link = document.createElement('a');
-                        link.download = 'badminton_bill.png';
+                        link.download = `羽毛球局结算单_${new Date().toLocaleDateString()}.png`;
                         link.href = URL.createObjectURL(blob);
                         link.click();
-                        URL.revokeObjectURL(link.href); // 清理内存
+                        URL.revokeObjectURL(link.href);
                         showToast('✅ 账单图片已下载');
                     } else {
                         showToast('❌ 图片生成失败');
                     }
                 }, 'image/png');
+
             } catch (error) {
                 console.error('导出图片失败:', error);
                 showToast('❌ 导出失败，请重试');
+                // 恢复样式（防错）
+                const resultSection = document.getElementById('resultSection');
+                if (resultSection) {
+                    resultSection.style.boxShadow = '';
+                    resultSection.style.border = '';
+                    resultSection.style.backgroundColor = '';
+                }
             }
         }
 
