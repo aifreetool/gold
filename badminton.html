@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>🏸 羽毛球局费用结算系统 | 精准分摊 + 球费明细</title>
-    <!-- Element UI 样式 -->
+    <title>🏸 羽毛球局费用结算系统 | 多场地明细 + 数字实时矫正</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
-    <!-- html2canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -15,7 +13,6 @@
             box-sizing: border-box;
         }
         
-        /* 默认主题 - 浅色模式 */
         body:not(.eye-care-mode) {
             font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
@@ -24,7 +21,6 @@
             color: #333;
         }
         
-        /* 护眼模式 */
         body.eye-care-mode {
             font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
             background: #f0f9e8;
@@ -107,10 +103,6 @@
             flex-wrap: wrap;
         }
         
-        .ball-item .el-input {
-            width: 120px;
-        }
-        
         .preview-section {
             background: #f0f9eb;
             border: 1px solid #e1f3d8;
@@ -145,20 +137,37 @@
         }
         
         .mode-btn {
-            height: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-weight: 600;
-            font-size: 16px;
+            width: 100% !important;
+            height: 80px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            border-radius: 12px !important;
+            background: #f5f7fa !important;
+            border: 1px solid #dcdfe6 !important;
+            transition: all 0.2s !important;
+            line-height: 1.3 !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+        
+        .mode-btn i {
+            font-size: 28px;
+            margin-bottom: 2px;
         }
         
         .mode-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: #667eea !important;
+        }
+        
+        .mode-btn.active i {
+            color: white !important;
         }
         
         .subsidy-section {
@@ -177,7 +186,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* 简化结算界面样式 */
         .simple-result {
             background: #f8f9fa;
             border-radius: 12px;
@@ -213,7 +221,18 @@
             font-weight: 600;
         }
         
-        /* 羽毛球明细区域样式 */
+        .venue-detail-row {
+            background: #fefce8;
+            margin: 4px 0 8px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #b45309;
+            display: flex;
+            justify-content: space-between;
+            border-left: 3px solid #f59e0b;
+        }
+        
         .ball-detail-block {
             background: #ffffff;
             border-radius: 10px;
@@ -301,6 +320,20 @@
             margin-top: 24px;
         }
         
+        .action-buttons .el-button {
+            width: 100% !important;
+            height: 48px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            border-radius: 10px !important;
+            line-height: 1 !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+        }
+        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -342,6 +375,25 @@
             border-color: #4caf50;
         }
         
+        .number-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            background: white;
+            box-sizing: border-box;
+        }
+        .number-input:focus {
+            outline: none;
+            border-color: #409eff;
+        }
+        .number-input[readonly] {
+            background: #f5f7fa;
+            cursor: default;
+        }
+        
         @media (max-width: 600px) {
             .form-row, .mode-buttons, .split-section-simple, .action-buttons {
                 grid-template-columns: 1fr;
@@ -358,6 +410,12 @@
                 padding: 6px 12px;
                 font-size: 12px;
             }
+            .mode-btn {
+                height: 70px !important;
+            }
+            .mode-btn i {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
@@ -370,7 +428,7 @@
     <div class="container">
         <div class="header">
             <h1><span>🏸</span> 羽毛球局费用结算系统</h1>
-            <p>专业 · 精准 · 高效 · 球费明细一目了然</p>
+            <p>多场地明细 · 球费明细 · 智能数字矫正</p>
         </div>
         
         <!-- 费用录入卡片 -->
@@ -382,8 +440,16 @@
                     <input type="date" id="gameDate" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
                 </div>
                 <div>
-                    <label>场地费 (元)</label>
-                    <input type="number" id="venueCost" placeholder="例如：200" step="0.01" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
+                    <label>场地数量</label>
+                    <input type="text" id="courtCount" placeholder="场地数量" class="number-input" value="1">
+                </div>
+                <div>
+                    <label>场地单价 (元/场)</label>
+                    <input type="text" id="courtPrice" placeholder="单价" class="number-input" value="0">
+                </div>
+                <div>
+                    <label>总场地费 (元)</label>
+                    <input type="text" id="venueCost" readonly class="number-input" style="background: #f5f7fa;">
                 </div>
             </div>
             
@@ -396,11 +462,11 @@
                     </div>
                     <div>
                         <label>单价 (元/个)</label>
-                        <input type="number" id="ballPrice" placeholder="如: 2.5" step="0.01" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
+                        <input type="text" id="ballPrice" placeholder="如: 2.5" class="number-input">
                     </div>
                     <div>
                         <label>数量 (个)</label>
-                        <input type="number" id="ballCount" placeholder="如: 2" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
+                        <input type="text" id="ballCount" placeholder="如: 2" class="number-input">
                     </div>
                 </div>
                 <div class="preview-section">
@@ -415,49 +481,58 @@
             <div class="form-row" style="margin-top: 20px;">
                 <div>
                     <label>球费小计</label>
-                    <input type="number" id="ballTotal" readonly class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; background: #f5f7fa;">
+                    <input type="text" id="ballTotal" readonly class="number-input" style="background: #f5f7fa;">
                 </div>
                 <div>
                     <label>其他费用 (水/停车等)</label>
-                    <input type="number" id="otherCost" placeholder="0" step="0.01" value="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px;">
+                    <input type="text" id="otherCost" placeholder="0" class="number-input" value="0">
                 </div>
             </div>
             <div class="total-preview">总费用预览: <span id="grandTotalPreview">0.00</span> 元</div>
         </div>
         
-        <!-- 人员与计费模式卡片 -->
+        <!-- 人员与计费模式卡片（彩色图标） -->
         <div class="card">
             <div class="card-title">👥 人员与计费模式</div>
             <div class="form-row">
                 <div>
                     <label>男生人数</label>
-                    <input type="number" id="maleCount" value="0" min="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 18px; text-align: center;">
+                    <input type="text" id="maleCount" value="0" class="number-input" style="text-align: center; font-size: 18px;">
                 </div>
                 <div>
                     <label>女生人数</label>
-                    <input type="number" id="femaleCount" value="0" min="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 18px; text-align: center;">
+                    <input type="text" id="femaleCount" value="0" class="number-input" style="text-align: center; font-size: 18px;">
                 </div>
             </div>
             <div class="mode-buttons">
-                <button id="btnModeAA" class="el-button mode-btn active"><span>👨‍💼</span><span>全员均摊</span><small style="font-size: 12px; opacity: 0.8;">平均分摊所有费用</small></button>
-                <button id="btnModeSub" class="el-button mode-btn"><span>👩‍💼</span><span>女生优惠</span><small style="font-size: 12px; opacity: 0.8;">女生少付，差额由男生分摊</small></button>
+                <button id="btnModeAA" class="el-button mode-btn active">
+                    <i class="el-icon-user-solid" style="color: #409EFF; font-size: 28px;"></i>
+                    <span>全员均摊</span>
+                    <small style="font-size: 12px; opacity: 0.8;">平均分摊所有费用</small>
+                </button>
+                <button id="btnModeSub" class="el-button mode-btn">
+                    <i class="el-icon-user-solid" style="color: #F56C6C; font-size: 28px;"></i>
+                    <span>女生优惠</span>
+                    <small style="font-size: 12px; opacity: 0.8;">女生少付，差额由男生分摊</small>
+                </button>
             </div>
             <div id="subsidySection" class="subsidy-section" style="display: none;">
                 <label>女生每人少付金额 (元)</label>
-                <input type="number" id="subsidyAmount" value="10" step="1" min="0" class="el-input__inner" style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 18px; text-align: center;">
+                <input type="text" id="subsidyAmount" value="10" class="number-input" style="text-align: center; font-size: 18px;">
             </div>
             <button id="calculateBtn" class="el-button el-button--success" style="width: 100%; height: 50px; font-size: 18px; font-weight: 600; margin-top: 20px;">⚡ 立即生成账单</button>
         </div>
         
-        <!-- 结算结果卡片（新增羽毛球明细模块） -->
+        <!-- 结算结果卡片（含场地明细 + 羽毛球明细） -->
         <div class="card result-section" id="resultSection">
             <div class="card-title">🧾 结算详情</div>
             <div class="simple-result" id="simpleResultContainer">
                 <div class="result-details-simple" id="billDetailsSimple">
                     <div class="detail-row"><span class="detail-label">组局日期</span><span class="detail-value" id="resGameDate">—</span></div>
                     <div class="detail-row"><span class="detail-label">场地费</span><span class="detail-value" id="resVenueCost">¥0.00</span></div>
+                    <!-- 场地费明细行动态插入 -->
+                    <div id="venueDetailContainer"></div>
                     <div class="detail-row"><span class="detail-label">球费总计</span><span class="detail-value" id="resBallTotal">¥0.00</span></div>
-                    <!-- 羽毛球明细将动态插入到此位置下方 -->
                     <div id="ballDetailContainer"></div>
                     <div class="detail-row"><span class="detail-label">其他费用</span><span class="detail-value" id="resOtherCost">¥0.00</span></div>
                     <div class="detail-row"><span class="detail-label">总计</span><span class="detail-value" id="resGrandTotal">¥0.00</span></div>
@@ -493,6 +568,8 @@
         
         const dom = {
             gameDate: () => document.getElementById('gameDate'),
+            courtCount: () => document.getElementById('courtCount'),
+            courtPrice: () => document.getElementById('courtPrice'),
             venueCost: () => document.getElementById('venueCost'),
             otherCost: () => document.getElementById('otherCost'),
             maleCount: () => document.getElementById('maleCount'),
@@ -501,29 +578,130 @@
             ballTotal: () => document.getElementById('ballTotal'),
             grandTotalPreview: () => document.getElementById('grandTotalPreview'),
             resultSection: () => document.getElementById('resultSection'),
-            ballDetailContainer: () => document.getElementById('ballDetailContainer')
+            ballDetailContainer: () => document.getElementById('ballDetailContainer'),
+            venueDetailContainer: () => document.getElementById('venueDetailContainer')
         };
         
-        // 初始化默认日期
+        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
             if (dom.gameDate()) dom.gameDate().value = today;
             applyEyeCareMode(eyeCareMode);
-            bindGlobalEvents();
+            bindEvents();
+            updateVenueTotal();  // 计算初始场地费
             updateTotals();
             updateDraftPreview();
         });
         
-        function bindGlobalEvents() {
-            const inputIds = ['venueCost', 'otherCost', 'maleCount', 'femaleCount', 'subsidyAmount'];
-            inputIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('input', () => { validateNumberInput(el); updateAndHideResult(); });
+        // ----- 数字输入处理（防前导零、实时矫正）-----
+        function cleanNumberInput(raw, allowDecimal = true) {
+            if (raw === undefined || raw === null) return '';
+            let str = String(raw);
+            // 1. 只允许数字、小数点、负号
+            let cleaned = str.replace(/[^0-9.-]/g, '');
+            // 2. 处理负号：只保留一个且必须在开头
+            let hasMinus = cleaned.startsWith('-');
+            cleaned = cleaned.replace(/-/g, '');
+            if (hasMinus && allowDecimal) cleaned = '-' + cleaned;
+            // 3. 处理小数点：只保留第一个
+            let dotIndex = cleaned.indexOf('.');
+            if (dotIndex !== -1) {
+                let beforeDot = cleaned.substring(0, dotIndex);
+                let afterDot = cleaned.substring(dotIndex + 1).replace(/\./g, '');
+                cleaned = beforeDot + '.' + afterDot;
+            }
+            // 4. 去除前导零（但保留 "0" 和 "0.x" 形式）
+            if (cleaned !== '' && cleaned !== '-' && !cleaned.startsWith('0.')) {
+                // 整数部分去除前导零
+                let parts = cleaned.split('.');
+                let intPart = parts[0];
+                if (intPart.length > 1 && intPart.startsWith('0')) {
+                    intPart = intPart.replace(/^0+/, '');
+                    if (intPart === '') intPart = '0';
+                    parts[0] = intPart;
+                    cleaned = parts.join('.');
+                }
+            }
+            // 处理空值或仅负号
+            if (cleaned === '' || cleaned === '-') cleaned = '0';
+            // 若以点开头，补0
+            if (cleaned.startsWith('.')) cleaned = '0' + cleaned;
+            // 整数类型（不允许小数）
+            if (!allowDecimal) {
+                let intVal = parseInt(cleaned, 10);
+                if (isNaN(intVal)) intVal = 0;
+                return String(intVal);
+            }
+            return cleaned;
+        }
+        
+        // 更新总场地费（数量 * 单价）
+        function updateVenueTotal() {
+            let count = parseInt(dom.courtCount()?.value) || 0;
+            let price = parseFloat(dom.courtPrice()?.value) || 0;
+            let total = count * price;
+            dom.venueCost().value = total.toFixed(2);
+            return total;
+        }
+        
+        // 绑定数字输入框（实时矫正 + 去除前导零）
+        function bindNumberInputs() {
+            const numberFields = [
+                { id: 'courtCount', allowDecimal: false },
+                { id: 'courtPrice', allowDecimal: true },
+                { id: 'otherCost', allowDecimal: true },
+                { id: 'maleCount', allowDecimal: false },
+                { id: 'femaleCount', allowDecimal: false },
+                { id: 'subsidyAmount', allowDecimal: true },
+                { id: 'ballPrice', allowDecimal: true },
+                { id: 'ballCount', allowDecimal: false }
+            ];
+            numberFields.forEach(field => {
+                const el = document.getElementById(field.id);
+                if (!el) return;
+                el.addEventListener('input', function(e) {
+                    let raw = e.target.value;
+                    let cleaned = cleanNumberInput(raw, field.allowDecimal);
+                    // 额外处理：如果 cleaned 是 "0" 且用户正在输入，不清空（保留0）
+                    if (cleaned === '') cleaned = '0';
+                    e.target.value = cleaned;
+                    if (field.id === 'courtCount' || field.id === 'courtPrice') {
+                        updateVenueTotal();
+                    }
+                    updateAndHideResult();
+                    if (field.id === 'ballPrice' || field.id === 'ballCount') updateDraftPreview();
+                });
+                el.addEventListener('blur', function(e) {
+                    let val = e.target.value;
+                    if (field.allowDecimal) {
+                        let num = parseFloat(val);
+                        if (isNaN(num)) num = 0;
+                        e.target.value = num.toFixed(2);
+                    } else {
+                        let num = parseInt(val, 10);
+                        if (isNaN(num)) num = 0;
+                        e.target.value = num;
+                    }
+                    if (field.id === 'courtCount' || field.id === 'courtPrice') {
+                        updateVenueTotal();
+                    }
+                    updateAndHideResult();
+                    updateTotals();
+                });
             });
+        }
+        
+        function bindEvents() {
+            bindNumberInputs();
+            
+            const dateInput = document.getElementById('gameDate');
+            if (dateInput) dateInput.addEventListener('change', updateAndHideResult);
+            
             ['ballBrand', 'ballPrice', 'ballCount'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', updateDraftPreview);
             });
+            
             document.getElementById('addBallBtn').addEventListener('click', addBallItem);
             document.getElementById('calculateBtn').addEventListener('click', calculateAndShow);
             document.getElementById('copyBtn').addEventListener('click', copyBill);
@@ -533,23 +711,12 @@
             document.getElementById('btnModeSub').addEventListener('click', () => selectPayMode('SUB'));
         }
         
-        function validateNumberInput(input) {
-            let value = input.value;
-            if (input.type === 'number') {
-                value = value.replace(/[^0-9.-]/g, '');
-                if ((value.match(/\./g) || []).length > 1) value = value.replace(/(\..*)\./g, '$1');
-                if (value === '' || value === '-') value = '0';
-                let num = parseFloat(value);
-                if (isNaN(num)) num = 0;
-                if (num < 0) num = 0;
-                input.value = num;
-            }
-        }
-        
         function updateDraftPreview() {
             const brand = document.getElementById('ballBrand').value.trim();
-            const price = parseFloat(document.getElementById('ballPrice').value) || 0;
-            const count = parseInt(document.getElementById('ballCount').value) || 0;
+            let price = parseFloat(document.getElementById('ballPrice').value);
+            let count = parseInt(document.getElementById('ballCount').value);
+            if (isNaN(price)) price = 0;
+            if (isNaN(count)) count = 0;
             const draftTotal = price * count;
             const previewDiv = document.getElementById('draftPreview');
             if (brand && price > 0 && count > 0) {
@@ -561,8 +728,8 @@
         
         function addBallItem() {
             const brand = document.getElementById('ballBrand').value.trim();
-            const price = parseFloat(document.getElementById('ballPrice').value);
-            const count = parseInt(document.getElementById('ballCount').value);
+            let price = parseFloat(document.getElementById('ballPrice').value);
+            let count = parseInt(document.getElementById('ballCount').value);
             if (!brand) { showToast('请输入品牌名称！'); return; }
             if (isNaN(price) || price <= 0) { showToast('请输入正确的单价！'); return; }
             if (isNaN(count) || count <= 0) { showToast('请输入正确的数量！'); return; }
@@ -585,8 +752,8 @@
                     <div style="flex:1;">
                         <strong>${escapeHtml(item.brand)}</strong>
                         <div style="color: #606266; margin-top: 4px;">
-                            单价: <input type="number" class="el-input__inner edit-price" value="${item.price}" data-id="${item.id}" step="0.01" style="width: 80px; padding: 6px;"> 元/个 × 
-                            数量: <input type="number" class="el-input__inner edit-count" value="${item.count}" data-id="${item.id}" style="width: 60px; padding: 6px;"> 个
+                            单价: <input type="text" class="number-input edit-price" value="${item.price.toFixed(2)}" data-id="${item.id}" style="width: 80px; padding: 6px;"> 元/个 × 
+                            数量: <input type="text" class="number-input edit-count" value="${item.count}" data-id="${item.id}" style="width: 60px; padding: 6px;"> 个
                         </div>
                     </div>
                     <div style="text-align: right; min-width: 80px;">¥ ${(item.price * item.count).toFixed(2)}</div>
@@ -594,20 +761,46 @@
                 `;
                 container.appendChild(div);
             });
-            container.querySelectorAll('.edit-price, .edit-count').forEach(inp => inp.addEventListener('input', function() { validateNumberInput(this); updateBallItem(this); }));
+            container.querySelectorAll('.edit-price').forEach(inp => {
+                inp.addEventListener('input', function(e) {
+                    let val = cleanNumberInput(e.target.value, true);
+                    e.target.value = val;
+                    updateBallItemFromField(this);
+                });
+                inp.addEventListener('blur', function(e) {
+                    let num = parseFloat(e.target.value);
+                    if (isNaN(num)) num = 0;
+                    e.target.value = num.toFixed(2);
+                    updateBallItemFromField(this);
+                });
+            });
+            container.querySelectorAll('.edit-count').forEach(inp => {
+                inp.addEventListener('input', function(e) {
+                    let val = cleanNumberInput(e.target.value, false);
+                    e.target.value = val;
+                    updateBallItemFromField(this);
+                });
+                inp.addEventListener('blur', function(e) {
+                    let num = parseInt(e.target.value, 10);
+                    if (isNaN(num)) num = 1;
+                    if (num < 1) num = 1;
+                    e.target.value = num;
+                    updateBallItemFromField(this);
+                });
+            });
             container.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', function() { removeBallItem(parseInt(this.getAttribute('data-id'))); }));
         }
         
-        function updateBallItem(inputElem) {
+        function updateBallItemFromField(inputElem) {
             const id = parseInt(inputElem.getAttribute('data-id'));
             const field = inputElem.classList.contains('edit-price') ? 'price' : 'count';
             let val = parseFloat(inputElem.value);
             if (isNaN(val)) val = field === 'price' ? 0 : 1;
             if (val < 0) val = 0;
+            if (field === 'count' && val === 0) val = 1;
+            if (field === 'price' && val === 0) val = 0.01;
             const idx = ballItems.findIndex(i => i.id === id);
             if (idx !== -1) {
-                if (field === 'count' && val === 0) val = 1;
-                if (field === 'price' && val === 0) val = 0.01;
                 ballItems[idx][field] = val;
                 renderBallList();
                 updateAndHideResult();
@@ -622,7 +815,7 @@
         
         function updateTotals() {
             const ballTotal = ballItems.reduce((sum, i) => sum + (i.price * i.count), 0);
-            document.getElementById('ballTotal').value = ballTotal > 0 ? ballTotal.toFixed(2) : '0.00';
+            document.getElementById('ballTotal').value = ballTotal.toFixed(2);
             const venue = parseFloat(dom.venueCost()?.value) || 0;
             const other = parseFloat(dom.otherCost()?.value) || 0;
             const grandTotal = venue + ballTotal + other;
@@ -630,6 +823,7 @@
         }
         
         function updateAndHideResult() {
+            updateVenueTotal();
             updateTotals();
             if (isResultVisible) {
                 dom.resultSection().style.display = 'none';
@@ -648,7 +842,30 @@
             updateAndHideResult();
         }
         
-        // 核心计算逻辑
+        // 获取场地明细文本（用于展示和复制）
+        function getVenueDetailText() {
+            let count = parseInt(dom.courtCount()?.value) || 0;
+            let price = parseFloat(dom.courtPrice()?.value) || 0;
+            let total = count * price;
+            if (count === 0 || price === 0) return null;
+            return `${count}场 × ¥${price.toFixed(2)}/场 = ¥${total.toFixed(2)}`;
+        }
+        
+        function renderVenueDetailInResult() {
+            const container = dom.venueDetailContainer();
+            if (!container) return;
+            let count = parseInt(dom.courtCount()?.value) || 0;
+            let price = parseFloat(dom.courtPrice()?.value) || 0;
+            let total = count * price;
+            if (count > 0 && price > 0) {
+                container.innerHTML = `<div class="venue-detail-row"><span>📋 场地明细</span><span>${count}场 × ¥${price.toFixed(2)}/场 = ¥${total.toFixed(2)}</span></div>`;
+            } else if (count > 0 && price === 0) {
+                container.innerHTML = `<div class="venue-detail-row"><span>📋 场地明细</span><span>${count}场 (单价未填) 总价 ¥0.00</span></div>`;
+            } else {
+                container.innerHTML = '';
+            }
+        }
+        
         function computeSplit() {
             const venue = parseFloat(dom.venueCost()?.value) || 0;
             const other = parseFloat(dom.otherCost()?.value) || 0;
@@ -658,7 +875,6 @@
             let femaleCount = parseInt(dom.femaleCount()?.value) || 0;
             const subsidy = parseFloat(dom.subsidyAmount()?.value) || 0;
             const totalCount = maleCount + femaleCount;
-            
             let malePay = 0, femalePay = 0;
             if (totalCount === 0) return { malePay, femalePay, maleCount, femaleCount, grandTotal, totalCount:0 };
             if (selectedPayMode === 'AA' || femaleCount === 0 || maleCount === 0) {
@@ -674,7 +890,6 @@
             return { malePay, femalePay, maleCount, femaleCount, grandTotal, totalCount, venue, ballTotal, other };
         }
         
-        // 渲染羽毛球明细区域 (在结算详情内)
         function renderBallDetailInResult() {
             const container = dom.ballDetailContainer();
             if (!container) return;
@@ -711,9 +926,7 @@
             const maleCount = parseInt(dom.maleCount()?.value) || 0;
             const femaleCount = parseInt(dom.femaleCount()?.value) || 0;
             if (maleCount + femaleCount === 0) { showToast('⚠️ 请至少输入一名参与人员！'); return; }
-            
             const { malePay, femalePay, maleCount: mCnt, femaleCount: fCnt, grandTotal, venue, ballTotal, other } = computeSplit();
-            
             document.getElementById('resGameDate').textContent = formatDate(gameDate);
             document.getElementById('resVenueCost').textContent = `¥ ${venue.toFixed(2)}`;
             document.getElementById('resBallTotal').textContent = `¥ ${ballTotal.toFixed(2)}`;
@@ -724,16 +937,13 @@
             document.getElementById('resFemalePay').textContent = femalePay.toFixed(2);
             document.getElementById('resMaleCount').textContent = `${mCnt}人`;
             document.getElementById('resFemaleCount').textContent = `${fCnt}人`;
-            
-            // 渲染羽毛球明细
+            renderVenueDetailInResult();
             renderBallDetailInResult();
-            
             dom.resultSection().style.display = 'block';
             isResultVisible = true;
             dom.resultSection().scrollIntoView({ behavior: 'smooth' });
         }
         
-        // 生成明细文本 (用于复制)
         function getBallDetailText() {
             if (ballItems.length === 0) return '  无羽毛球消耗';
             let lines = ballItems.map(item => `  ${item.brand}: ${item.count}个 × ¥${item.price.toFixed(2)}/个 = ¥${(item.price * item.count).toFixed(2)}`);
@@ -754,12 +964,12 @@
             const maleCnt = document.getElementById('resMaleCount').innerText;
             const femaleCnt = document.getElementById('resFemaleCount').innerText;
             const detailText = getBallDetailText();
-            
-            const billText = `【羽毛球局结算 - ${gameDate}】\n${venue} 场地费\n球费明细:\n${detailText}\n${other} 其他费用\n总计 ${grand}\n计费模式: ${mode}\n👨 ${maleCnt} 人均 ${malePay}\n👩 ${femaleCnt} 人均 ${femalePay}\n感谢参与！`;
-            navigator.clipboard.writeText(billText).then(() => showToast('✅ 账单已复制 (含球费明细)')).catch(() => { alert('手动复制失败'); });
+            const venueDetail = getVenueDetailText();
+            let venueDetailLine = venueDetail ? `场地明细: ${venueDetail}\n` : '';
+            const billText = `【羽毛球局结算 - ${gameDate}】\n${venue} 场地费\n${venueDetailLine}球费明细:\n${detailText}\n${other} 其他费用\n总计 ${grand}\n计费模式: ${mode}\n👨 ${maleCnt} 人均 ${malePay}\n👩 ${femaleCnt} 人均 ${femalePay}\n感谢参与！`;
+            navigator.clipboard.writeText(billText).then(() => showToast('✅ 账单已复制 (含场地/球费明细)')).catch(() => alert('手动复制失败'));
         }
         
-        // 导出图片 (完整包含明细)
         async function exportAsImage() {
             if (!isResultVisible) { showToast('请先生成账单'); return; }
             try {
@@ -774,8 +984,11 @@
                 const femalePay = document.getElementById('resFemalePay').innerText;
                 const maleCountText = document.getElementById('resMaleCount').innerText;
                 const femaleCountText = document.getElementById('resFemaleCount').innerText;
-                
-                // 构造明细HTML
+                const venueDetail = getVenueDetailText();
+                let venueDetailHtml = '';
+                if (venueDetail) {
+                    venueDetailHtml = `<div style="background:#fefce8; margin:4px 0 8px 0; padding:6px 12px; border-radius:8px; display:flex; justify-content:space-between; font-size:13px; color:#b45309;"><span>📋 场地明细</span><span>${venueDetail}</span></div>`;
+                }
                 let detailHtml = '';
                 if (ballItems.length === 0) {
                     detailHtml = '<div style="background:#f1f5f9; border-radius:12px; padding:12px; margin:8px 0; text-align:center; color:#64748b;">📭 无羽毛球消耗</div>';
@@ -788,52 +1001,26 @@
                                 </div>`;
                     });
                     const totalBall = ballItems.reduce((s,i)=>s+i.price*i.count,0);
-                    detailHtml = `
-                        <div style="background:#f8fafc; border-radius:14px; padding:12px 16px; margin:10px 0;">
-                            <div style="font-weight:700; margin-bottom:10px; color:#2c3e66;">📋 羽毛球明细</div>
-                            ${rows}
-                            <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:8px; border-top:2px solid #cbd5e1; font-weight:800;">合计<span>¥${totalBall.toFixed(2)}</span></div>
-                        </div>
-                    `;
+                    detailHtml = `<div style="background:#f8fafc; border-radius:14px; padding:12px 16px; margin:10px 0;"><div style="font-weight:700; margin-bottom:10px; color:#2c3e66;">📋 羽毛球明细</div>${rows}<div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:8px; border-top:2px solid #cbd5e1; font-weight:800;">合计<span>¥${totalBall.toFixed(2)}</span></div></div>`;
                 }
-                
                 const exportContainer = document.createElement('div');
-                exportContainer.style.cssText = `
-                    width: 580px;
-                    background: white;
-                    border-radius: 24px;
-                    padding: 28px;
-                    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', Arial, sans-serif;
-                    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-                    border: 1px solid #e9ecef;
-                `;
-                exportContainer.innerHTML = `
-                    <div style="font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eef2ff; padding-bottom: 14px;">
-                        🏸 羽毛球局结算单
-                    </div>
-                    <div style="background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">组局日期</span><span style="font-weight:600;">${gameDate}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">场地费</span><span style="font-weight:600;">${venueCost}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="color:#334155;">球费总计</span><span style="font-weight:600;">${ballTotalTxt}</span></div>
+                exportContainer.style.cssText = `width:580px; background:white; border-radius:24px; padding:28px; font-family:'Helvetica Neue', Helvetica, 'PingFang SC', Arial, sans-serif; box-shadow:0 12px 28px rgba(0,0,0,0.1); border:1px solid #e9ecef;`;
+                exportContainer.innerHTML = `<div style="font-size:22px; font-weight:800; margin-bottom:20px; border-bottom:2px solid #eef2ff; padding-bottom:14px;">🏸 羽毛球局结算单</div>
+                    <div style="background:#f8fafc; border-radius:20px; padding:20px; margin-bottom:20px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span>组局日期</span><span style="font-weight:600;">${gameDate}</span></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span>场地费</span><span style="font-weight:600;">${venueCost}</span></div>
+                        ${venueDetailHtml}
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>球费总计</span><span style="font-weight:600;">${ballTotalTxt}</span></div>
                         ${detailHtml}
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span style="color:#334155;">其他费用</span><span style="font-weight:600;">${otherCostTxt}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin: 16px 0 8px 0; padding-top: 12px; border-top: 2px solid #e2e8f0; font-size: 18px; font-weight: 800;"><span>总计</span><span style="color:#ef4444;">${grandTotalTxt}</span></div>
-                        <div style="display: flex; justify-content: space-between;"><span style="color:#334155;">计费模式</span><span style="font-weight:500;">${payMode}</span></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span>其他费用</span><span style="font-weight:600;">${otherCostTxt}</span></div>
+                        <div style="display:flex; justify-content:space-between; margin:16px 0 8px; padding-top:12px; border-top:2px solid #e2e8f0; font-size:18px; font-weight:800;"><span>总计</span><span style="color:#ef4444;">${grandTotalTxt}</span></div>
+                        <div style="display:flex; justify-content:space-between;"><span>计费模式</span><span style="font-weight:500;">${payMode}</span></div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="background: linear-gradient(135deg, #409eff, #2c6bff); border-radius: 20px; padding: 24px; text-align: center; color: white;">
-                            <div style="font-size: 14px; opacity:0.9;">👨 男生人均</div>
-                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0;">¥ ${malePay}</div>
-                            <div style="font-size: 15px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${maleCountText}</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #ff7e9e, #f64b7a); border-radius: 20px; padding: 24px; text-align: center; color: white;">
-                            <div style="font-size: 14px; opacity:0.9;">👩 女生人均</div>
-                            <div style="font-size: 38px; font-weight: 800; margin: 12px 0;">¥ ${femalePay}</div>
-                            <div style="font-size: 15px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 12px; border-radius: 40px;">${femaleCountText}</div>
-                        </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div style="background:linear-gradient(135deg,#409eff,#2c6bff); border-radius:20px; padding:24px; text-align:center; color:white;"><div>👨 男生人均</div><div style="font-size:38px; font-weight:800; margin:12px 0;">¥ ${malePay}</div><div style="background:rgba(255,255,255,0.2); display:inline-block; padding:4px 12px; border-radius:40px;">${maleCountText}</div></div>
+                        <div style="background:linear-gradient(135deg,#ff7e9e,#f64b7a); border-radius:20px; padding:24px; text-align:center; color:white;"><div>👩 女生人均</div><div style="font-size:38px; font-weight:800; margin:12px 0;">¥ ${femalePay}</div><div style="background:rgba(255,255,255,0.2); display:inline-block; padding:4px 12px; border-radius:40px;">${femaleCountText}</div></div>
                     </div>
-                    <div style="margin-top: 28px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #eef2ff; padding-top: 16px;">羽毛球局费用结算系统 · 明细包含品牌及数量</div>
-                `;
+                    <div style="margin-top:28px; text-align:center; font-size:11px; color:#94a3b8; border-top:1px solid #eef2ff; padding-top:16px;">羽毛球局费用结算系统 · 含场地/球费明细</div>`;
                 document.body.appendChild(exportContainer);
                 const canvas = await html2canvas(exportContainer, { backgroundColor: '#ffffff', scale: 2.5, logging: false });
                 document.body.removeChild(exportContainer);
@@ -842,11 +1029,8 @@
                 link.download = `羽毛球结算_${dateLabel}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                showToast('✅ 图片已保存 (含羽毛球明细)');
-            } catch (err) {
-                console.error(err);
-                showToast('❌ 导出失败，可重试');
-            }
+                showToast('✅ 图片已保存 (含场地明细)');
+            } catch (err) { console.error(err); showToast('❌ 导出失败，可重试'); }
         }
         
         function formatDate(dateString) {
