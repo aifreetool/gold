@@ -2,32 +2,35 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>黄金持仓助手 (专业策略版)</title>
 <script src='https://cdn.staticfile.org/tesseract.js/5.0.5/tesseract.min.js'></script>
 <style>
 :root {
-  /* Warm Color Palette */
-  --primary-color: #FF9800; /* 主色调 - 橙色 */
-  --primary-light: #FFE0B2; /* 主色调浅色 */
-  --primary-dark: #EF6C00; /* 主色调深色 */
-  --accent-color: #FF5722; /* 强调色 - 深橙红 */
-  --success-color: #8BC34A; /* 成功色 - 浅绿 */
-  --warning-color: #FFC107; /* 警告色 - 琥珀 */
-  --danger-color: #F44336; /* 危险色 - 红 */
-  --info-color: #00BCD4; /* 信息色 - 青 */
-  --text-primary: #212121;
-  --text-secondary: #757575;
-  --text-disabled: #bdbdbd;
-  --bg-color: #FFF8E1; /* 页面背景 - 米白 */
+  /* Gray Color Palette - 灰色主题 */
+  --primary-color: #6B7280; /* 主色调 - 灰色 */
+  --primary-light: #E5E7EB; /* 主色调浅色 */
+  --primary-dark: #4B5563; /* 主色调深色 */
+  --accent-color: #9CA3AF; /* 强调色 - 中灰色 */
+  --success-color: #10B981; /* 成功色 - 绿色 */
+  --warning-color: #F59E0B; /* 警告色 - 琥珀 */
+  --danger-color: #EF4444; /* 危险色 - 红 */
+  --info-color: #3B82F6; /* 信息色 - 蓝 */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-disabled: #9CA3AF;
+  --bg-color: #F3F4F6; /* 页面背景 - 浅灰 */
   --card-bg: #FFFFFF; /* 卡片背景 - 白 */
-  --border-color: #E0E0E0; /* 边框色 */
-  --border-radius: 6px;
-  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --border-color: #E5E7EB; /* 边框色 */
+  --border-radius: 8px;
+  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   --header-height: 60px;
   /* Profit/Loss Colors */
   --profit-color: var(--danger-color); /* 红色表示盈利 */
   --loss-color: var(--success-color); /* 绿色表示亏损 */
+}
+* {
+  box-sizing: border-box;
 }
 body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
@@ -36,36 +39,37 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
 }
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   position: relative;
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: 20px;
+  padding: 16px 20px;
 }
 h1 {
   color: var(--primary-color);
   margin-bottom: 5px;
-  font-size: 1.8rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 p.subtitle {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 /* Header Actions */
 .header-actions {
   position: absolute;
-  top: 20px;
+  top: 16px;
   right: 20px;
   display: flex;
   gap: 10px;
@@ -75,40 +79,40 @@ p.subtitle {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
   border: 1px solid var(--border-color);
 }
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 .card-title {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: var(--text-primary);
 }
 /* Button Styles */
 .btn {
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   outline: none;
   background-color: white;
   color: var(--text-secondary);
@@ -136,76 +140,73 @@ p.subtitle {
   color: var(--primary-color);
 }
 .btn-danger {
-  background-color: #ffebee;
+  background-color: #FEF2F2;
   color: var(--danger-color);
-  border-color: #ffcdd2;
+  border-color: #FEE2E2;
   padding: 4px 8px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 .btn-danger:hover {
-  background-color: #f3e5f5;
-  border-color: #ef9a9a;
-  color: #e53935;
+  background-color: #FEE2E2;
+  color: #DC2626;
 }
 .btn-sm {
-  padding: 6px 12px;
-  font-size: 0.85rem;
+  padding: 4px 10px;
+  font-size: 0.75rem;
 }
 .btn-save-position {
   background-color: var(--success-color);
   color: white;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(139, 195, 74, 0.3);
   border-color: var(--success-color);
 }
 .btn-save-position:hover {
-  background-color: #7CB342;
-  border-color: var(--success-color);
-  transform: translateY(-1px);
+  background-color: #059669;
 }
 /* Table */
 .table-responsive {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px;
+  min-width: 500px;
 }
 th {
   background-color: var(--primary-light);
   color: var(--text-primary);
   font-weight: 600;
   text-align: left;
-  padding: 12px;
-  font-size: 0.85rem;
+  padding: 10px 8px;
+  font-size: 0.75rem;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border-color);
 }
 td {
-  padding: 8px 12px;
+  padding: 8px 8px;
   border-bottom: 1px solid var(--border-color);
 }
 input.editable-input {
   width: 100%;
-  padding: 6px 8px;
+  padding: 6px 6px;
   border: 1px solid transparent;
   border-radius: var(--border-radius);
   background: transparent;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
   font-family: inherit;
   box-sizing: border-box;
 }
 input.editable-input:hover {
-  background-color: #fff3e0; /* Hover background color */
-  border-color: #ffb74d; /* Hover border color */
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
 }
 input.editable-input:focus {
   background: white;
   border-color: var(--primary-color);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.2);
 }
 .total-row td {
   font-weight: bold;
@@ -216,24 +217,24 @@ input.editable-input:focus {
 /* Dashboard */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
 }
 .stat-box {
   background: var(--card-bg);
-  padding: 15px;
+  padding: 12px;
   border-radius: var(--border-radius);
   text-align: center;
   border: 1px solid var(--border-color);
   box-shadow: var(--box-shadow);
 }
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 .stat-value {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -243,30 +244,57 @@ input.editable-input:focus {
 /* Calculator Form - Responsive Grid */
 .calculator-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-  gap: 20px;
-  width: 100%; /* Ensure full width */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+.form-input {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: white;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.2);
+}
+.form-input[readonly] {
+  background-color: var(--primary-light);
+  color: var(--text-primary);
 }
 /* Strategy Tabs */
 .strategy-tabs {
   display: flex;
-  gap: 0;
-  margin-bottom: 20px;
-  background: #fff3e0; /* Tab background */
+  gap: 4px;
+  margin-bottom: 16px;
+  background: var(--primary-light);
   padding: 4px;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
 }
 .strategy-tab {
   flex: 1;
-  min-width: 70px; /* Minimum width for tabs */
-  padding: 10px 5px;
+  min-width: 60px;
+  padding: 8px 4px;
   text-align: center;
   background: transparent;
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   border: 1px solid transparent;
   user-select: none;
   transition: all 0.2s;
@@ -277,74 +305,71 @@ input.editable-input:focus {
   border-color: var(--border-color);
   color: var(--primary-color);
   font-weight: bold;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 .strategy-tab:hover:not(.active) {
-  background: var(--primary-light);
+  background: rgba(255,255,255,0.5);
   color: var(--primary-color);
 }
 /* Profit Grid */
 .profit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
 }
 .profit-item {
   background: var(--card-bg);
-  padding: 12px;
+  padding: 10px;
   border-radius: var(--border-radius);
   text-align: center;
   border: 1px solid var(--border-color);
-  box-shadow: var(--box-shadow);
 }
 .profit-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 .profit-val {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 .text-up {
-  color: var(--profit-color); /* Red for profit */
+  color: var(--profit-color);
 }
 .text-down {
-  color: var(--loss-color); /* Green for loss */
+  color: var(--loss-color);
 }
 .text-neutral {
   color: var(--text-secondary);
 }
 /* Result Box */
 .result-box {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 16px;
+  padding: 12px;
   border-radius: var(--border-radius);
   display: none;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.5;
   border: 1px solid;
 }
 .result-box.success {
-  background-color: #fff8e1; /* Warm success bg */
-  border-color: #ffd54f;
-  color: #5d4037; /* Warm text */
+  background-color: #FEFCE8;
+  border-color: #FDE047;
+  color: #713F12;
 }
 .result-box.error {
-  background-color: #ffebee;
-  border-color: #ffcdd2;
-  color: #c62828;
+  background-color: #FEF2F2;
+  border-color: #FEE2E2;
+  color: #991B1B;
 }
 .result-title {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   display: block;
-  font-size: 1.05rem;
+  font-size: 0.9rem;
 }
 .result-highlight {
   font-weight: bold;
-  font-size: 1.1em;
   color: var(--primary-color);
 }
 #fileInput {
@@ -357,7 +382,7 @@ input.editable-input:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,248,225,0.95); /* Warm bg */
+  background: rgba(243, 244, 246, 0.95);
   display: none;
   justify-content: center;
   align-items: center;
@@ -369,23 +394,23 @@ input.editable-input:focus {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
+  border: 4px solid #E5E7EB;
   border-top: 4px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 .progress-bar {
-  width: 280px;
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 4px;
+  width: 260px;
+  height: 6px;
+  background: #E5E7EB;
+  border-radius: 3px;
   overflow: hidden;
-  margin: 10px 0;
+  margin: 8px 0;
 }
 .progress-fill {
   height: 100%;
@@ -394,31 +419,31 @@ input.editable-input:focus {
   transition: width 0.3s;
 }
 .loading-status {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   font-weight: 600;
 }
 .loading-hint {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
-  max-width: 300px;
+  max-width: 280px;
   line-height: 1.4;
 }
 /* Empty State */
 .empty-state {
   text-align: center;
-  padding: 40px;
+  padding: 40px 20px;
   color: var(--text-disabled);
   border: 2px dashed var(--border-color);
   border-radius: var(--border-radius);
-  margin-top: 20px;
+  margin-top: 16px;
 }
 .refresh-hint {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-disabled);
   text-align: right;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 /* Modal */
 .modal-overlay {
@@ -434,46 +459,47 @@ input.editable-input:focus {
   align-items: center;
   backdrop-filter: blur(2px);
 }
-/* My Portfolio Modal - Responsive */
+/* My Portfolio Modal - Responsive 无滚动条优化 */
 .modal-content {
   background: white;
-  width: 95vw; /* Responsive width */
-  max-width: 1200px; /* Max width on large screens */
-  min-width: 400px; /* Min width */
+  width: 90vw;
+  max-width: 1000px;
   max-height: 85vh;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   animation: slideUp 0.3s ease-out;
-  overflow: hidden; /* Contain rounded corners */
+  overflow: hidden;
 }
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 .modal-header {
-  padding: 20px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--primary-light); /* Header bg */
-  border-radius: var(--border-radius) var(--border-radius) 0 0; /* Rounded top */
+  background: var(--primary-light);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  flex-shrink: 0;
 }
 .modal-body {
-  padding: 20px;
+  padding: 16px;
   overflow-y: auto;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 .modal-footer {
-  padding: 15px 20px;
+  padding: 12px 20px;
   border-top: 1px solid var(--border-color);
   text-align: right;
-  background: #fff3e0; /* Footer bg */
-  border-radius: 0 0 var(--border-radius) var(--border-radius); /* Rounded bottom */
+  background: var(--primary-light);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  flex-shrink: 0;
 }
 .close-modal {
   background: none;
@@ -487,80 +513,78 @@ input.editable-input:focus {
 }
 /* Data Status */
 .data-status {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--success-color);
-  margin-left: 10px;
+  margin-left: 8px;
   display: none;
 }
 .data-status.visible {
   display: inline-block;
 }
-/* Position List */
+/* Position List - 自适应优化 */
 .position-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   flex-grow: 1;
-  min-height: 0; /* Needed for flex parent with overflow */
 }
-/* Responsive Position Item */
 .position-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 12px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background: var(--card-bg);
   transition: all 0.2s;
   cursor: pointer;
-  flex-wrap: wrap; /* Wrap content on small screens */
-  gap: 10px; /* Add gap between wrapped items */
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .position-item:hover {
   border-color: var(--primary-color);
   background: var(--primary-light);
-  transform: translateX(5px);
 }
 .position-info {
-  flex-grow: 1;
-  min-width: 150px; /* Ensure some minimum width */
+  flex: 2;
+  min-width: 140px;
 }
 .position-info h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
   color: var(--text-primary);
 }
 .position-meta {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
 }
 .position-stats {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  min-width: 120px;
-  text-align: right;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  min-width: 160px;
+}
+.position-stat {
+  text-align: center;
 }
 .position-stat-val {
   font-weight: bold;
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 .position-stat-label {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--text-secondary);
 }
 .btn-load {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: var(--border-radius);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
-  margin-left: 10px;
 }
 .btn-load:hover {
   background: var(--primary-dark);
@@ -571,9 +595,8 @@ input.editable-input:focus {
   border: 1px solid var(--danger-color);
   padding: 4px 8px;
   border-radius: var(--border-radius);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   cursor: pointer;
-  margin-left: 5px;
 }
 .btn-delete-pos:hover {
   background: var(--danger-color);
@@ -583,30 +606,101 @@ input.editable-input:focus {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 15px;
-  margin-top: 15px;
-  padding-top: 15px;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px dashed var(--border-color);
 }
 .save-hint {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
+}
+/* Strategy Output - 无滚动条优化 */
+#strategyOutput {
+  margin-top: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#strategyOutput table {
+  min-width: 500px;
+  width: 100%;
+}
+#resultSummary {
+  padding: 12px;
+  background: var(--primary-light);
+  border-radius: var(--border-radius);
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
 }
 /* Special Cards */
 .card-profit {
-  border-left: 5px solid var(--success-color);
+  border-left: 4px solid var(--success-color);
 }
 .card-strategy {
-  border-left: 5px solid var(--info-color);
+  border-left: 4px solid var(--info-color);
 }
-/* Responsive Strategy Output Table */
-#strategyOutput .table-responsive {
-    overflow-x: auto; /* Allow horizontal scroll if needed */
-    margin-top: 15px;
+/* 保存仓位模态框 */
+#saveNameModal .modal-content {
+  max-width: 380px;
 }
-#strategyOutput table {
-    min-width: 600px; /* Set a minimum width for the table */
-    width: 100%; /* Expand to container width if wider than min */
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+  .header-actions {
+    position: static;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  header {
+    text-align: center;
+    padding: 12px;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .position-stats {
+    justify-content: flex-start;
+  }
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .profit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .strategy-tab {
+    min-width: 50px;
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: 1rem;
+  }
+  .profit-val {
+    font-size: 0.85rem;
+  }
+  .position-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .position-stats {
+    justify-content: space-between;
+  }
+  .calculator-form {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -616,22 +710,22 @@ input.editable-input:focus {
 <div class="loading-status" id="loadingText">正在初始化 OCR 引擎...</div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="loading-hint" id="loadingHint">首次运行需下载语言包 (约 20MB)<br>若超过 15 秒无反应，建议点击下方取消并使用手动输入</div>
-<button onclick="cancelOCR()" style="margin-top:20px; padding:6px 20px; background:#fff; border:1px solid #ccc; border-radius:6px; cursor:pointer; color:#666;">取消并手动输入</button>
+<button onclick="cancelOCR()" style="margin-top:16px; padding:6px 18px; background:#fff; border:1px solid #ccc; border-radius:6px; cursor:pointer; color:#666; font-size:0.8rem;">取消并手动输入</button>
 </div>
 <!-- 我的持仓模态框 -->
 <div class="modal-overlay" id="portfolioModal">
 <div class="modal-content">
 <div class="modal-header">
-<h2 style="margin:0; font-size:1.2rem; color:var(--text-primary);">🪙 我的持仓仓库</h2>
+<h2 style="margin:0; font-size:1.1rem; color:var(--text-primary);">🪙 我的持仓仓库</h2>
 <button class="close-modal" onclick="toggleModal(false)">&times;</button>
 </div>
 <div class="modal-body">
 <div id="positionListContainer" class="position-list">
 <!-- 动态生成仓位列表 -->
 </div>
-<div id="modalEmpty" style="text-align:center; padding: 30px; color: var(--text-disabled); display:none;">
+<div id="modalEmpty" style="text-align:center; padding: 30px 20px; color: var(--text-disabled); display:none;">
 暂无保存的仓位记录<br>
-<span style="font-size:0.85rem">请在主界面编辑好数据后，点击右下角"💾 保存当前持仓"</span>
+<span style="font-size:0.75rem">请在主界面编辑好数据后，点击"💾 保存当前持仓"</span>
 </div>
 </div>
 <div class="modal-footer">
@@ -641,16 +735,16 @@ input.editable-input:focus {
 </div>
 <!-- 保存仓位命名模态框 -->
 <div class="modal-overlay" id="saveNameModal">
-<div class="modal-content" style="max-width: 400px;">
+<div class="modal-content" style="max-width: 380px;">
 <div class="modal-header">
-<h2 style="margin:0; font-size:1.1rem;">💾 保存当前持仓</h2>
+<h2 style="margin:0; font-size:1rem;">💾 保存当前持仓</h2>
 <button class="close-modal" onclick="toggleSaveModal(false)">&times;</button>
 </div>
 <div class="modal-body">
 <div class="form-group">
 <label class="form-label">请输入仓位名称</label>
 <input type="text" id="positionNameInput" class="form-input" placeholder="例如：春节建仓、定投计划 A" onkeypress="if(event.keyCode==13) confirmSavePosition()">
-<p style="font-size:0.8rem; color:var(--text-secondary); margin-top:5px;">名称将用于在"我的持仓"中标识此笔记录。</p>
+<p style="font-size:0.7rem; color:var(--text-secondary); margin-top:4px;">名称将用于在"我的持仓"中标识此笔记录。</p>
 </div>
 </div>
 <div class="modal-footer">
@@ -685,7 +779,7 @@ input.editable-input:focus {
 </div>
 <div id="emptyState" class="empty-state">
 <p>暂无数据</p>
-<p style="font-size: 0.9rem; margin-top:5px;">💡 建议：直接点击"手动新增"输入数据最快最准<br>或点击"上传图片"尝试自动识别 (需联网)<br><strong>数据会自动保存，刷新页面无需重新输入</strong></p>
+<p style="font-size: 0.85rem; margin-top:4px;">💡 建议：直接点击"手动新增"输入数据最快最准<br>或点击"上传图片"尝试自动识别 (需联网)<br><strong>数据会自动保存，刷新页面无需重新输入</strong></p>
 </div>
 <div class="table-responsive" id="tableContainer" style="display:none;">
 <table id="holdingsTable">
@@ -723,7 +817,7 @@ input.editable-input:focus {
 <div class="stat-box"><div class="stat-label">总持仓克数</div><div class="stat-value" id="dashWeight">0.0000 g</div></div>
 <div class="stat-box"><div class="stat-label">总投入成本</div><div class="stat-value" id="dashCost">¥0.00</div></div>
 <div class="stat-box"><div class="stat-label">当前持仓均价</div><div class="stat-value highlight" id="dashAvgPrice">¥0.00</div></div>
-<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; border:none; background:transparent; font-weight:bold; font-size:1.5rem; color:var(--text-secondary);" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
+<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; border:none; background:transparent; font-weight:bold; font-size:1.2rem; color:var(--text-secondary); padding:0;" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
 </div>
 </div>
 <div class="card card-strategy">
@@ -820,7 +914,7 @@ input.editable-input:focus {
 <input type="number" id="beFee" class="form-input" value="0.4" step="0.01" oninput="runStrategies()">
 </div>
 </div>
-<div id="strategyOutput" class="table-responsive" style="margin-top: 20px; max-height: 400px;">
+<div id="strategyOutput" class="table-responsive">
 <table id="resultTable">
 <thead>
 <tr>
@@ -833,7 +927,7 @@ input.editable-input:focus {
 </thead>
 <tbody id="resultBody"></tbody>
 </table>
-<div id="resultSummary" style="padding: 15px; background: #fff8e1; border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem; color: #5d4037; display:none;"></div>
+<div id="resultSummary" style="display:none;"></div>
 </div>
 <div id="strategyResult" class="result-box">
 <span class="result-title" id="resultTitle"></span>
@@ -843,7 +937,7 @@ input.editable-input:focus {
 <div class="card card-profit">
 <div class="card-header">
 <div class="card-title">💰 累计收益测算</div>
-<div style="font-size:0.85rem; color:var(--text-secondary);">模拟卖出全部持仓，计算净利润</div>
+<div style="font-size:0.7rem; color:var(--text-secondary);">模拟卖出全部持仓，计算净利润</div>
 </div>
 <div class="calculator-form">
 <div class="form-group">
@@ -851,7 +945,7 @@ input.editable-input:focus {
 <input type="number" id="sellPrice" class="form-input" placeholder="例如：600" oninput="calculateProfit()">
 </div>
 <div class="form-group">
-<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.8rem; color:var(--text-disabled);">(默认 0.4%)</span></label>
+<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.7rem; color:var(--text-disabled);">(默认 0.4%)</span></label>
 <input type="number" id="feeRate" class="form-input" value="0.4" step="0.01" oninput="calculateProfit()">
 </div>
 </div>
@@ -872,10 +966,10 @@ input.editable-input:focus {
 <div class="profit-label">持仓成本</div>
 <div class="profit-val" id="profitCost">¥0.00</div>
 </div>
-<div class="profit-item" style="grid-column: span 2; background: #fff8e1; border-color: #ffd54f;">
+<div class="profit-item" style="grid-column: span 2; background: var(--primary-light); border-color: var(--border-color);">
 <div class="profit-label">累计收益 (元)</div>
 <div class="profit-val" id="profitValue">¥0.00</div>
-<div class="profit-label" style="margin-top:4px; font-size:0.75rem;" id="profitPercent">收益率 0.00%</div>
+<div class="profit-label" style="margin-top:4px; font-size:0.7rem;" id="profitPercent">收益率 0.00%</div>
 </div>
 </div>
 </div>
@@ -1040,12 +1134,12 @@ function renderModalTable() {
   savedPositions.forEach((pos, index) => {
     const avgPrice = pos.totalWeight > 0 ? (pos.totalCost / pos.totalWeight) : 0;
     let profitValue = '0.00';
-    let profitColor = '#a8abb2'; // Default gray
+    let profitColor = '#9CA3AF';
     if (currentMarketPrice > 0) {
       const currentTotalValue = pos.totalWeight * currentMarketPrice;
       const profit = currentTotalValue - pos.totalCost;
       profitValue = profit.toFixed(2);
-      profitColor = profit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)'; // Red for profit, green for loss
+      profitColor = profit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)';
       totalOverallProfit += profit;
     }
     
@@ -1053,21 +1147,29 @@ function renderModalTable() {
     div.className = 'position-item';
     div.innerHTML = `
       <div class="position-info" onclick="loadPosition(${index})">
-        <h3>${pos.name}</h3>
+        <h3>${escapeHtml(pos.name)}</h3>
         <div class="position-meta">保存于：${pos.savedAt}</div>
-        <div class="position-meta">市价：¥${currentMarketPrice > 0 ? currentMarketPrice.toFixed(2) : '--'}</div>
+        <div class="position-meta">市价：${currentMarketPrice > 0 ? '¥' + currentMarketPrice.toFixed(2) : '--'}</div>
       </div>
       <div class="position-stats">
-        <div class="position-stat-val">${pos.totalWeight.toFixed(4)} g</div>
-        <div class="position-stat-label">总克重</div>
-        <div class="position-stat-val" style="margin-top:4px;">¥${pos.totalCost.toFixed(2)}</div>
-        <div class="position-stat-label">总成本</div>
-        <div class="position-stat-val" style="margin-top:4px; color:var(--primary-color);">¥${avgPrice.toFixed(2)}</div>
-        <div class="position-stat-label">持仓均价</div>
-        <div class="position-stat-val" style="margin-top:4px; color:${profitColor};">¥${profitValue}</div>
-        <div class="position-stat-label">盈亏</div>
+        <div class="position-stat">
+          <div class="position-stat-val">${pos.totalWeight.toFixed(4)} g</div>
+          <div class="position-stat-label">总克重</div>
+        </div>
+        <div class="position-stat">
+          <div class="position-stat-val">¥${pos.totalCost.toFixed(2)}</div>
+          <div class="position-stat-label">总成本</div>
+        </div>
+        <div class="position-stat">
+          <div class="position-stat-val" style="color:var(--primary-color);">¥${avgPrice.toFixed(2)}</div>
+          <div class="position-stat-label">持仓均价</div>
+        </div>
+        <div class="position-stat">
+          <div class="position-stat-val" style="color:${profitColor};">¥${profitValue}</div>
+          <div class="position-stat-label">盈亏</div>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; flex-shrink: 0;">
+      <div style="display:flex; align-items:center; gap:6px; flex-shrink: 0;">
         <button class="btn-load" onclick="loadPosition(${index})">加载</button>
         <button class="btn-delete-pos" onclick="deletePosition(${index}, event)">删除</button>
       </div>
@@ -1077,21 +1179,21 @@ function renderModalTable() {
   
   const totalProfitDiv = document.createElement('div');
   totalProfitDiv.style.cssText = `
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 16px;
+    padding: 12px;
     background: var(--primary-light);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     text-align: center;
   `;
   
-  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)'; // Red for profit, green for loss
+  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)';
   totalProfitDiv.innerHTML = `
-    <h3 style="margin: 0 0 10px; color: ${overallProfitColor}; font-size: 1.2rem;">
+    <h3 style="margin: 0 0 8px; color: ${overallProfitColor}; font-size: 1rem;">
       所有仓位总盈亏：¥${totalOverallProfit.toFixed(2)}
     </h3>
-    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
-      基于当前市价：¥${currentMarketPrice > 0 ? currentMarketPrice.toFixed(2) : '--'}
+    <p style="margin: 0; color: var(--text-secondary); font-size: 0.75rem;">
+      基于当前市价：${currentMarketPrice > 0 ? '¥' + currentMarketPrice.toFixed(2) : '--'}
     </p>
   `;
   
@@ -1110,7 +1212,7 @@ function deletePosition(index, event) {
 }
 
 function loadPosition(index) {
-  if(confirm(`确定要加载仓位 "${savedPositions[index].name}" 吗？这将覆盖当前编辑区的數據。`)) {
+  if(confirm(`确定要加载仓位 "${savedPositions[index].name}" 吗？这将覆盖当前编辑区的数据。`)) {
     holdings = JSON.parse(JSON.stringify(savedPositionsDetails[index]));
     saveData();
     renderTable();
@@ -1299,11 +1401,11 @@ function calculateStrategy() {
   }
   const currentAvg = C/W;
   if (calculatedPrice > currentAvg && targetAvg < currentAvg) {
-    msg += `<br><br><span style="color:var(--profit-color); font-size:0.9em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
+    msg += `<br><br><span style="color:var(--profit-color); font-size:0.85em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
     resultBox.className = 'result-box success';
   } else if (marketPrice) {
-    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--loss-color); font-size:0.9em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
-    else msg += `<br><br><span style="color:var(--warning-color); font-size:0.9em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
+    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--loss-color); font-size:0.85em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
+    else msg += `<br><br><span style="color:var(--warning-color); font-size:0.85em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
     resultBox.className = 'result-box success';
   } else { resultBox.className = 'result-box success'; }
   resultTitle.textContent = '💡 策略建议';
@@ -1343,7 +1445,7 @@ function runStrategies() {
   const Cost_hold = stats.totalCost;
   let P_market = parseFloat(document.getElementById('marketPrice').value);
   if (!P_market && currentStrategyMode === 'E') {
-    P_market = parseFloat(document.getElementById('beMarketPrice').value);
+    P_market = P_avg;
   }
   if (!P_market) P_market = P_avg; 
   const tbody = document.getElementById('resultBody');
@@ -1351,7 +1453,7 @@ function runStrategies() {
   tbody.innerHTML = '';
   summary.style.display = 'none';
   if (W_hold === 0 && currentStrategyMode !== 'C') {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">请先在主表格录入持仓数据</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 16px;">请先在主表格录入持仓数据</td></tr>';
     return;
   }
   if (currentStrategyMode === 'C') {
@@ -1497,6 +1599,16 @@ function cancelOCR() {
   if(loadTimeout) clearTimeout(loadTimeout);
   document.getElementById('loadingOverlay').style.display = 'none';
   document.getElementById('fileInput').value = '';
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
 }
 
 async function handleImageUpload(input) {
