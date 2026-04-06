@@ -240,54 +240,48 @@ input.editable-input:focus {
 .stat-value.highlight {
   color: var(--primary-color);
 }
-/* Calculator Form */
+/* Calculator Form - Responsive Grid */
 .calculator-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
   gap: 20px;
+  width: 100%; /* Ensure full width */
 }
-@media (max-width: 600px) {
-  .calculator-form {
-    grid-template-columns: 1fr;
-  }
-}
-.form-group {
-  margin-bottom: 15px;
-}
-.form-label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-.form-input {
-  width: 100%;
-  padding: 6px 10px;
-  border: 1px solid var(--border-color);
+/* Strategy Tabs */
+.strategy-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  background: #fff3e0; /* Tab background */
+  padding: 4px;
   border-radius: var(--border-radius);
-  font-size: 1rem;
-  box-sizing: border-box;
-  color: var(--text-primary);
-  background-color: white;
-  transition: border-color 0.2s;
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
-.form-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+.strategy-tab {
+  flex: 1;
+  min-width: 70px; /* Minimum width for tabs */
+  padding: 10px 5px;
+  text-align: center;
+  background: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  user-select: none;
+  transition: all 0.2s;
+  color: var(--text-secondary);
 }
-.form-input[readonly] {
-  background-color: #fafafa;
-  color: var(--text-disabled);
-  cursor: not-allowed;
+.strategy-tab.active {
+  background: white;
+  border-color: var(--border-color);
+  color: var(--primary-color);
+  font-weight: bold;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
-select.form-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 8px center;
-  background-repeat: no-repeat;
-  background-size: 16px 16px;
+.strategy-tab:hover:not(.active) {
+  background: var(--primary-light);
+  color: var(--primary-color);
 }
 /* Profit Grid */
 .profit-grid {
@@ -321,41 +315,6 @@ select.form-input {
 }
 .text-neutral {
   color: var(--text-secondary);
-}
-/* Strategy Tabs */
-.strategy-tabs {
-  display: flex;
-  gap: 0;
-  margin-bottom: 20px;
-  background: #fff3e0; /* Tab background */
-  padding: 4px;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-}
-.strategy-tab {
-  flex: 1;
-  padding: 10px 5px;
-  text-align: center;
-  background: transparent;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 0.9rem;
-  border: 1px solid transparent;
-  user-select: none;
-  transition: all 0.2s;
-  min-width: 80px;
-  color: var(--text-secondary);
-}
-.strategy-tab.active {
-  background: white;
-  border-color: var(--border-color);
-  color: var(--primary-color);
-  font-weight: bold;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-.strategy-tab:hover:not(.active) {
-  background: var(--primary-light);
-  color: var(--primary-color);
 }
 /* Result Box */
 .result-box {
@@ -475,10 +434,12 @@ select.form-input {
   align-items: center;
   backdrop-filter: blur(2px);
 }
+/* My Portfolio Modal - Responsive */
 .modal-content {
   background: white;
-  width: 90%;
-  max-width: 800px;
+  width: 95vw; /* Responsive width */
+  max-width: 1200px; /* Max width on large screens */
+  min-width: 400px; /* Min width */
   max-height: 85vh;
   border-radius: var(--border-radius);
   display: flex;
@@ -542,6 +503,7 @@ select.form-input {
   flex-grow: 1;
   min-height: 0; /* Needed for flex parent with overflow */
 }
+/* Responsive Position Item */
 .position-item {
   display: flex;
   justify-content: space-between;
@@ -552,8 +514,8 @@ select.form-input {
   background: var(--card-bg);
   transition: all 0.2s;
   cursor: pointer;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-wrap: wrap; /* Wrap content on small screens */
+  gap: 10px; /* Add gap between wrapped items */
 }
 .position-item:hover {
   border-color: var(--primary-color);
@@ -562,7 +524,7 @@ select.form-input {
 }
 .position-info {
   flex-grow: 1;
-  min-width: 150px;
+  min-width: 150px; /* Ensure some minimum width */
 }
 .position-info h3 {
   margin: 0 0 5px 0;
@@ -636,6 +598,15 @@ select.form-input {
 }
 .card-strategy {
   border-left: 5px solid var(--info-color);
+}
+/* Responsive Strategy Output Table */
+#strategyOutput .table-responsive {
+    overflow-x: auto; /* Allow horizontal scroll if needed */
+    margin-top: 15px;
+}
+#strategyOutput table {
+    min-width: 600px; /* Set a minimum width for the table */
+    width: 100%; /* Expand to container width if wider than min */
 }
 </style>
 </head>
