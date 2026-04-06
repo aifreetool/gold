@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>黄金持仓助手 · 暖色调策略版 | 预期均价+手续费净盈亏</title>
+<title>黄金持仓助手 · 暖色调策略版 | 动态持仓名+策略提示修复</title>
 <script src='https://cdn.staticfile.org/tesseract.js/5.0.5/tesseract.min.js'></script>
 <style>
 /* ----- 暖色调主题变量 ----- */
@@ -770,7 +770,9 @@ input.editable-input:focus,
 </div>
 
 <div class="card">
-<div class="card-header"><div class="card-title">📊 实时概况</div></div>
+<div class="card-header">
+<div class="card-title" id="dashboardTitle">📊 当前持仓</div>
+</div>
 <div class="dashboard-grid">
 <div class="stat-box"><div class="stat-label">总持仓克数</div><div class="stat-value" id="dashWeight">0.0000 g</div></div>
 <div class="stat-box"><div class="stat-label">总投入成本</div><div class="stat-value" id="dashCost">¥0.00</div></div>
@@ -825,13 +827,29 @@ input.editable-input:focus,
 let holdings = [], savedPositions = [], savedPositionsDetails = [];
 let currentStrategyMode = 'A';
 let loadTimeout = null;
+let currentPortfolioName = "当前持仓";  // 动态持仓名称
 const STORAGE_KEY_DATA = 'gold_portfolio_data_v2';
 const STORAGE_KEY_POSITIONS = 'gold_portfolio_positions_v2';
 const STORAGE_KEY_POSITIONS_DETAILS = 'gold_portfolio_positions_details_v2';
 
+// 更新实时概况卡片标题
+function updateDashboardTitle() {
+  const titleEl = document.getElementById('dashboardTitle');
+  if(titleEl) {
+    titleEl.innerHTML = `📊 ${escapeHtml(currentPortfolioName)}`;
+  }
+}
+
+// 重置持仓名称为默认（数据被修改时调用）
+function resetPortfolioName() {
+  currentPortfolioName = "当前持仓";
+  updateDashboardTitle();
+}
+
 window.onload = function() {
   loadData(); loadPositions(); loadPositionsDetails();
   renderTable(); updateDashboard(); switchStrategyMode('A');
+  updateDashboardTitle();  // 初始化标题
   closeAllModals();
   document.getElementById('myPortfolioBtn').addEventListener('click', () => toggleModal(true));
   document.getElementById('savePositionBtn').addEventListener('click', openSaveModal);
@@ -882,10 +900,9 @@ function renderModalTable(){
   if(savedPositions.length===0){ emptyDiv.style.display='block'; container.innerHTML=''; document.getElementById('totalProfitContainer').innerHTML=''; return; } 
   emptyDiv.style.display='none'; container.innerHTML=''; 
   
-  // 获取当前市价和手续费率（确保正确获取）
   const marketPrice = parseFloat(document.getElementById('marketPrice').value) || 0;
   const feeRateElem = document.getElementById('feeRate');
-  let feeRate = 0.4; // 默认值
+  let feeRate = 0.4;
   if(feeRateElem) {
     feeRate = parseFloat(feeRateElem.value);
     if(isNaN(feeRate)) feeRate = 0.4;
@@ -951,7 +968,17 @@ function renderModalTable(){
     `;
   }
 }
-function loadPosition(idx){ if(confirm(`加载“${savedPositions[idx].name}”? 将覆盖当前数据。`)){ holdings=JSON.parse(JSON.stringify(savedPositionsDetails[idx])); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); toggleModal(false); alert(`已加载：${savedPositions[idx].name}`); } }
+function loadPosition(idx){ 
+  if(confirm(`加载“${savedPositions[idx].name}”? 将覆盖当前数据。`)){ 
+    holdings=JSON.parse(JSON.stringify(savedPositionsDetails[idx])); 
+    // 更新当前持仓名称为加载的仓位名称
+    currentPortfolioName = savedPositions[idx].name;
+    updateDashboardTitle();
+    saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); 
+    toggleModal(false); 
+    alert(`已加载：${savedPositions[idx].name}`); 
+  } 
+}
 function deletePosition(idx,ev){ ev.stopPropagation(); if(confirm(`删除“${savedPositions[idx].name}”?`)){ savedPositions.splice(idx,1); savedPositionsDetails.splice(idx,1); savePositions(); savePositionsDetails(); renderModalTable(); } }
 function saveData() { localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(holdings)); showSaveStatus(); }
 function savePositions() { localStorage.setItem(STORAGE_KEY_POSITIONS, JSON.stringify(savedPositions)); }
@@ -960,24 +987,139 @@ function loadData() { try { const stored = localStorage.getItem(STORAGE_KEY_DATA
 function loadPositions() { try { const stored = localStorage.getItem(STORAGE_KEY_POSITIONS); if (stored) savedPositions = JSON.parse(stored); } catch(e) { savedPositions = []; } }
 function loadPositionsDetails() { try { const stored = localStorage.getItem(STORAGE_KEY_POSITIONS_DETAILS); if (stored) savedPositionsDetails = JSON.parse(stored); } catch(e) { savedPositionsDetails = []; } }
 function showSaveStatus() { const el = document.getElementById('saveStatus'); el.classList.add('visible'); setTimeout(() => el.classList.remove('visible'), 1500); }
-function addRow() { holdings.push({ date: new Date().toISOString().split('T')[0], weight: 1.0, price: 0 }); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); }
-function removeRow(i) { if(confirm('删除记录？')) { holdings.splice(i,1); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); } }
+function addRow() { holdings.push({ date: new Date().toISOString().split('T')[0], weight: 1.0, price: 0 }); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); resetPortfolioName(); }
+function removeRow(i) { if(confirm('删除记录？')) { holdings.splice(i,1); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); resetPortfolioName(); } }
 function renderTable() { const tbody=document.getElementById('tableBody'), empty=document.getElementById('emptyState'), container=document.getElementById('tableContainer'); if(!holdings.length){ empty.style.display='block'; container.style.display='none'; updateTotals(0,0); return; } empty.style.display='none'; container.style.display='block'; tbody.innerHTML=''; holdings.forEach((item,idx)=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td><input type="date" class="editable-input" value="${item.date}" onchange="triggerGlobalUpdate()"></td><td><input type="number" step="0.0001" class="editable-input" value="${item.weight}" oninput="updateRowTotal(this,${idx})" onchange="triggerGlobalUpdate()"></td><td><input type="number" step="0.01" class="editable-input" value="${item.price}" oninput="updateRowTotal(this,${idx})" onchange="triggerGlobalUpdate()"></td><td id="rowTotal-${idx}">${((item.weight||0)*(item.price||0)).toFixed(2)}</td><td><button class="btn btn-danger" onclick="removeRow(${idx})">删除</button></td>`; tbody.appendChild(tr); }); const tw=holdings.reduce((s,i)=>s+(parseFloat(i.weight)||0),0), tc=holdings.reduce((s,i)=>s+((parseFloat(i.weight)||0)*(parseFloat(i.price)||0)),0); updateTotals(tw,tc); }
 function updateRowTotal(input,idx){ const row=input.closest('tr'), inputs=row.querySelectorAll('input'); const w=parseFloat(inputs[1].value)||0, p=parseFloat(inputs[2].value)||0; document.getElementById(`rowTotal-${idx}`).innerText=(w*p).toFixed(2); }
-function triggerGlobalUpdate(){ const rows=document.getElementById('tableBody').children; for(let i=0;i<rows.length;i++){ const ins=rows[i].querySelectorAll('input'); holdings[i].date=ins[0].value; holdings[i].weight=parseFloat(ins[1].value)||0; holdings[i].price=parseFloat(ins[2].value)||0; } saveData(); const tw=holdings.reduce((s,i)=>s+(i.weight||0),0), tc=holdings.reduce((s,i)=>s+((i.weight||0)*(i.price||0)),0); updateTotals(tw,tc); updateDashboardValues(tw,tc); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); }
+function triggerGlobalUpdate(){ const rows=document.getElementById('tableBody').children; for(let i=0;i<rows.length;i++){ const ins=rows[i].querySelectorAll('input'); holdings[i].date=ins[0].value; holdings[i].weight=parseFloat(ins[1].value)||0; holdings[i].price=parseFloat(ins[2].value)||0; } saveData(); const tw=holdings.reduce((s,i)=>s+(i.weight||0),0), tc=holdings.reduce((s,i)=>s+((i.weight||0)*(i.price||0)),0); updateTotals(tw,tc); updateDashboardValues(tw,tc); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); resetPortfolioName(); }
 function updateTotals(w,c){ document.getElementById('sumWeight').innerText=w.toFixed(4); document.getElementById('sumCost').innerText=c.toFixed(2); }
 function updateDashboardValues(w,c){ const avg=w>0?c/w:0; document.getElementById('dashWeight').innerText=w.toFixed(4)+' g'; document.getElementById('dashCost').innerText='¥'+c.toFixed(2); document.getElementById('dashAvgPrice').innerText='¥'+avg.toFixed(2); return {totalWeight:w,totalCost:c,avgPrice:avg}; }
 function updateDashboard(){ const w=holdings.reduce((s,i)=>s+(i.weight||0),0), c=holdings.reduce((s,i)=>s+((i.weight||0)*(i.price||0)),0); return updateDashboardValues(w,c); }
 function switchStrategyMode(mode){ currentStrategyMode=mode; document.querySelectorAll('.strategy-tab').forEach(t=>t.classList.remove('active')); document.getElementById(`tab${mode}`).classList.add('active'); ['modeAInputs','modeBInputs','modeCInputs','modeDInputs','modeEInputs','modeFInputs'].forEach(id=>document.getElementById(id).style.display='none'); document.getElementById('strategyResult').style.display='none'; document.getElementById('strategyOutput').style.display='none'; if(mode==='A'||mode==='B'){ document.getElementById(`mode${mode}Inputs`).style.display='grid'; calculateStrategy(); } else if(mode==='F'){ document.getElementById('modeFInputs').style.display='grid'; calculateExpectedAverage(); } else { document.getElementById(`mode${mode}Inputs`).style.display='grid'; document.getElementById('strategyOutput').style.display='block'; runStrategies(); } }
-function calculateStrategy(){ if(currentStrategyMode!=='A' && currentStrategyMode!=='B') return; const stats=updateDashboard(); const {totalWeight:W,totalCost:C}=stats; const targetAvg=parseFloat(document.getElementById('targetAvg').value); const resultBox=document.getElementById('strategyResult'); if(!targetAvg || W===0){ resultBox.style.display='none'; return; } if(currentStrategyMode==='A'){ const w=parseFloat(document.getElementById('inputWeightA').value); if(!w||w<=0) return; const requiredTotal=(targetAvg*(W+w))-C; const price=requiredTotal/w; if(requiredTotal<=0||price<=0){ document.getElementById('resultTotalA').value='无法达成'; document.getElementById('resultPriceA').value='-'; } else { document.getElementById('resultTotalA').value='¥'+requiredTotal.toFixed(2); document.getElementById('resultPriceA').value='¥'+price.toFixed(2)+'/g'; } } else { const M=parseFloat(document.getElementById('inputMoneyB').value); if(!M||M<=0) return; const denominator=C+M-(targetAvg*W); if(denominator<=0){ document.getElementById('resultPriceB').value='无法达成'; document.getElementById('resultWeightB').value='-'; } else { const price=(targetAvg*M)/denominator; document.getElementById('resultPriceB').value='¥'+price.toFixed(2)+'/g'; document.getElementById('resultWeightB').value=(M/price).toFixed(4)+' g'; } } resultBox.style.display='block'; }
+
+// ========== 修复后的 calculateStrategy 函数（带完整提示） ==========
+function calculateStrategy() {
+  if (currentStrategyMode !== 'A' && currentStrategyMode !== 'B') return;
+  
+  const stats = updateDashboard();
+  const { totalWeight: W, totalCost: C, avgPrice: currentAvg } = stats;
+  const targetAvg = parseFloat(document.getElementById('targetAvg').value);
+  const resultBox = document.getElementById('strategyResult');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultMessage = document.getElementById('resultMessage');
+  
+  if (W === 0) {
+    resultBox.className = 'result-box error';
+    resultTitle.textContent = '⚠️ 暂无持仓数据';
+    resultMessage.innerHTML = '请先在「持仓明细编辑」中添加持仓记录，然后再使用策略计算。';
+    resultBox.style.display = 'block';
+    return;
+  }
+  
+  if (!targetAvg || targetAvg <= 0) {
+    resultBox.className = 'result-box error';
+    resultTitle.textContent = '📝 请输入目标均价';
+    resultMessage.innerHTML = '请在「目标持仓均价」输入框中填写您希望达到的持仓均价（元/g）。<br><br>当前持仓均价：<strong>¥' + currentAvg.toFixed(2) + '</strong>';
+    resultBox.style.display = 'block';
+    return;
+  }
+  
+  if (currentStrategyMode === 'A') {
+    const w = parseFloat(document.getElementById('inputWeightA').value);
+    if (!w || w <= 0) {
+      resultBox.className = 'result-box error';
+      resultTitle.textContent = '📝 请输入计划买入克数';
+      resultMessage.innerHTML = '请在「计划买入克数」输入框中填写您打算买入的克重（g）。';
+      resultBox.style.display = 'block';
+      return;
+    }
+    
+    const requiredTotal = (targetAvg * (W + w)) - C;
+    const calculatedPrice = requiredTotal / w;
+    
+    if (requiredTotal <= 0 || calculatedPrice <= 0) {
+      resultBox.className = 'result-box error';
+      resultTitle.textContent = '❌ 无法达成目标';
+      resultMessage.innerHTML = `即使以 0 元购入，也无法将均价拉低至 <strong>¥${targetAvg}</strong>。<br><br>当前均价：¥${currentAvg.toFixed(2)} | 目标均价：¥${targetAvg}`;
+      resultBox.style.display = 'block';
+      return;
+    }
+    
+    document.getElementById('resultTotalA').value = '¥' + requiredTotal.toFixed(2);
+    document.getElementById('resultPriceA').value = '¥' + calculatedPrice.toFixed(2) + '/g';
+    
+    const marketPrice = parseFloat(document.getElementById('marketPrice').value);
+    let extraMsg = '';
+    if (marketPrice && marketPrice > 0) {
+      if (calculatedPrice <= marketPrice) {
+        extraMsg = `<br><br><span style="color:var(--success-color);">✅ 可行性：当前市价 (¥${marketPrice.toFixed(2)}) 低于限价，可考虑执行。</span>`;
+      } else {
+        extraMsg = `<br><br><span style="color:var(--warning-color);">⚠️ 挑战：当前市价 (¥${marketPrice.toFixed(2)}) 高于限价，需等待回调。</span>`;
+      }
+    }
+    
+    resultBox.className = 'result-box success';
+    resultTitle.textContent = '💡 策略建议（固定克数）';
+    resultMessage.innerHTML = `若想将均价从 <strong>¥${currentAvg.toFixed(2)}</strong> 拉至 <strong>¥${targetAvg}</strong>，<br>
+      您需要在金价 <strong class="result-highlight">不高于 ¥${calculatedPrice.toFixed(2)}</strong> 时，<br>
+      买入 <strong>${w.toFixed(4)} g</strong>，预计总花费 <strong>¥${requiredTotal.toFixed(2)}</strong>。${extraMsg}`;
+    resultBox.style.display = 'block';
+    return;
+  }
+  
+  if (currentStrategyMode === 'B') {
+    const M = parseFloat(document.getElementById('inputMoneyB').value);
+    if (!M || M <= 0) {
+      resultBox.className = 'result-box error';
+      resultTitle.textContent = '📝 请输入计划投入金额';
+      resultMessage.innerHTML = '请在「计划投入总金额」输入框中填写您打算投入的资金（元）。';
+      resultBox.style.display = 'block';
+      return;
+    }
+    
+    const denominator = C + M - (targetAvg * W);
+    if (denominator <= 0) {
+      resultBox.className = 'result-box error';
+      resultTitle.textContent = '❌ 无法达成目标';
+      resultMessage.innerHTML = `即使以 0 元购入，也无法将均价拉低至 <strong>¥${targetAvg}</strong>。<br><br>当前均价：¥${currentAvg.toFixed(2)} | 目标均价：¥${targetAvg}`;
+      resultBox.style.display = 'block';
+      return;
+    }
+    
+    const calculatedPrice = (targetAvg * M) / denominator;
+    const buyableWeight = M / calculatedPrice;
+    
+    document.getElementById('resultPriceB').value = '¥' + calculatedPrice.toFixed(2) + '/g';
+    document.getElementById('resultWeightB').value = buyableWeight.toFixed(4) + ' g';
+    
+    const marketPrice = parseFloat(document.getElementById('marketPrice').value);
+    let extraMsg = '';
+    if (marketPrice && marketPrice > 0) {
+      if (calculatedPrice <= marketPrice) {
+        extraMsg = `<br><br><span style="color:var(--success-color);">✅ 可行性：当前市价 (¥${marketPrice.toFixed(2)}) 低于限价，可考虑执行。</span>`;
+      } else {
+        extraMsg = `<br><br><span style="color:var(--warning-color);">⚠️ 挑战：当前市价 (¥${marketPrice.toFixed(2)}) 高于限价，需等待回调。</span>`;
+      }
+    }
+    
+    resultBox.className = 'result-box success';
+    resultTitle.textContent = '💡 策略建议（固定金额）';
+    resultMessage.innerHTML = `若想将均价从 <strong>¥${currentAvg.toFixed(2)}</strong> 拉至 <strong>¥${targetAvg}</strong>，<br>
+      您需要在金价 <strong class="result-highlight">不高于 ¥${calculatedPrice.toFixed(2)}</strong> 时，<br>
+      投入 <strong>¥${M.toFixed(2)}</strong>，预计可买入 <strong>${buyableWeight.toFixed(4)} g</strong>。${extraMsg}`;
+    resultBox.style.display = 'block';
+    return;
+  }
+}
+
 function calculateProfit(){ const stats=updateDashboard(); const tw=stats.totalWeight, tc=stats.totalCost; const sp=parseFloat(document.getElementById('sellPrice').value)||0; let fee=parseFloat(document.getElementById('feeRate').value)||0.4; const gross=tw*sp, feeAmt=gross*(fee/100), net=gross-feeAmt, profit=net-tc, percent=tc>0?(profit/tc)*100:0; document.getElementById('profitGross').innerText='¥'+gross.toFixed(2); document.getElementById('profitFee').innerText='-¥'+feeAmt.toFixed(2); document.getElementById('profitNet').innerText='¥'+net.toFixed(2); document.getElementById('profitCost').innerText='¥'+tc.toFixed(2); const pv=document.getElementById('profitValue'); pv.innerText=(profit>=0?'+':'')+'¥'+profit.toFixed(2); pv.className='profit-val '+(profit>0?'text-up':(profit<0?'text-down':'text-neutral')); document.getElementById('profitPercent').innerHTML=`收益率 ${percent.toFixed(2)}%`; }
-function runStrategies(){ if(!['C','D','E'].includes(currentStrategyMode)) return; const stats=updateDashboard(); const W=stats.totalWeight, avg=stats.avgPrice, cost=stats.totalCost; let market=parseFloat(document.getElementById('marketPrice').value)||avg; const tbody=document.getElementById('resultBody'), summaryDiv=document.getElementById('resultSummary'); tbody.innerHTML=''; summaryDiv.style.display='none'; if(currentStrategyMode==='C'){ const step=parseFloat(document.getElementById('gridStep').value)/100, base=parseFloat(document.getElementById('gridBaseWeight').value), layers=parseInt(document.getElementById('gridLayers').value), multi=parseInt(document.getElementById('gridMultiplier').value); let totalInv=0,totalW=0; for(let i=1;i<=layers;i++){ let price=market*(1-i*step), wgt=base*(multi>1?Math.pow(multi,i-1):base); let costLayer=price*wgt; totalInv+=costLayer; totalW+=wgt; let newAvg=(cost+totalInv)/(W+totalW); tbody.insertRow().innerHTML=`<td>第 ${i} 层</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${wgt.toFixed(3)} g</td><td>¥${costLayer.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; } summaryDiv.innerHTML=`<strong>网格总结：</strong> 共需资金 ¥${totalInv.toFixed(2)}，累计买入 ${totalW.toFixed(3)}g，最终均价 ¥${((cost+totalInv)/(W+totalW)).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='D'){ const totalMoney=parseFloat(document.getElementById('pyraTotalMoney').value), stepPct=parseFloat(document.getElementById('pyraStep').value)/100, mode=document.getElementById('pyraMode').value; let ratios=[]; if(mode==='equal') ratios=[0.25,0.25,0.25,0.25]; else if(mode==='aggressive') ratios=[0.1,0.2,0.3,0.4]; else { let fib=[1,2,3,5], sum=fib.reduce((a,b)=>a+b,0); ratios=fib.map(x=>x/sum); } let curCost=cost, curWeight=W; ratios.forEach((r,i)=>{ let money=totalMoney*r, price=avg*(1-(i+1)*stepPct), weight=money/price; curCost+=money; curWeight+=weight; let newAvg=curCost/curWeight; tbody.insertRow().innerHTML=`<tr>第 ${i+1} 跌 (${((i+1)*stepPct*100).toFixed(0)}%)</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${weight.toFixed(3)} g</td><td>¥${money.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; }); summaryDiv.innerHTML=`<strong>金字塔总结：</strong> 总预算 ¥${totalMoney}，最终持仓 ${curWeight.toFixed(3)}g，均价 ¥${(curCost/curWeight).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='E'){ let rebound=parseFloat(document.getElementById('beRebound').value)/100, fee=parseFloat(document.getElementById('beFee').value)/100; let targetGross=market*(1+rebound), targetNet=targetGross*(1-fee); let denominator=targetNet-market; if(Math.abs(denominator)<0.0001){ summaryDiv.innerHTML='无法计算：预期反弹净价几乎等于当前市价'; } else { let X=(cost-targetNet*W)/denominator; if(X<0){ summaryDiv.innerHTML=`🎉 恭喜！无需补仓。若反弹 ${rebound*100}%，当前持仓即可回本盈利。`; } else { let addCost=X*market, newWeight=W+X, newCost=cost+addCost; summaryDiv.innerHTML=`若金价反弹 ${(rebound*100).toFixed(1)}% 至 ¥${targetGross.toFixed(2)}，需补仓 <strong>${X.toFixed(3)} g</strong> (≈ ¥${addCost.toFixed(2)}) 即可回本。新均价 ¥${(newCost/newWeight).toFixed(2)}。`; tbody.insertRow().innerHTML=`<td>当前情景</td><td>¥${market.toFixed(2)}</td><td>补仓 ${X.toFixed(3)} g</td><td>¥${addCost.toFixed(2)}</td><td>¥${(newCost/newWeight).toFixed(2)}</td>`; } } summaryDiv.style.display='block'; } }
+function runStrategies(){ if(!['C','D','E'].includes(currentStrategyMode)) return; const stats=updateDashboard(); const W=stats.totalWeight, avg=stats.avgPrice, cost=stats.totalCost; let market=parseFloat(document.getElementById('marketPrice').value)||avg; const tbody=document.getElementById('resultBody'), summaryDiv=document.getElementById('resultSummary'); tbody.innerHTML=''; summaryDiv.style.display='none'; if(currentStrategyMode==='C'){ const step=parseFloat(document.getElementById('gridStep').value)/100, base=parseFloat(document.getElementById('gridBaseWeight').value), layers=parseInt(document.getElementById('gridLayers').value), multi=parseInt(document.getElementById('gridMultiplier').value); let totalInv=0,totalW=0; for(let i=1;i<=layers;i++){ let price=market*(1-i*step), wgt=base*(multi>1?Math.pow(multi,i-1):base); let costLayer=price*wgt; totalInv+=costLayer; totalW+=wgt; let newAvg=(cost+totalInv)/(W+totalW); tbody.insertRow().innerHTML=`<td>第 ${i} 层</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${wgt.toFixed(3)} g</td><td>¥${costLayer.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; } summaryDiv.innerHTML=`<strong>网格总结：</strong> 共需资金 ¥${totalInv.toFixed(2)}，累计买入 ${totalW.toFixed(3)}g，最终均价 ¥${((cost+totalInv)/(W+totalW)).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='D'){ const totalMoney=parseFloat(document.getElementById('pyraTotalMoney').value), stepPct=parseFloat(document.getElementById('pyraStep').value)/100, mode=document.getElementById('pyraMode').value; let ratios=[]; if(mode==='equal') ratios=[0.25,0.25,0.25,0.25]; else if(mode==='aggressive') ratios=[0.1,0.2,0.3,0.4]; else { let fib=[1,2,3,5], sum=fib.reduce((a,b)=>a+b,0); ratios=fib.map(x=>x/sum); } let curCost=cost, curWeight=W; ratios.forEach((r,i)=>{ let money=totalMoney*r, price=avg*(1-(i+1)*stepPct), weight=money/price; curCost+=money; curWeight+=weight; let newAvg=curCost/curWeight; tbody.insertRow().innerHTML=`<td>第 ${i+1} 跌 (${((i+1)*stepPct*100).toFixed(0)}%)</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${weight.toFixed(3)} g</td><td>¥${money.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; }); summaryDiv.innerHTML=`<strong>金字塔总结：</strong> 总预算 ¥${totalMoney}，最终持仓 ${curWeight.toFixed(3)}g，均价 ¥${(curCost/curWeight).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='E'){ let rebound=parseFloat(document.getElementById('beRebound').value)/100, fee=parseFloat(document.getElementById('beFee').value)/100; let targetGross=market*(1+rebound), targetNet=targetGross*(1-fee); let denominator=targetNet-market; if(Math.abs(denominator)<0.0001){ summaryDiv.innerHTML='无法计算：预期反弹净价几乎等于当前市价'; } else { let X=(cost-targetNet*W)/denominator; if(X<0){ summaryDiv.innerHTML=`🎉 恭喜！无需补仓。若反弹 ${rebound*100}%，当前持仓即可回本盈利。`; } else { let addCost=X*market, newWeight=W+X, newCost=cost+addCost; summaryDiv.innerHTML=`若金价反弹 ${(rebound*100).toFixed(1)}% 至 ¥${targetGross.toFixed(2)}，需补仓 <strong>${X.toFixed(3)} g</strong> (≈ ¥${addCost.toFixed(2)}) 即可回本。新均价 ¥${(newCost/newWeight).toFixed(2)}。`; tbody.insertRow().innerHTML=`<td>当前情景</td><td>¥${market.toFixed(2)}</td><td>补仓 ${X.toFixed(3)} g</td><td>¥${addCost.toFixed(2)}</td><td>¥${(newCost/newWeight).toFixed(2)}</td>`; } } summaryDiv.style.display='block'; } }
 function calculateExpectedAverage(){ const stats=updateDashboard(); const currentWeight=stats.totalWeight, currentCost=stats.totalCost; const futurePrice=parseFloat(document.getElementById('futurePrice').value); if(!futurePrice || futurePrice<=0){ document.getElementById('expectedAvgDisplay').innerText='¥0.00 /g'; document.getElementById('expectedTotalCost').innerText='新总成本: ¥0.00'; document.getElementById('expectedTotalWeight').innerText='新总克重: 0.0000g'; return; } let amount=parseFloat(document.getElementById('futureAmount').value)||0; let weight=parseFloat(document.getElementById('futureWeight').value)||0; if(amount>0 && weight===0) weight=amount/futurePrice; else if(weight>0 && amount===0) amount=weight*futurePrice; if(amount<=0 || weight<=0){ document.getElementById('expectedAvgDisplay').innerText='请输入金额或克数'; return; } const newCost=currentCost+amount; const newWeight=currentWeight+weight; const newAvg=newWeight>0?newCost/newWeight:0; document.getElementById('expectedAvgDisplay').innerHTML=`¥${newAvg.toFixed(2)} /g`; document.getElementById('expectedTotalCost').innerText=`新总成本: ¥${newCost.toFixed(2)}`; document.getElementById('expectedTotalWeight').innerText=`新总克重: ${newWeight.toFixed(4)}g`; }
 function syncFutureAmountFromWeight(){ const price=parseFloat(document.getElementById('futurePrice').value); const weight=parseFloat(document.getElementById('futureWeight').value); if(price && weight && !isNaN(price) && !isNaN(weight)){ const amount=price*weight; document.getElementById('futureAmount').value=amount.toFixed(2); calculateExpectedAverage(); } else calculateExpectedAverage(); }
 function syncFutureWeightFromAmount(){ const price=parseFloat(document.getElementById('futurePrice').value); const amount=parseFloat(document.getElementById('futureAmount').value); if(price && amount && price>0){ const weight=amount/price; document.getElementById('futureWeight').value=weight.toFixed(4); calculateExpectedAverage(); } else calculateExpectedAverage(); }
 function syncFutureAmountWeight(){ const price=parseFloat(document.getElementById('futurePrice').value); const weight=parseFloat(document.getElementById('futureWeight').value); const amount=parseFloat(document.getElementById('futureAmount').value); if(price && weight && !isNaN(price) && !isNaN(weight) && weight>0){ const newAmt=price*weight; document.getElementById('futureAmount').value=newAmt.toFixed(2); } else if(price && amount && !isNaN(price) && !isNaN(amount) && amount>0){ const newWgt=amount/price; document.getElementById('futureWeight').value=newWgt.toFixed(4); } calculateExpectedAverage(); }
 function updatePositionProfits(){ if(document.getElementById('portfolioModal').style.display==='flex') renderModalTable(); }
-async function handleImageUpload(file){ const overlay=document.getElementById('loadingOverlay'); overlay.style.display='flex'; try{ const {data:{text}}=await Tesseract.recognize(file,'chi_sim+eng',{logger:m=>{if(m.status==='recognizing text'){document.getElementById('loadingText').innerText=`识别中 ${(m.progress*100).toFixed(0)}%`; const fill=document.getElementById('progressFill'); if(fill) fill.style.width=`${m.progress*100}%`; }}}); const parsed=parseOCRText(text); if(parsed.length) holdings=parsed; saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); alert(`✅ 成功识别 ${parsed.length} 条记录！`); }catch(e){ alert("识别失败，请手动输入。"); }finally{ overlay.style.display='none'; } }
+async function handleImageUpload(file){ const overlay=document.getElementById('loadingOverlay'); overlay.style.display='flex'; try{ const {data:{text}}=await Tesseract.recognize(file,'chi_sim+eng',{logger:m=>{if(m.status==='recognizing text'){document.getElementById('loadingText').innerText=`识别中 ${(m.progress*100).toFixed(0)}%`; const fill=document.getElementById('progressFill'); if(fill) fill.style.width=`${m.progress*100}%`; }}}); const parsed=parseOCRText(text); if(parsed.length) holdings=parsed; saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); calculateExpectedAverage(); resetPortfolioName(); alert(`✅ 成功识别 ${parsed.length} 条记录！`); }catch(e){ alert("识别失败，请手动输入。"); }finally{ overlay.style.display='none'; } }
 function parseOCRText(text){ const lines=text.split('\n'), res=[]; let curDate=new Date().toISOString().split('T')[0]; for(let line of lines){ const dMatch=line.match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/); if(dMatch) curDate=dMatch[1].replace(/\//g,'-'); const wMatch=line.match(/(\d+\.\d{3,4})/); let weight=wMatch?parseFloat(wMatch[1]):null; const pMatches=line.match(/(\d+\.\d{2})/g); let price=null; if(pMatches) for(let p of pMatches){ let v=parseFloat(p); if(v>100 && v<5000){ price=v; break; } } if(weight && price) res.push({date:curDate,weight,price}); } return res; }
 function cancelOCR(){ const overlay=document.getElementById('loadingOverlay'); if(overlay) overlay.style.display='none'; if(loadTimeout) clearTimeout(loadTimeout); }
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]||m)); }
