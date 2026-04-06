@@ -3,35 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>黄金持仓助手 (专业策略版)</title>
+<title>黄金持仓助手 · 暖色调策略版</title>
 <script src='https://cdn.staticfile.org/tesseract.js/5.0.5/tesseract.min.js'></script>
 <style>
+/* ----- 暖色调主题变量 ----- */
 :root {
-  /* Gray Color Palette - 灰色主题 */
-  --primary-color: #6B7280; /* 主色调 - 灰色 */
-  --primary-light: #E5E7EB; /* 主色调浅色 */
-  --primary-dark: #4B5563; /* 主色调深色 */
-  --accent-color: #9CA3AF; /* 强调色 - 中灰色 */
-  --success-color: #10B981; /* 成功色 - 绿色 */
-  --warning-color: #F59E0B; /* 警告色 - 琥珀 */
-  --danger-color: #EF4444; /* 危险色 - 红 */
-  --info-color: #3B82F6; /* 信息色 - 蓝 */
-  --text-primary: #1F2937;
-  --text-secondary: #6B7280;
-  --text-disabled: #9CA3AF;
-  --bg-color: #F3F4F6; /* 页面背景 - 浅灰 */
-  --card-bg: #FFFFFF; /* 卡片背景 - 白 */
-  --border-color: #E5E7EB; /* 边框色 */
-  --border-radius: 8px;
-  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --header-height: 60px;
-  /* Profit/Loss Colors */
-  --profit-color: var(--danger-color); /* 红色表示盈利 */
-  --loss-color: var(--success-color); /* 绿色表示亏损 */
+  /* 主色调 - 暖杏橙 */
+  --primary-color: #D98C5F;
+  --primary-light: #FDF0E6;
+  --primary-dark: #B46F45;
+  --accent-color: #F0CFB0;
+  /* 功能色 - 柔和版本 */
+  --success-color: #2E7D5E;
+  --warning-color: #E67E22;
+  --danger-color: #C23B22;
+  --info-color: #5D8AA8;
+  /* 文字颜色 - 暖褐灰 */
+  --text-primary: #4A3525;
+  --text-secondary: #8B694A;
+  --text-disabled: #C2A288;
+  /* 背景与卡片 */
+  --bg-color: #FFF7EF;
+  --card-bg: #FFFFFF;
+  --border-color: #F0E0D0;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  /* 盈亏色沿用原逻辑 (红涨绿跌) */
+  --profit-color: var(--danger-color);
+  --loss-color: var(--success-color);
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
   background-color: var(--bg-color);
@@ -41,32 +46,37 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
 }
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 16px;
   box-sizing: border-box;
 }
+
+/* 头部卡片 */
 header {
   text-align: center;
   margin-bottom: 20px;
-  position: relative;
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 16px 20px;
+  border: 1px solid var(--border-color);
 }
+
 h1 {
   color: var(--primary-color);
   margin-bottom: 5px;
   font-size: 1.5rem;
   font-weight: 600;
 }
+
 p.subtitle {
   color: var(--text-secondary);
   font-size: 0.8rem;
 }
-/* Header Actions */
+
 .header-actions {
   position: absolute;
   top: 16px;
@@ -74,25 +84,28 @@ p.subtitle {
   display: flex;
   gap: 10px;
 }
-/* Card */
+
+/* 卡片通用样式 */
 .card {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
   border: 1px solid var(--border-color);
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 8px;
   flex-wrap: wrap;
   gap: 8px;
 }
+
 .card-title {
   font-weight: 600;
   font-size: 1rem;
@@ -101,7 +114,8 @@ p.subtitle {
   gap: 6px;
   color: var(--text-primary);
 }
-/* Button Styles */
+
+/* 按钮 - 暖色调 */
 .btn {
   padding: 6px 12px;
   border-radius: var(--border-radius);
@@ -117,62 +131,71 @@ p.subtitle {
   background-color: white;
   color: var(--text-secondary);
 }
-.btn:focus {
-  outline: none;
-}
+
 .btn-primary {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
 }
+
 .btn-primary:hover {
   background-color: var(--primary-dark);
   border-color: var(--primary-dark);
 }
+
 .btn-outline {
   background-color: white;
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
 }
+
 .btn-outline:hover {
   background-color: var(--primary-light);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
+
 .btn-danger {
-  background-color: #FEF2F2;
+  background-color: #FEF3F0;
   color: var(--danger-color);
-  border-color: #FEE2E2;
+  border-color: #FADCD2;
   padding: 4px 8px;
   font-size: 0.75rem;
 }
+
 .btn-danger:hover {
-  background-color: #FEE2E2;
-  color: #DC2626;
+  background-color: #FCE6DF;
+  color: #B0321A;
 }
+
 .btn-sm {
   padding: 4px 10px;
   font-size: 0.75rem;
 }
+
 .btn-save-position {
   background-color: var(--success-color);
   color: white;
   font-weight: bold;
   border-color: var(--success-color);
 }
+
 .btn-save-position:hover {
-  background-color: #059669;
+  background-color: #236B4F;
 }
-/* Table */
+
+/* 表格区域 */
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   min-width: 500px;
 }
+
 th {
   background-color: var(--primary-light);
   color: var(--text-primary);
@@ -180,115 +203,115 @@ th {
   text-align: left;
   padding: 10px 8px;
   font-size: 0.75rem;
-  text-transform: uppercase;
   border-bottom: 1px solid var(--border-color);
 }
+
 td {
   padding: 8px 8px;
   border-bottom: 1px solid var(--border-color);
 }
-input.editable-input {
-  width: 100%;
-  padding: 6px 6px;
-  border: 1px solid transparent;
+
+/* 输入框强制白色底色 */
+input.editable-input,
+.form-input,
+select.form-input,
+#marketPrice {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  background: transparent;
+  padding: 8px 10px;
   font-size: 0.85rem;
-  color: var(--text-primary);
   font-family: inherit;
+  transition: all 0.2s;
+  width: 100%;
   box-sizing: border-box;
 }
-input.editable-input:hover {
-  background-color: var(--primary-light);
+
+input.editable-input:hover,
+.form-input:hover {
+  background-color: #FFFFFF;
   border-color: var(--primary-color);
 }
-input.editable-input:focus {
-  background: white;
-  border-color: var(--primary-color);
+
+input.editable-input:focus,
+.form-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(217, 140, 95, 0.2);
 }
+
 .total-row td {
   font-weight: bold;
   background-color: var(--primary-light);
   border-top: 2px solid var(--primary-color);
   color: var(--text-primary);
 }
-/* Dashboard */
+
+/* 实时概况卡片 - 修复溢出问题 */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
 }
+
 .stat-box {
   background: var(--card-bg);
-  padding: 12px;
+  padding: 12px 8px;
   border-radius: var(--border-radius);
   text-align: center;
   border: 1px solid var(--border-color);
   box-shadow: var(--box-shadow);
+  overflow: hidden;
+  word-break: break-word;
 }
+
 .stat-label {
   font-size: 0.7rem;
   color: var(--text-secondary);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
+
 .stat-value {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.3;
 }
+
 .stat-value.highlight {
   color: var(--primary-color);
 }
-/* Calculator Form - Responsive Grid */
-.calculator-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+
+/* 参考市价输入框在卡片内自适应 */
+#marketPrice {
   width: 100%;
-}
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-.form-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-bottom: 4px;
-  color: var(--text-secondary);
-}
-.form-input {
-  padding: 8px 10px;
+  min-width: 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 4px 0;
+  background: white;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  font-size: 0.85rem;
-  font-family: inherit;
-  background: white;
 }
-.form-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.2);
-}
-.form-input[readonly] {
-  background-color: var(--primary-light);
-  color: var(--text-primary);
-}
-/* Strategy Tabs */
+
+/* 策略选项卡暖色调 */
 .strategy-tabs {
   display: flex;
-  gap: 4px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 18px;
   background: var(--primary-light);
-  padding: 4px;
+  padding: 5px;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   flex-wrap: wrap;
 }
+
 .strategy-tab {
   flex: 1;
-  min-width: 60px;
+  min-width: 70px;
   padding: 8px 4px;
   text-align: center;
   background: transparent;
@@ -300,23 +323,48 @@ input.editable-input:focus {
   transition: all 0.2s;
   color: var(--text-secondary);
 }
+
 .strategy-tab.active {
   background: white;
   border-color: var(--border-color);
   color: var(--primary-color);
   font-weight: bold;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
+
 .strategy-tab:hover:not(.active) {
-  background: rgba(255,255,255,0.5);
-  color: var(--primary-color);
+  background: rgba(255,255,240,0.7);
+  color: var(--primary-dark);
 }
-/* Profit Grid */
+
+/* 表单区域 */
+.calculator-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+
+/* 盈利网格 */
 .profit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
   margin-top: 12px;
 }
+
 .profit-item {
   background: var(--card-bg);
   padding: 10px;
@@ -324,25 +372,31 @@ input.editable-input:focus {
   text-align: center;
   border: 1px solid var(--border-color);
 }
+
 .profit-label {
   font-size: 0.7rem;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
+
 .profit-val {
   font-size: 1rem;
   font-weight: 700;
 }
+
 .text-up {
   color: var(--profit-color);
 }
+
 .text-down {
   color: var(--loss-color);
 }
+
 .text-neutral {
   color: var(--text-secondary);
 }
-/* Result Box */
+
+/* 结果框暖色 */
 .result-box {
   margin-top: 16px;
   padding: 12px;
@@ -352,114 +406,25 @@ input.editable-input:focus {
   line-height: 1.5;
   border: 1px solid;
 }
+
 .result-box.success {
-  background-color: #FEFCE8;
-  border-color: #FDE047;
-  color: #713F12;
+  background-color: #FEF7E8;
+  border-color: #F3DEBA;
+  color: #5E3A1C;
 }
+
 .result-box.error {
-  background-color: #FEF2F2;
-  border-color: #FEE2E2;
-  color: #991B1B;
+  background-color: #FEF2EF;
+  border-color: #FADCD2;
+  color: #9C3B24;
 }
-.result-title {
-  font-weight: bold;
-  margin-bottom: 4px;
-  display: block;
-  font-size: 0.9rem;
-}
+
 .result-highlight {
   font-weight: bold;
   color: var(--primary-color);
 }
-#fileInput {
-  display: none;
-}
-/* Loading Overlay */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(243, 244, 246, 0.95);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  flex-direction: column;
-  text-align: center;
-  backdrop-filter: blur(2px);
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #E5E7EB;
-  border-top: 4px solid var(--primary-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 12px;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.progress-bar {
-  width: 260px;
-  height: 6px;
-  background: #E5E7EB;
-  border-radius: 3px;
-  overflow: hidden;
-  margin: 8px 0;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--primary-color);
-  width: 0%;
-  transition: width 0.3s;
-}
-.loading-status {
-  font-size: 0.85rem;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-.loading-hint {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  max-width: 280px;
-  line-height: 1.4;
-}
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-disabled);
-  border: 2px dashed var(--border-color);
-  border-radius: var(--border-radius);
-  margin-top: 16px;
-}
-.refresh-hint {
-  font-size: 0.7rem;
-  color: var(--text-disabled);
-  text-align: right;
-  margin-top: 4px;
-}
-/* Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 2000;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(2px);
-}
-/* My Portfolio Modal - Responsive 无滚动条优化 */
+
+/* 模态框暖调 */
 .modal-content {
   background: white;
   width: 90vw;
@@ -468,14 +433,10 @@ input.editable-input:focus {
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
   overflow: hidden;
 }
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+
 .modal-header {
   padding: 14px 20px;
   border-bottom: 1px solid var(--border-color);
@@ -483,51 +444,16 @@ input.editable-input:focus {
   justify-content: space-between;
   align-items: center;
   background: var(--primary-light);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
   flex-shrink: 0;
 }
-.modal-body {
-  padding: 16px;
-  overflow-y: auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+
 .modal-footer {
   padding: 12px 20px;
   border-top: 1px solid var(--border-color);
   text-align: right;
   background: var(--primary-light);
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-  flex-shrink: 0;
 }
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-disabled);
-}
-.close-modal:hover {
-  color: var(--text-primary);
-}
-/* Data Status */
-.data-status {
-  font-size: 0.7rem;
-  color: var(--success-color);
-  margin-left: 8px;
-  display: none;
-}
-.data-status.visible {
-  display: inline-block;
-}
-/* Position List - 自适应优化 */
-.position-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex-grow: 1;
-}
+
 .position-item {
   display: flex;
   justify-content: space-between;
@@ -541,42 +467,12 @@ input.editable-input:focus {
   flex-wrap: wrap;
   gap: 8px;
 }
+
 .position-item:hover {
   border-color: var(--primary-color);
   background: var(--primary-light);
 }
-.position-info {
-  flex: 2;
-  min-width: 140px;
-}
-.position-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-}
-.position-meta {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-}
-.position-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  min-width: 160px;
-}
-.position-stat {
-  text-align: center;
-}
-.position-stat-val {
-  font-weight: bold;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-}
-.position-stat-label {
-  font-size: 0.65rem;
-  color: var(--text-secondary);
-}
+
 .btn-load {
   background: var(--primary-color);
   color: white;
@@ -586,9 +482,11 @@ input.editable-input:focus {
   font-size: 0.75rem;
   cursor: pointer;
 }
+
 .btn-load:hover {
   background: var(--primary-dark);
 }
+
 .btn-delete-pos {
   background: transparent;
   color: var(--danger-color);
@@ -598,105 +496,69 @@ input.editable-input:focus {
   font-size: 0.7rem;
   cursor: pointer;
 }
-.btn-delete-pos:hover {
-  background: var(--danger-color);
-  color: white;
-}
-.save-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--border-color);
-}
-.save-hint {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-}
-/* Strategy Output - 无滚动条优化 */
-#strategyOutput {
-  margin-top: 16px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-#strategyOutput table {
-  min-width: 500px;
-  width: 100%;
-}
-#resultSummary {
-  padding: 12px;
-  background: var(--primary-light);
+
+/* 其他辅助元素 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-disabled);
+  border: 2px dashed var(--border-color);
   border-radius: var(--border-radius);
-  margin-top: 12px;
-  font-size: 0.8rem;
-  color: var(--text-primary);
 }
-/* Special Cards */
-.card-profit {
-  border-left: 4px solid var(--success-color);
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 247, 239, 0.96);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
 }
-.card-strategy {
-  border-left: 4px solid var(--info-color);
+
+.spinner {
+  border: 4px solid #F0E0D0;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
 }
-/* 保存仓位模态框 */
-#saveNameModal .modal-content {
-  max-width: 380px;
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-/* 响应式优化 */
+
+/* 响应式优化 (溢出修复辅助) */
 @media (max-width: 768px) {
-  .container {
-    padding: 12px;
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .stat-value {
+    font-size: 0.9rem;
   }
   .header-actions {
     position: static;
     justify-content: center;
     margin-top: 10px;
   }
-  header {
-    text-align: center;
-    padding: 12px;
-  }
-  h1 {
-    font-size: 1.3rem;
-  }
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .btn-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .position-stats {
-    justify-content: flex-start;
-  }
-  .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .profit-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .strategy-tab {
-    min-width: 50px;
-    font-size: 0.7rem;
-  }
 }
+
 @media (max-width: 480px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
   .stat-value {
-    font-size: 1rem;
-  }
-  .profit-val {
-    font-size: 0.85rem;
-  }
-  .position-item {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .position-stats {
-    justify-content: space-between;
+    font-size: 0.9rem;
   }
   .calculator-form {
     grid-template-columns: 1fr;
@@ -709,24 +571,19 @@ input.editable-input:focus {
 <div class="spinner"></div>
 <div class="loading-status" id="loadingText">正在初始化 OCR 引擎...</div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="loading-hint" id="loadingHint">首次运行需下载语言包 (约 20MB)<br>若超过 15 秒无反应，建议点击下方取消并使用手动输入</div>
-<button onclick="cancelOCR()" style="margin-top:16px; padding:6px 18px; background:#fff; border:1px solid #ccc; border-radius:6px; cursor:pointer; color:#666; font-size:0.8rem;">取消并手动输入</button>
+<div class="loading-hint" id="loadingHint">首次运行需下载语言包 (约 20MB)<br>若超时建议取消并使用手动输入</div>
+<button onclick="cancelOCR()" style="margin-top:16px; padding:6px 18px; background:#fff; border:1px solid #D9C2A8; border-radius:30px; cursor:pointer; color:#8B694A;">取消并手动输入</button>
 </div>
 <!-- 我的持仓模态框 -->
 <div class="modal-overlay" id="portfolioModal">
 <div class="modal-content">
 <div class="modal-header">
 <h2 style="margin:0; font-size:1.1rem; color:var(--text-primary);">🪙 我的持仓仓库</h2>
-<button class="close-modal" onclick="toggleModal(false)">&times;</button>
+<button class="close-modal" onclick="toggleModal(false)" style="background:none; border:none; font-size:1.6rem; cursor:pointer;">&times;</button>
 </div>
-<div class="modal-body">
-<div id="positionListContainer" class="position-list">
-<!-- 动态生成仓位列表 -->
-</div>
-<div id="modalEmpty" style="text-align:center; padding: 30px 20px; color: var(--text-disabled); display:none;">
-暂无保存的仓位记录<br>
-<span style="font-size:0.75rem">请在主界面编辑好数据后，点击"💾 保存当前持仓"</span>
-</div>
+<div class="modal-body" style="padding:16px; overflow-y:auto;">
+<div id="positionListContainer" class="position-list"></div>
+<div id="modalEmpty" style="text-align:center; padding: 30px 20px; color: var(--text-disabled); display:none;">暂无保存的仓位记录<br><span style="font-size:0.75rem">请在主界面编辑数据后，点击"💾 保存当前持仓"</span></div>
 </div>
 <div class="modal-footer">
 <button class="btn btn-outline" onclick="toggleModal(false)">关闭</button>
@@ -738,7 +595,7 @@ input.editable-input:focus {
 <div class="modal-content" style="max-width: 380px;">
 <div class="modal-header">
 <h2 style="margin:0; font-size:1rem;">💾 保存当前持仓</h2>
-<button class="close-modal" onclick="toggleSaveModal(false)">&times;</button>
+<button class="close-modal" onclick="toggleSaveModal(false)" style="background:none; border:none; font-size:1.4rem;">&times;</button>
 </div>
 <div class="modal-body">
 <div class="form-group">
@@ -755,13 +612,11 @@ input.editable-input:focus {
 </div>
 <div class="container">
 <header>
-<h1>🏆 黄金持仓助手 (专业策略版)</h1>
-<p class="subtitle">支持图片识别 · 多仓位管理 · <strong>智能策略中心</strong></p>
+<h1>🏆 黄金持仓助手 · 暖色调策略版</h1>
+<p class="subtitle">多维度策略 · 图片识别 · 智能回本测算</p>
 <div class="header-actions">
-<span id="saveStatus" class="data-status">💾 已自动保存</span>
-<button class="btn btn-outline btn-sm" onclick="toggleModal(true)">
-🪙 我的持仓
-</button>
+<span id="saveStatus" class="data-status" style="color: var(--success-color);">💾 已自动保存</span>
+<button class="btn btn-outline btn-sm" onclick="toggleModal(true)">🪙 我的持仓</button>
 </div>
 </header>
 <div class="card">
@@ -769,45 +624,20 @@ input.editable-input:focus {
 <div class="card-title">📷 持仓明细编辑</div>
 <div class="btn-group">
 <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(this)">
-<button class="btn btn-outline" onclick="document.getElementById('fileInput').click()">
-📤 上传图片识别
-</button>
-<button class="btn btn-primary" onclick="addRow()">
-➕ 手动新增
-</button>
+<button class="btn btn-outline" onclick="document.getElementById('fileInput').click()">📤 上传图片识别</button>
+<button class="btn btn-primary" onclick="addRow()">➕ 手动新增</button>
 </div>
 </div>
-<div id="emptyState" class="empty-state">
-<p>暂无数据</p>
-<p style="font-size: 0.85rem; margin-top:4px;">💡 建议：直接点击"手动新增"输入数据最快最准<br>或点击"上传图片"尝试自动识别 (需联网)<br><strong>数据会自动保存，刷新页面无需重新输入</strong></p>
-</div>
+<div id="emptyState" class="empty-state"><p>暂无数据</p><p style="font-size:0.85rem;">💡 点击"手动新增"开始录入，或上传图片识别</p></div>
 <div class="table-responsive" id="tableContainer" style="display:none;">
 <table id="holdingsTable">
-<thead>
-<tr>
-<th style="width: 15%">日期</th>
-<th style="width: 20%">克重 (g)</th>
-<th style="width: 25%">单价 (元/g)</th>
-<th style="width: 25%">总金额 (元)</th>
-<th style="width: 15%">操作</th>
-</tr>
-</thead>
+<thead><tr><th>日期</th><th>克重 (g)</th><th>单价 (元/g)</th><th>总金额 (元)</th><th>操作</th></tr></thead>
 <tbody id="tableBody"></tbody>
-<tfoot>
-<tr class="total-row">
-<td>合计</td>
-<td id="sumWeight">0.0000</td>
-<td>-</td>
-<td id="sumCost">0.00</td>
-<td></td>
-</tr>
-</tfoot>
+<tfoot><tr class="total-row"><td>合计</td><td id="sumWeight">0.0000</td><td>-</td><td id="sumCost">0.00</td><td></td></tr></tfoot>
 </table>
-<div class="save-footer">
-<span class="save-hint">💡 输入完成后按回车或点击空白处，数据将自动保存并更新计算</span>
-<button class="btn btn-save-position" onclick="openSaveModal()">
-💾 保存当前持仓
-</button>
+<div class="save-footer" style="display:flex; justify-content:flex-end; gap:12px; margin-top:12px;">
+<span class="save-hint" style="font-size:0.7rem; color:var(--text-secondary);">💡 数据自动保存，刷新页面不丢失</span>
+<button class="btn btn-save-position" onclick="openSaveModal()">💾 保存当前持仓</button>
 </div>
 </div>
 </div>
@@ -817,17 +647,12 @@ input.editable-input:focus {
 <div class="stat-box"><div class="stat-label">总持仓克数</div><div class="stat-value" id="dashWeight">0.0000 g</div></div>
 <div class="stat-box"><div class="stat-label">总投入成本</div><div class="stat-value" id="dashCost">¥0.00</div></div>
 <div class="stat-box"><div class="stat-label">当前持仓均价</div><div class="stat-value highlight" id="dashAvgPrice">¥0.00</div></div>
-<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; border:none; background:transparent; font-weight:bold; font-size:1.2rem; color:var(--text-secondary); padding:0;" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
+<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; font-weight:bold; font-size:1rem;" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
 </div>
 </div>
 <div class="card card-strategy">
-<div class="card-header">
-<div class="card-title">🎯 智能持仓策略中心</div>
-</div>
-<div class="form-group">
-<label class="form-label">目标持仓均价 (元/g)</label>
-<input type="number" id="targetAvg" class="form-input" placeholder="例如：1050" oninput="calculateStrategy()">
-</div>
+<div class="card-header"><div class="card-title">🎯 智能持仓策略中心</div></div>
+<div class="form-group"><label class="form-label">目标持仓均价 (元/g)</label><input type="number" id="targetAvg" class="form-input" placeholder="例如：550" oninput="calculateStrategy()"></div>
 <div class="strategy-tabs">
 <div class="strategy-tab active" id="tabA" onclick="switchStrategyMode('A')">A: 固定克数</div>
 <div class="strategy-tab" id="tabB" onclick="switchStrategyMode('B')">B: 固定金额</div>
@@ -835,877 +660,60 @@ input.editable-input:focus {
 <div class="strategy-tab" id="tabD" onclick="switchStrategyMode('D')">D: 金字塔建仓</div>
 <div class="strategy-tab" id="tabE" onclick="switchStrategyMode('E')">E: 回本测算</div>
 </div>
-<div id="modeAInputs" class="calculator-form">
-<div class="form-group">
-<label class="form-label">计划买入克数 (g)</label>
-<input type="number" id="inputWeightA" class="form-input" placeholder="例如：1" oninput="calculateStrategy()">
-</div>
-<div class="form-group">
-<label class="form-label">所需总金额 (计算结果)</label>
-<input type="text" id="resultTotalA" class="form-input" readonly placeholder="¥0.00">
-</div>
-<div class="form-group">
-<label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary-color);">
-</div>
-</div>
-<div id="modeBInputs" class="calculator-form" style="display:none;">
-<div class="form-group">
-<label class="form-label">计划投入总金额 (元)</label>
-<input type="number" id="inputMoneyB" class="form-input" placeholder="例如：2000" oninput="calculateStrategy()">
-</div>
-<div class="form-group">
-<label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary-color);">
-</div>
-<div class="form-group">
-<label class="form-label">预计买入克数</label>
-<input type="text" id="resultWeightB" class="form-input" readonly placeholder="0.0000 g">
-</div>
-</div>
-<div id="modeCInputs" class="calculator-form" style="display:none;">
-<div class="form-group">
-<label class="form-label">网格间距 (%)</label>
-<input type="number" id="gridStep" class="form-input" value="2" step="0.5" oninput="runStrategies()">
-<small style="color:var(--text-secondary)">每跌 2% 买入一档</small>
-</div>
-<div class="form-group">
-<label class="form-label">基础单笔克数 (g)</label>
-<input type="number" id="gridBaseWeight" class="form-input" value="1" step="0.1" oninput="runStrategies()">
-</div>
-<div class="form-group">
-<label class="form-label">网格层数</label>
-<input type="number" id="gridLayers" class="form-input" value="5" step="1" oninput="runStrategies()">
-</div>
-<div class="form-group">
-<label class="form-label">是否倍增买入？</label>
-<select id="gridMultiplier" class="form-input" onchange="runStrategies()">
-<option value="1">否 (固定克数)</option>
-<option value="2">是 (1, 2, 4, 8...)</option>
-</select>
-</div>
-</div>
-<div id="modeDInputs" class="calculator-form" style="display:none;">
-<div class="form-group">
-<label class="form-label">总预备资金 (元)</label>
-<input type="number" id="pyraTotalMoney" class="form-input" value="10000" step="1000" oninput="runStrategies()">
-</div>
-<div class="form-group">
-<label class="form-label">每层跌幅阈值 (%)</label>
-<input type="number" id="pyraStep" class="form-input" value="3" step="0.5" oninput="runStrategies()">
-</div>
-<div class="form-group">
-<label class="form-label">资金分配模式</label>
-<select id="pyraMode" class="form-input" onchange="runStrategies()">
-<option value="equal">等额分配 (25%, 25%...)</option>
-<option value="aggressive">激进型 (10%, 20%, 30%, 40%)</option>
-<option value="fibonacci">斐波那契 (1, 2, 3, 5...)</option>
-</select>
-</div>
-</div>
-<div id="modeEInputs" class="calculator-form" style="display:none;">
-<div class="form-group">
-<label class="form-label">预期反弹幅度 (%)</label>
-<input type="number" id="beRebound" class="form-input" value="5" step="0.5" oninput="runStrategies()">
-<small style="color:var(--text-secondary)">假设金价从当前位置反弹多少？</small>
-</div>
-<div class="form-group">
-<label class="form-label">手续费率 (%)</label>
-<input type="number" id="beFee" class="form-input" value="0.4" step="0.01" oninput="runStrategies()">
-</div>
-</div>
-<div id="strategyOutput" class="table-responsive">
-<table id="resultTable">
-<thead>
-<tr>
-<th>层级/情景</th>
-<th>触发价格</th>
-<th>建议操作</th>
-<th>投入资金</th>
-<th>操作后均价</th>
-</tr>
-</thead>
-<tbody id="resultBody"></tbody>
-</table>
-<div id="resultSummary" style="display:none;"></div>
-</div>
-<div id="strategyResult" class="result-box">
-<span class="result-title" id="resultTitle"></span>
-<div id="resultMessage"></div>
-</div>
+<div id="modeAInputs" class="calculator-form"><div class="form-group"><label class="form-label">计划买入克数 (g)</label><input type="number" id="inputWeightA" class="form-input" placeholder="例如：1" oninput="calculateStrategy()"></div><div class="form-group"><label class="form-label">所需总金额 (计算结果)</label><input type="text" id="resultTotalA" class="form-input" readonly placeholder="¥0.00"></div><div class="form-group"><label class="form-label">🎯 目标购入单价 (限价)</label><input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary-color);"></div></div>
+<div id="modeBInputs" class="calculator-form" style="display:none;"><div class="form-group"><label class="form-label">计划投入总金额 (元)</label><input type="number" id="inputMoneyB" class="form-input" placeholder="例如：2000" oninput="calculateStrategy()"></div><div class="form-group"><label class="form-label">🎯 目标购入单价 (限价)</label><input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g"></div><div class="form-group"><label class="form-label">预计买入克数</label><input type="text" id="resultWeightB" class="form-input" readonly placeholder="0.0000 g"></div></div>
+<div id="modeCInputs" class="calculator-form" style="display:none;"><div class="form-group"><label class="form-label">网格间距 (%)</label><input type="number" id="gridStep" class="form-input" value="2" step="0.5" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">基础单笔克数 (g)</label><input type="number" id="gridBaseWeight" class="form-input" value="1" step="0.1" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">网格层数</label><input type="number" id="gridLayers" class="form-input" value="5" step="1" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">是否倍增买入？</label><select id="gridMultiplier" class="form-input" onchange="runStrategies()"><option value="1">否 (固定克数)</option><option value="2">是 (1, 2, 4, 8...)</option></select></div></div>
+<div id="modeDInputs" class="calculator-form" style="display:none;"><div class="form-group"><label class="form-label">总预备资金 (元)</label><input type="number" id="pyraTotalMoney" class="form-input" value="10000" step="1000" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">每层跌幅阈值 (%)</label><input type="number" id="pyraStep" class="form-input" value="3" step="0.5" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">资金分配模式</label><select id="pyraMode" class="form-input" onchange="runStrategies()"><option value="equal">等额分配 (25%, 25%...)</option><option value="aggressive">激进型 (10%, 20%, 30%, 40%)</option><option value="fibonacci">斐波那契 (1, 2, 3, 5...)</option></select></div></div>
+<div id="modeEInputs" class="calculator-form" style="display:none;"><div class="form-group"><label class="form-label">预期反弹幅度 (%)</label><input type="number" id="beRebound" class="form-input" value="5" step="0.5" oninput="runStrategies()"></div><div class="form-group"><label class="form-label">手续费率 (%)</label><input type="number" id="beFee" class="form-input" value="0.4" step="0.01" oninput="runStrategies()"></div></div>
+<div id="strategyOutput" class="table-responsive" style="display:none;"><table id="resultTable"><thead><tr><th>层级/情景</th><th>触发价格</th><th>建议操作</th><th>投入资金</th><th>操作后均价</th></tr></thead><tbody id="resultBody"></tbody></table><div id="resultSummary" style="display:none;"></div></div>
+<div id="strategyResult" class="result-box"><span class="result-title" id="resultTitle"></span><div id="resultMessage"></div></div>
 </div>
 <div class="card card-profit">
-<div class="card-header">
-<div class="card-title">💰 累计收益测算</div>
-<div style="font-size:0.7rem; color:var(--text-secondary);">模拟卖出全部持仓，计算净利润</div>
-</div>
-<div class="calculator-form">
-<div class="form-group">
-<label class="form-label">预期售出金价 (元/g)</label>
-<input type="number" id="sellPrice" class="form-input" placeholder="例如：600" oninput="calculateProfit()">
-</div>
-<div class="form-group">
-<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.7rem; color:var(--text-disabled);">(默认 0.4%)</span></label>
-<input type="number" id="feeRate" class="form-input" value="0.4" step="0.01" oninput="calculateProfit()">
-</div>
-</div>
-<div class="profit-grid">
-<div class="profit-item">
-<div class="profit-label">售出总金额</div>
-<div class="profit-val" id="profitGross">¥0.00</div>
-</div>
-<div class="profit-item">
-<div class="profit-label">扣除手续费</div>
-<div class="profit-val text-down" id="profitFee">-¥0.00</div>
-</div>
-<div class="profit-item">
-<div class="profit-label">实际到手</div>
-<div class="profit-val" id="profitNet">¥0.00</div>
-</div>
-<div class="profit-item">
-<div class="profit-label">持仓成本</div>
-<div class="profit-val" id="profitCost">¥0.00</div>
-</div>
-<div class="profit-item" style="grid-column: span 2; background: var(--primary-light); border-color: var(--border-color);">
-<div class="profit-label">累计收益 (元)</div>
-<div class="profit-val" id="profitValue">¥0.00</div>
-<div class="profit-label" style="margin-top:4px; font-size:0.7rem;" id="profitPercent">收益率 0.00%</div>
-</div>
-</div>
+<div class="card-header"><div class="card-title">💰 累计收益测算</div><div style="font-size:0.7rem;">模拟卖出全部持仓，计算净利润</div></div>
+<div class="calculator-form"><div class="form-group"><label class="form-label">预期售出金价 (元/g)</label><input type="number" id="sellPrice" class="form-input" placeholder="例如：600" oninput="calculateProfit()"></div><div class="form-group"><label class="form-label">手续费率 (%)</label><input type="number" id="feeRate" class="form-input" value="0.4" step="0.01" oninput="calculateProfit()"></div></div>
+<div class="profit-grid"><div class="profit-item"><div class="profit-label">售出总金额</div><div class="profit-val" id="profitGross">¥0.00</div></div><div class="profit-item"><div class="profit-label">扣除手续费</div><div class="profit-val text-down" id="profitFee">-¥0.00</div></div><div class="profit-item"><div class="profit-label">实际到手</div><div class="profit-val" id="profitNet">¥0.00</div></div><div class="profit-item"><div class="profit-label">持仓成本</div><div class="profit-val" id="profitCost">¥0.00</div></div><div class="profit-item" style="grid-column: span 2; background: var(--primary-light);"><div class="profit-label">累计收益 (元)</div><div class="profit-val" id="profitValue">¥0.00</div><div class="profit-label" style="margin-top:4px;" id="profitPercent">收益率 0.00%</div></div></div>
 </div>
 </div>
 <script>
-let holdings = [];
-let savedPositions = [];
-let savedPositionsDetails = [];
+// 核心数据与逻辑 (与原始功能保持一致，仅优化显示)
+let holdings = [], savedPositions = [], savedPositionsDetails = [];
 let currentStrategyMode = 'A';
-let loadTimeout = null;
 const STORAGE_KEY_DATA = 'gold_portfolio_data_v2';
 const STORAGE_KEY_POSITIONS = 'gold_portfolio_positions_v2';
 const STORAGE_KEY_POSITIONS_DETAILS = 'gold_portfolio_positions_details_v2';
 
-window.onload = function() {
-  loadData(); 
-  loadPositions();
-  loadPositionsDetails();
-  renderTable();
-  updateDashboard();
-  switchStrategyMode('A');
-};
-
-function saveData() {
-  try {
-    localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(holdings));
-    showSaveStatus();
-  } catch (e) {
-    console.error("保存失败", e);
-    alert("保存失败：本地存储空间可能已满。");
-  }
-}
-
-function savePositions() {
-  try {
-    localStorage.setItem(STORAGE_KEY_POSITIONS, JSON.stringify(savedPositions));
-  } catch (e) {
-    console.error("保存仓位失败", e);
-  }
-}
-
-function savePositionsDetails() {
-  try {
-    localStorage.setItem(STORAGE_KEY_POSITIONS_DETAILS, JSON.stringify(savedPositionsDetails));
-  } catch (e) {
-    console.error("保存仓位详情失败", e);
-  }
-}
-
-function loadData() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY_DATA);
-    if (stored) {
-      holdings = JSON.parse(stored);
-    }
-  } catch (e) {
-    console.error("加载失败", e);
-    holdings = [];
-  }
-}
-
-function loadPositions() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY_POSITIONS);
-    if (stored) {
-      savedPositions = JSON.parse(stored);
-    }
-  } catch (e) {
-    console.error("加载仓位失败", e);
-    savedPositions = [];
-  }
-}
-
-function loadPositionsDetails() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY_POSITIONS_DETAILS);
-    if (stored) {
-      savedPositionsDetails = JSON.parse(stored);
-    }
-  } catch (e) {
-    console.error("加载仓位详情失败", e);
-    savedPositionsDetails = [];
-  }
-}
-
-function showSaveStatus() {
-  const statusEl = document.getElementById('saveStatus');
-  statusEl.classList.add('visible');
-  setTimeout(() => {
-    statusEl.classList.remove('visible');
-  }, 2000);
-}
-
-function addRow() {
-  holdings.push({ date: new Date().toISOString().split('T')[0], weight: 1.0, price: 0 });
-  saveData();
-  renderTable();
-  updateDashboard();
-  calculateStrategy();
-  calculateProfit();
-  runStrategies();
-  setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
-}
-
-function removeRow(index) {
-  if(confirm('确定删除此记录？')) {
-    holdings.splice(index, 1);
-    saveData();
-    renderTable();
-    updateDashboard();
-    calculateStrategy();
-    calculateProfit();
-    runStrategies();
-  }
-}
-
-function renderTable() {
-  const tbody = document.getElementById('tableBody');
-  const emptyState = document.getElementById('emptyState');
-  const tableContainer = document.getElementById('tableContainer');
-  if (holdings.length === 0) {
-    emptyState.style.display = 'block';
-    tableContainer.style.display = 'none';
-    updateTotals(0, 0);
-    return;
-  }
-  emptyState.style.display = 'none';
-  tableContainer.style.display = 'block';
-  tbody.innerHTML = '';
-  holdings.forEach((item, index) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><input type="date" class="editable-input" value="${item.date}" onchange="triggerGlobalUpdate()"></td>
-      <td><input type="number" step="0.0001" class="editable-input" value="${item.weight}" oninput="updateRowTotal(this, ${index})" onchange="triggerGlobalUpdate()"></td>
-      <td><input type="number" step="0.01" class="editable-input" value="${item.price}" oninput="updateRowTotal(this, ${index})" onchange="triggerGlobalUpdate()"></td>
-      <td style="color:var(--text-secondary);" id="rowTotal-${index}">${((item.weight||0)*(item.price||0)).toFixed(2)}</td>
-      <td><button class="btn btn-danger" onclick="removeRow(${index})">删除</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-  const totalWeight = holdings.reduce((sum, item) => sum + (parseFloat(item.weight) || 0), 0);
-  const totalCost = holdings.reduce((sum, item) => sum + ((parseFloat(item.weight) || 0) * (parseFloat(item.price) || 0)), 0);
-  updateTotals(totalWeight, totalCost);
-}
-
-function renderModalTable() {
-  const container = document.getElementById('positionListContainer');
-  const emptyState = document.getElementById('modalEmpty');
-  
-  if (savedPositions.length === 0) {
-    emptyState.style.display = 'block';
-    container.innerHTML = '';
-    return;
-  }
-  
-  emptyState.style.display = 'none';
-  container.innerHTML = '';
-  
-  const currentMarketPrice = parseFloat(document.getElementById('marketPrice').value) || 0;
-  let totalOverallProfit = 0;
-  
-  savedPositions.forEach((pos, index) => {
-    const avgPrice = pos.totalWeight > 0 ? (pos.totalCost / pos.totalWeight) : 0;
-    let profitValue = '0.00';
-    let profitColor = '#9CA3AF';
-    if (currentMarketPrice > 0) {
-      const currentTotalValue = pos.totalWeight * currentMarketPrice;
-      const profit = currentTotalValue - pos.totalCost;
-      profitValue = profit.toFixed(2);
-      profitColor = profit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)';
-      totalOverallProfit += profit;
-    }
-    
-    const div = document.createElement('div');
-    div.className = 'position-item';
-    div.innerHTML = `
-      <div class="position-info" onclick="loadPosition(${index})">
-        <h3>${escapeHtml(pos.name)}</h3>
-        <div class="position-meta">保存于：${pos.savedAt}</div>
-        <div class="position-meta">市价：${currentMarketPrice > 0 ? '¥' + currentMarketPrice.toFixed(2) : '--'}</div>
-      </div>
-      <div class="position-stats">
-        <div class="position-stat">
-          <div class="position-stat-val">${pos.totalWeight.toFixed(4)} g</div>
-          <div class="position-stat-label">总克重</div>
-        </div>
-        <div class="position-stat">
-          <div class="position-stat-val">¥${pos.totalCost.toFixed(2)}</div>
-          <div class="position-stat-label">总成本</div>
-        </div>
-        <div class="position-stat">
-          <div class="position-stat-val" style="color:var(--primary-color);">¥${avgPrice.toFixed(2)}</div>
-          <div class="position-stat-label">持仓均价</div>
-        </div>
-        <div class="position-stat">
-          <div class="position-stat-val" style="color:${profitColor};">¥${profitValue}</div>
-          <div class="position-stat-label">盈亏</div>
-        </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:6px; flex-shrink: 0;">
-        <button class="btn-load" onclick="loadPosition(${index})">加载</button>
-        <button class="btn-delete-pos" onclick="deletePosition(${index}, event)">删除</button>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-  
-  const totalProfitDiv = document.createElement('div');
-  totalProfitDiv.style.cssText = `
-    margin-top: 16px;
-    padding: 12px;
-    background: var(--primary-light);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    text-align: center;
-  `;
-  
-  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)';
-  totalProfitDiv.innerHTML = `
-    <h3 style="margin: 0 0 8px; color: ${overallProfitColor}; font-size: 1rem;">
-      所有仓位总盈亏：¥${totalOverallProfit.toFixed(2)}
-    </h3>
-    <p style="margin: 0; color: var(--text-secondary); font-size: 0.75rem;">
-      基于当前市价：${currentMarketPrice > 0 ? '¥' + currentMarketPrice.toFixed(2) : '--'}
-    </p>
-  `;
-  
-  container.appendChild(totalProfitDiv);
-}
-
-function deletePosition(index, event) {
-  event.stopPropagation();
-  if(confirm(`确定要删除仓位 "${savedPositions[index].name}" 吗？此操作不可恢复。`)) {
-    savedPositions.splice(index, 1);
-    savedPositionsDetails.splice(index, 1);
-    savePositions();
-    savePositionsDetails();
-    renderModalTable();
-  }
-}
-
-function loadPosition(index) {
-  if(confirm(`确定要加载仓位 "${savedPositions[index].name}" 吗？这将覆盖当前编辑区的数据。`)) {
-    holdings = JSON.parse(JSON.stringify(savedPositionsDetails[index]));
-    saveData();
-    renderTable();
-    updateDashboard();
-    calculateStrategy();
-    calculateProfit();
-    runStrategies();
-    toggleModal(false);
-    alert(`✅ 已成功加载仓位：${savedPositions[index].name}`);
-  }
-}
-
-function toggleModal(show) {
-  const modal = document.getElementById('portfolioModal');
-  if (show) {
-    renderModalTable();
-    modal.style.display = 'flex';
-  } else {
-    modal.style.display = 'none';
-  }
-}
-
-function openSaveModal() {
-  if (holdings.length === 0) {
-    alert("当前没有数据可保存，请先添加持仓记录。");
-    return;
-  }
-  document.getElementById('positionNameInput').value = '';
-  document.getElementById('saveNameModal').style.display = 'flex';
-  document.getElementById('positionNameInput').focus();
-}
-
-function toggleSaveModal(show) {
-  document.getElementById('saveNameModal').style.display = show ? 'flex' : 'none';
-}
-
-function confirmSavePosition() {
-  const name = document.getElementById('positionNameInput').value.trim();
-  if (!name) {
-    alert("请输入仓位名称");
-    return;
-  }
-  const totalWeight = holdings.reduce((sum, item) => sum + (parseFloat(item.weight) || 0), 0);
-  const totalCost = holdings.reduce((sum, item) => sum + ((parseFloat(item.weight) || 0) * (parseFloat(item.price) || 0)), 0);
-  const now = new Date();
-  const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-  const newPosition = {
-    id: Date.now(),
-    name: name,
-    totalWeight: totalWeight,
-    totalCost: totalCost,
-    savedAt: dateStr
-  };
-  savedPositions.unshift(newPosition);
-  savedPositionsDetails.unshift(JSON.parse(JSON.stringify(holdings)));
-  savePositions();
-  savePositionsDetails();
-  toggleSaveModal(false);
-  alert(`✅ 仓位 "${name}" 已成功保存！\n您可以在"我的持仓"中随时查看或加载。`);
-}
-
-function updateRowTotal(input, index) {
-  const row = input.closest('tr');
-  const inputs = row.querySelectorAll('input');
-  const w = parseFloat(inputs[1].value) || 0;
-  const p = parseFloat(inputs[2].value) || 0;
-  const total = w * p;
-  document.getElementById(`rowTotal-${index}`).textContent = total.toFixed(2);
-}
-
-function triggerGlobalUpdate() {
-  const rows = document.getElementById('tableBody').children;
-  for (let i = 0; i < rows.length; i++) {
-    const inputs = rows[i].querySelectorAll('input');
-    holdings[i].date = inputs[0].value;
-    holdings[i].weight = parseFloat(inputs[1].value) || 0;
-    holdings[i].price = parseFloat(inputs[2].value) || 0;
-  }
-  saveData();
-  const totalWeight = holdings.reduce((sum, item) => sum + (parseFloat(item.weight) || 0), 0);
-  const totalCost = holdings.reduce((sum, item) => sum + ((parseFloat(item.weight) || 0) * (parseFloat(item.price) || 0)), 0);
-  updateTotals(totalWeight, totalCost);
-  updateDashboardValues(totalWeight, totalCost);
-  calculateStrategy();
-  calculateProfit();
-  runStrategies();
-}
-
-function updateTotals(w, c) {
-  document.getElementById('sumWeight').textContent = w.toFixed(4);
-  document.getElementById('sumCost').textContent = c.toFixed(2);
-}
-
-function updateDashboardValues(w, c) {
-  const avg = w > 0 ? c / w : 0;
-  document.getElementById('dashWeight').textContent = w.toFixed(4) + ' g';
-  document.getElementById('dashCost').textContent = '¥' + c.toFixed(2);
-  document.getElementById('dashAvgPrice').textContent = '¥' + avg.toFixed(2);
-  return { totalWeight: w, totalCost: c, avgPrice: avg };
-}
-
-function updateDashboard() {
-  const w = holdings.reduce((sum, item) => sum + (parseFloat(item.weight) || 0), 0);
-  const c = holdings.reduce((sum, item) => sum + ((parseFloat(item.weight) || 0) * (parseFloat(item.price) || 0)), 0);
-  return updateDashboardValues(w, c);
-}
-
-function switchStrategyMode(mode) {
-  currentStrategyMode = mode;
-  document.querySelectorAll('.strategy-tab').forEach(tab => tab.classList.remove('active'));
-  document.getElementById(`tab${mode}`).classList.add('active');
-  document.getElementById('modeAInputs').style.display = 'none';
-  document.getElementById('modeBInputs').style.display = 'none';
-  document.getElementById('modeCInputs').style.display = 'none';
-  document.getElementById('modeDInputs').style.display = 'none';
-  document.getElementById('modeEInputs').style.display = 'none';
-  document.getElementById('strategyResult').style.display = 'none';
-  document.getElementById('strategyOutput').style.display = 'none';
-  if (mode === 'A') {
-    document.getElementById('modeAInputs').style.display = 'grid';
-    calculateStrategy();
-  } else if (mode === 'B') {
-    document.getElementById('modeBInputs').style.display = 'grid';
-    calculateStrategy();
-  } else if (mode === 'C') {
-    document.getElementById('modeCInputs').style.display = 'grid';
-    document.getElementById('strategyOutput').style.display = 'block';
-    runStrategies();
-  } else if (mode === 'D') {
-    document.getElementById('modeDInputs').style.display = 'grid';
-    document.getElementById('strategyOutput').style.display = 'block';
-    runStrategies();
-  } else if (mode === 'E') {
-    document.getElementById('modeEInputs').style.display = 'grid';
-    document.getElementById('strategyOutput').style.display = 'block';
-    runStrategies();
-  }
-}
-
-function calculateStrategy() {
-  if (currentStrategyMode !== 'A' && currentStrategyMode !== 'B') return;
-  const stats = updateDashboard();
-  const { totalWeight: W, totalCost: C } = stats;
-  const targetAvg = parseFloat(document.getElementById('targetAvg').value);
-  const resultBox = document.getElementById('strategyResult');
-  const resultTitle = document.getElementById('resultTitle');
-  const resultMessage = document.getElementById('resultMessage');
-  resultBox.className = 'result-box';
-  document.getElementById('resultTotalA').value = '';
-  document.getElementById('resultPriceA').value = '';
-  document.getElementById('resultPriceB').value = '';
-  document.getElementById('resultWeightB').value = '';
-  if (!targetAvg || W === 0) { resultBox.style.display = 'none'; return; }
-  let scenario = '';
-  let calculatedPrice = 0;
-  let isValid = true;
-  if (currentStrategyMode === 'A') {
-    const w = parseFloat(document.getElementById('inputWeightA').value);
-    if (!w || w <= 0) { document.getElementById('resultTotalA').value = '-'; document.getElementById('resultPriceA').value = '-'; resultBox.style.display = 'none'; return; }
-    const requiredTotal = (targetAvg * (W + w)) - C;
-    calculatedPrice = requiredTotal / w;
-    if (requiredTotal <= 0 || calculatedPrice <= 0) { isValid = false; document.getElementById('resultTotalA').value = '无法达成'; document.getElementById('resultPriceA').value = '-'; }
-    else { document.getElementById('resultTotalA').value = '¥' + requiredTotal.toFixed(2); document.getElementById('resultPriceA').value = '¥' + calculatedPrice.toFixed(2) + '/g'; }
-    scenario = `买入 ${w}g`;
-  } else {
-    const M = parseFloat(document.getElementById('inputMoneyB').value);
-    if (!M || M <= 0) { document.getElementById('resultPriceB').value = '-'; document.getElementById('resultWeightB').value = '-'; resultBox.style.display = 'none'; return; }
-    const denominator = C + M - (targetAvg * W);
-    if (denominator <= 0) { isValid = false; document.getElementById('resultPriceB').value = '无法达成'; document.getElementById('resultWeightB').value = '-'; }
-    else { calculatedPrice = (targetAvg * M) / denominator; const buyableWeight = M / calculatedPrice; document.getElementById('resultPriceB').value = '¥' + calculatedPrice.toFixed(2) + '/g'; document.getElementById('resultWeightB').value = buyableWeight.toFixed(4) + ' g'; }
-    scenario = `花费 ¥${M}`;
-  }
-  if (!isValid) {
-    resultBox.className = 'result-box error';
-    resultTitle.textContent = '❌ 无法达成目标';
-    resultMessage.innerHTML = `即使以 0 元购入，也无法将均价拉低至 <strong>${targetAvg}</strong>。`;
-    resultBox.style.display = 'block';
-    return;
-  }
-  const marketPrice = parseFloat(document.getElementById('marketPrice').value);
-  let msg = '';
-  if (currentStrategyMode === 'A') {
-    msg = `若想将均价拉至 <strong>¥${targetAvg}</strong>，您需要在金价不高于 <span class="result-highlight">¥${calculatedPrice.toFixed(2)}</span> 时，买入 <strong>${scenario}</strong>。<br>预计总花费：<strong>¥${((targetAvg * (W + parseFloat(document.getElementById('inputWeightA').value))) - C).toFixed(2)}</strong>`;
-  } else {
-    msg = `若想将均价拉至 <strong>¥${targetAvg}</strong>，您需要在金价不高于 <span class="result-highlight">¥${calculatedPrice.toFixed(2)}</span> 时，投入 <strong>${scenario}</strong>。<br>预计可买入：<strong>${(M/calculatedPrice).toFixed(4)} g</strong>`;
-  }
-  const currentAvg = C/W;
-  if (calculatedPrice > currentAvg && targetAvg < currentAvg) {
-    msg += `<br><br><span style="color:var(--profit-color); font-size:0.85em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
-    resultBox.className = 'result-box success';
-  } else if (marketPrice) {
-    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--loss-color); font-size:0.85em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
-    else msg += `<br><br><span style="color:var(--warning-color); font-size:0.85em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
-    resultBox.className = 'result-box success';
-  } else { resultBox.className = 'result-box success'; }
-  resultTitle.textContent = '💡 策略建议';
-  resultMessage.innerHTML = msg;
-  resultBox.style.display = 'block';
-}
-
-function calculateProfit() {
-  const stats = updateDashboard();
-  const totalWeight = stats.totalWeight;
-  const totalCost = stats.totalCost;
-  const sellPrice = parseFloat(document.getElementById('sellPrice').value);
-  let feeRate = parseFloat(document.getElementById('feeRate').value);
-  if (isNaN(feeRate)) feeRate = 0.4;
-  const grossTotal = totalWeight * (sellPrice || 0);
-  const feeAmount = grossTotal * (feeRate / 100);
-  const netTotal = grossTotal - feeAmount;
-  const profit = netTotal - totalCost;
-  const profitPercent = totalCost > 0 ? (profit / totalCost) * 100 : 0;
-  document.getElementById('profitGross').textContent = '¥' + grossTotal.toFixed(2);
-  document.getElementById('profitFee').textContent = '-¥' + feeAmount.toFixed(2);
-  document.getElementById('profitNet').textContent = '¥' + netTotal.toFixed(2);
-  document.getElementById('profitCost').textContent = '¥' + totalCost.toFixed(2);
-  const profitValEl = document.getElementById('profitValue');
-  const profitPerEl = document.getElementById('profitPercent');
-  profitValEl.textContent = (profit >= 0 ? '+' : '') + '¥' + profit.toFixed(2);
-  profitPerEl.textContent = `收益率 ${profitPercent.toFixed(2)}%`;
-  profitValEl.className = 'profit-val ' + (profit > 0 ? 'text-up' : (profit < 0 ? 'text-down' : 'text-neutral'));
-  profitPerEl.className = 'profit-label ' + (profit > 0 ? 'text-up' : (profit < 0 ? 'text-down' : 'text-neutral'));
-}
-
-function runStrategies() {
-  if (currentStrategyMode !== 'C' && currentStrategyMode !== 'D' && currentStrategyMode !== 'E') return;
-  const stats = updateDashboard();
-  const W_hold = stats.totalWeight;
-  const P_avg = stats.avgPrice;
-  const Cost_hold = stats.totalCost;
-  let P_market = parseFloat(document.getElementById('marketPrice').value);
-  if (!P_market && currentStrategyMode === 'E') {
-    P_market = P_avg;
-  }
-  if (!P_market) P_market = P_avg; 
-  const tbody = document.getElementById('resultBody');
-  const summary = document.getElementById('resultSummary');
-  tbody.innerHTML = '';
-  summary.style.display = 'none';
-  if (W_hold === 0 && currentStrategyMode !== 'C') {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 16px;">请先在主表格录入持仓数据</td></tr>';
-    return;
-  }
-  if (currentStrategyMode === 'C') {
-    calculateGrid(P_market, W_hold, P_avg, Cost_hold, tbody, summary);
-  } else if (currentStrategyMode === 'D') {
-    calculatePyramid(P_avg, W_hold, Cost_hold, tbody, summary);
-  } else if (currentStrategyMode === 'E') {
-    calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary);
-  }
-}
-
-function calculateGrid(P_curr, W_hold, P_avg, Cost_hold, tbody, summary) {
-  const stepPercent = parseFloat(document.getElementById('gridStep').value) / 100;
-  const baseWeight = parseFloat(document.getElementById('gridBaseWeight').value);
-  const layers = parseInt(document.getElementById('gridLayers').value);
-  const multiplier = parseInt(document.getElementById('gridMultiplier').value);
-  let totalInvest = 0;
-  let totalWeightAdded = 0;
-  for (let i = 1; i <= layers; i++) {
-    const price = P_curr * (1 - i * stepPercent);
-    let weight = baseWeight;
-    if (multiplier > 1) {
-      weight = baseWeight * Math.pow(multiplier, i - 1);
-    }
-    const cost = price * weight;
-    totalInvest += cost;
-    totalWeightAdded += weight;
-    const newTotalCost = Cost_hold + totalInvest;
-    const newTotalWeight = W_hold + totalWeightAdded;
-    const newAvg = newTotalWeight > 0 ? newTotalCost / newTotalWeight : 0;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>第 ${i} 层</td>
-      <td style="color:var(--profit-color); font-weight:bold;">¥${price.toFixed(2)}</td>
-      <td>买入 ${weight.toFixed(3)} g</td>
-      <td>¥${cost.toFixed(2)}</td>
-      <td>¥${newAvg.toFixed(2)}</td>
-    `;
-    tbody.appendChild(tr);
-  }
-  summary.innerHTML = `<strong>网格总结：</strong> 若全程执行，共需资金 <strong>¥${totalInvest.toFixed(2)}</strong>，累计买入 <strong>${totalWeightAdded.toFixed(3)}g</strong>，最终均价可拉低至 <strong>¥${((Cost_hold+totalInvest)/(W_hold+totalWeightAdded)).toFixed(2)}</strong>。`;
-  summary.style.display = 'block';
-}
-
-function calculatePyramid(P_avg, W_hold, Cost_hold, tbody, summary) {
-  const totalMoney = parseFloat(document.getElementById('pyraTotalMoney').value);
-  const stepPercent = parseFloat(document.getElementById('pyraStep').value) / 100;
-  const mode = document.getElementById('pyraMode').value;
-  let weights = [];
-  if (mode === 'equal') weights = [0.25, 0.25, 0.25, 0.25];
-  else if (mode === 'aggressive') weights = [0.1, 0.2, 0.3, 0.4];
-  else if (mode === 'fibonacci') {
-    const fib = [1, 2, 3, 5];
-    const sum = fib.reduce((a,b)=>a+b, 0);
-    weights = fib.map(x => x/sum);
-  }
-  let remainingMoney = totalMoney;
-  let currentCumCost = Cost_hold;
-  let currentCumWeight = W_hold;
-  weights.forEach((ratio, index) => {
-    const moneyForLayer = totalMoney * ratio;
-    const triggerPrice = P_avg * (1 - (index + 1) * stepPercent);
-    const weightToBuy = moneyForLayer / triggerPrice;
-    currentCumCost += moneyForLayer;
-    currentCumWeight += weightToBuy;
-    const newAvg = currentCumCost / currentCumWeight;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>第 ${index + 1} 跌 (${((index+1)*stepPercent*100).toFixed(0)}%)</td>
-      <td style="color:var(--profit-color); font-weight:bold;">¥${triggerPrice.toFixed(2)}</td>
-      <td>买入 ${weightToBuy.toFixed(3)} g</td>
-      <td>¥${moneyForLayer.toFixed(2)}</td>
-      <td>¥${newAvg.toFixed(2)}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-  summary.innerHTML = `<strong>金字塔总结：</strong> 总预算 ¥${totalMoney} 分配完毕。若全部成交，总持仓将达到 <strong>${currentCumWeight.toFixed(3)}g</strong>，综合均价降至 <strong>¥${(currentCumCost/currentCumWeight).toFixed(2)}</strong>。`;
-  summary.style.display = 'block';
-}
-
-function calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary) {
-  const dashboardMarketPrice = parseFloat(document.getElementById('marketPrice').value);
-  if (dashboardMarketPrice > 0) {
-    P_market = dashboardMarketPrice;
-  } else {
-    P_market = P_avg;
-  }
-  
-  const reboundPercent = parseFloat(document.getElementById('beRebound').value) / 100;
-  const feeRate = parseFloat(document.getElementById('beFee').value) / 100;
-  
-  if (P_market <= 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">请输入仪表盘中的参考市价</td></tr>';
-    return;
-  }
-  
-  const targetGrossPrice = P_market * (1 + reboundPercent);
-  const targetNetPrice = targetGrossPrice * (1 - feeRate);
-  const denominator = targetNetPrice - P_market;
-  
-  let X = 0;
-  let message = "";
-  let colorClass = "";
-  
-  if (Math.abs(denominator) < 0.0001) {
-    message = "无法计算：预期反弹后的净价几乎等于当前市价，需要无限资金才能拉低。";
-    colorClass = "text-red-600";
-  } else {
-    X = (Cost_hold - targetNetPrice * W_hold) / denominator;
-    if (X < 0) {
-      message = `🎉 恭喜！无需补仓。若反弹 ${reboundPercent*100}%，您的当前持仓即可回本盈利。`;
-      colorClass = "text-green-600";
-      X = 0;
-    } else {
-      const costToAdd = X * P_market;
-      const newTotalWeight = W_hold + X;
-      const newTotalCost = Cost_hold + costToAdd;
-      const newAvg = newTotalCost / newTotalWeight;
-      message = `若金价反弹 <strong>${(reboundPercent*100).toFixed(1)}%</strong> (至 ¥${targetGrossPrice.toFixed(2)})，您需要现在补仓 <strong>${X.toFixed(3)} g</strong> (约 ¥${costToAdd.toFixed(2)}) 即可刚好回本。操作后新均价为 ¥${newAvg.toFixed(2)}。`;
-      colorClass = "text-blue-600";
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>当前情景</td>
-        <td>¥${P_market.toFixed(2)}</td>
-        <td style="font-weight:bold; color:var(--primary-color)">补仓 ${X.toFixed(3)} g</td>
-        <td>¥${costToAdd.toFixed(2)}</td>
-        <td>¥${newAvg.toFixed(2)}</td>
-      `;
-      tbody.appendChild(tr);
-    }
-  }
-  summary.innerHTML = `<span class="${colorClass}">${message}</span>`;
-  summary.style.display = 'block';
-}
-
-function updatePositionProfits() {
-  if (document.getElementById('portfolioModal').style.display === 'flex') {
-    renderModalTable();
-  }
-}
-
-function cancelOCR() {
-  if(loadTimeout) clearTimeout(loadTimeout);
-  document.getElementById('loadingOverlay').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-}
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/[&<>]/g, function(m) {
-    if (m === '&') return '&amp;';
-    if (m === '<') return '&lt;';
-    if (m === '>') return '&gt;';
-    return m;
-  });
-}
-
-async function handleImageUpload(input) {
-  if (!input.files || !input.files[0]) return;
-  const file = input.files[0];
-  const overlay = document.getElementById('loadingOverlay');
-  const loadingText = document.getElementById('loadingText');
-  const progressFill = document.getElementById('progressFill');
-  overlay.style.display = 'flex';
-  progressFill.style.width = '0%';
-  loadingText.textContent = "🧠 启动识别引擎...";
-  loadTimeout = setTimeout(() => { 
-    cancelOCR(); 
-    alert("OCR 加载超时，可能是网络原因。\n请直接使用【手动新增】输入数据。"); 
-  }, 15000);
-  try {
-    loadingText.textContent = "📦 加载语言包 (首次较慢)...";
-    const result = await Tesseract.recognize(
-      file,
-      'chi_sim+eng',
-      {
-        logger: (m) => {
-          if (m.status === 'recognizing text') {
-            const progress = (m.progress * 100).toFixed(1);
-            loadingText.textContent = `📖 识别中 ${progress}%`;
-            progressFill.style.width = `${progress}%`;
-          } else if (m.status === 'loading tesseract') {
-            loadingText.textContent = '📦 加载核心引擎...';
-          } else if (m.status === 'loading language traineddata') {
-            loadingText.textContent = '📥 下载中文语言包...';
-          } else {
-            loadingText.textContent = m.status;
-          }
-        },
-      },
-    );
-    clearTimeout(loadTimeout);
-    const text = result.data.text;
-    const parsed = parseOCRText(text);
-    if (parsed.length === 0) throw new Error("未识别到有效数据，请确保图片清晰且包含'克重'、'单价'等关键词。");
-    holdings = parsed;
-    saveData();
-    overlay.style.display = 'none';
-    renderTable();
-    updateDashboard();
-    calculateStrategy();
-    calculateProfit();
-    runStrategies();
-    alert(`✅ 成功识别 ${parsed.length} 条记录！\n数据已自动保存。\n请核对数据，如有误差可直接在表格中修改。`);
-  } catch (e) {
-    clearTimeout(loadTimeout);
-    overlay.style.display = 'none';
-    console.error(e);
-    alert("识别失败：" + e.message + "\n建议使用手动输入。");
-  }
-  input.value = '';
-}
-
-function parseOCRText(text) {
-  const lines = text.split('\n');
-  const results = [];
-  const dateRe = /(\d{4}[-/]\d{1,2}[-/]\d{1,2})/;
-  const weightRe = /(\d+\.\d{3,4})/;
-  const priceRe = /(\d+\.\d{2})/;
-  let currentDate = new Date().toISOString().split('T')[0];
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-    const dMatch = line.match(dateRe);
-    if (dMatch) currentDate = dMatch[1].replace(/\//g, '-');
-    const wMatch = line.match(weightRe);
-    let weight = wMatch ? parseFloat(wMatch[1]) : null;
-    const pMatches = line.match(/(\d+\.\d{2})/g);
-    let price = null;
-    if (pMatches) {
-      for (let p of pMatches) {
-        const val = parseFloat(p);
-        if (val > 100 && val < 5000) { price = val; break; }
-      }
-    }
-    if (weight && !price && i + 1 < lines.length) {
-      const nextLine = lines[i+1];
-      const nextPMatches = nextLine.match(/(\d+\.\d{2})/g);
-      if (nextPMatches) {
-        for (let p of nextPMatches) {
-          const val = parseFloat(p);
-          if (val > 100 && val < 5000) { price = val; break; }
-        }
-      }
-    }
-    if (weight && price) {
-      const exists = results.some(r => Math.abs(r.weight - weight) < 0.0001 && r.price === price);
-      if (!exists) results.push({ date: currentDate, weight: weight, price: price });
-    }
-  }
-  return results;
-}
+window.onload = function() { loadData(); loadPositions(); loadPositionsDetails(); renderTable(); updateDashboard(); switchStrategyMode('A'); };
+function saveData() { localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(holdings)); showSaveStatus(); }
+function savePositions() { localStorage.setItem(STORAGE_KEY_POSITIONS, JSON.stringify(savedPositions)); }
+function savePositionsDetails() { localStorage.setItem(STORAGE_KEY_POSITIONS_DETAILS, JSON.stringify(savedPositionsDetails)); }
+function loadData() { try { const stored = localStorage.getItem(STORAGE_KEY_DATA); if (stored) holdings = JSON.parse(stored); } catch(e) { holdings = []; } }
+function loadPositions() { try { const stored = localStorage.getItem(STORAGE_KEY_POSITIONS); if (stored) savedPositions = JSON.parse(stored); } catch(e) { savedPositions = []; } }
+function loadPositionsDetails() { try { const stored = localStorage.getItem(STORAGE_KEY_POSITIONS_DETAILS); if (stored) savedPositionsDetails = JSON.parse(stored); } catch(e) { savedPositionsDetails = []; } }
+function showSaveStatus() { const el = document.getElementById('saveStatus'); el.style.opacity = '1'; el.classList.add('visible'); setTimeout(() => el.classList.remove('visible'), 1500); }
+function addRow() { holdings.push({ date: new Date().toISOString().split('T')[0], weight: 1.0, price: 0 }); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); }
+function removeRow(i) { if(confirm('删除记录？')) { holdings.splice(i,1); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); } }
+function renderTable() { const tbody=document.getElementById('tableBody'), empty=document.getElementById('emptyState'), container=document.getElementById('tableContainer'); if(!holdings.length){ empty.style.display='block'; container.style.display='none'; updateTotals(0,0); return; } empty.style.display='none'; container.style.display='block'; tbody.innerHTML=''; holdings.forEach((item,idx)=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td><input type="date" class="editable-input" value="${item.date}" onchange="triggerGlobalUpdate()"></td><td><input type="number" step="0.0001" class="editable-input" value="${item.weight}" oninput="updateRowTotal(this,${idx})" onchange="triggerGlobalUpdate()"></td><td><input type="number" step="0.01" class="editable-input" value="${item.price}" oninput="updateRowTotal(this,${idx})" onchange="triggerGlobalUpdate()"></td><td id="rowTotal-${idx}">${((item.weight||0)*(item.price||0)).toFixed(2)}</td><td><button class="btn btn-danger" onclick="removeRow(${idx})">删除</button></td>`; tbody.appendChild(tr); }); const tw=holdings.reduce((s,i)=>s+(parseFloat(i.weight)||0),0); const tc=holdings.reduce((s,i)=>s+((parseFloat(i.weight)||0)*(parseFloat(i.price)||0)),0); updateTotals(tw,tc); }
+function updateRowTotal(input,idx){ const row=input.closest('tr'), inputs=row.querySelectorAll('input'); const w=parseFloat(inputs[1].value)||0, p=parseFloat(inputs[2].value)||0; document.getElementById(`rowTotal-${idx}`).innerText=(w*p).toFixed(2); }
+function triggerGlobalUpdate(){ const rows=document.getElementById('tableBody').children; for(let i=0;i<rows.length;i++){ const ins=rows[i].querySelectorAll('input'); holdings[i].date=ins[0].value; holdings[i].weight=parseFloat(ins[1].value)||0; holdings[i].price=parseFloat(ins[2].value)||0; } saveData(); const tw=holdings.reduce((s,i)=>s+(i.weight||0),0), tc=holdings.reduce((s,i)=>s+((i.weight||0)*(i.price||0)),0); updateTotals(tw,tc); updateDashboardValues(tw,tc); calculateStrategy(); calculateProfit(); runStrategies(); }
+function updateTotals(w,c){ document.getElementById('sumWeight').innerText=w.toFixed(4); document.getElementById('sumCost').innerText=c.toFixed(2); }
+function updateDashboardValues(w,c){ const avg=w>0?c/w:0; document.getElementById('dashWeight').innerText=w.toFixed(4)+' g'; document.getElementById('dashCost').innerText='¥'+c.toFixed(2); document.getElementById('dashAvgPrice').innerText='¥'+avg.toFixed(2); return {totalWeight:w,totalCost:c,avgPrice:avg}; }
+function updateDashboard(){ const w=holdings.reduce((s,i)=>s+(i.weight||0),0), c=holdings.reduce((s,i)=>s+((i.weight||0)*(i.price||0)),0); return updateDashboardValues(w,c); }
+function switchStrategyMode(mode){ currentStrategyMode=mode; document.querySelectorAll('.strategy-tab').forEach(t=>t.classList.remove('active')); document.getElementById(`tab${mode}`).classList.add('active'); ['modeAInputs','modeBInputs','modeCInputs','modeDInputs','modeEInputs'].forEach(id=>document.getElementById(id).style.display='none'); document.getElementById('strategyResult').style.display='none'; document.getElementById('strategyOutput').style.display='none'; if(mode==='A'||mode==='B'){ document.getElementById(`mode${mode}Inputs`).style.display='grid'; calculateStrategy(); } else { document.getElementById(`mode${mode}Inputs`).style.display='grid'; document.getElementById('strategyOutput').style.display='block'; runStrategies(); } }
+function calculateStrategy(){ if(currentStrategyMode!=='A' && currentStrategyMode!=='B') return; const stats=updateDashboard(); const {totalWeight:W,totalCost:C}=stats; const targetAvg=parseFloat(document.getElementById('targetAvg').value); const resultBox=document.getElementById('strategyResult'); if(!targetAvg || W===0){ resultBox.style.display='none'; return; } let isValid=true,calculatedPrice=0; if(currentStrategyMode==='A'){ const w=parseFloat(document.getElementById('inputWeightA').value); if(!w||w<=0){ document.getElementById('resultTotalA').value='-'; document.getElementById('resultPriceA').value='-'; resultBox.style.display='none'; return; } const requiredTotal=(targetAvg*(W+w))-C; calculatedPrice=requiredTotal/w; if(requiredTotal<=0||calculatedPrice<=0){ isValid=false; document.getElementById('resultTotalA').value='无法达成'; document.getElementById('resultPriceA').value='-'; } else { document.getElementById('resultTotalA').value='¥'+requiredTotal.toFixed(2); document.getElementById('resultPriceA').value='¥'+calculatedPrice.toFixed(2)+'/g'; } } else { const M=parseFloat(document.getElementById('inputMoneyB').value); if(!M||M<=0){ document.getElementById('resultPriceB').value='-'; document.getElementById('resultWeightB').value='-'; resultBox.style.display='none'; return; } const denominator=C+M-(targetAvg*W); if(denominator<=0){ isValid=false; document.getElementById('resultPriceB').value='无法达成'; document.getElementById('resultWeightB').value='-'; } else { calculatedPrice=(targetAvg*M)/denominator; document.getElementById('resultPriceB').value='¥'+calculatedPrice.toFixed(2)+'/g'; document.getElementById('resultWeightB').value=(M/calculatedPrice).toFixed(4)+' g'; } } if(!isValid){ resultBox.className='result-box error'; document.getElementById('resultTitle').innerHTML='❌ 无法达成目标'; document.getElementById('resultMessage').innerHTML=`即使以 0 元购入，也无法将均价拉低至 <strong>${targetAvg}</strong>。`; resultBox.style.display='block'; return; } resultBox.className='result-box success'; document.getElementById('resultTitle').innerHTML='💡 策略建议'; document.getElementById('resultMessage').innerHTML=currentStrategyMode==='A'?`若想将均价拉至 <strong>¥${targetAvg}</strong>，需在金价不高于 <span class="result-highlight">¥${calculatedPrice.toFixed(2)}</span> 时买入 <strong>${document.getElementById('inputWeightA').value}g</strong>。`:`若想将均价拉至 <strong>¥${targetAvg}</strong>，需在金价不高于 <span class="result-highlight">¥${calculatedPrice.toFixed(2)}</span> 时投入 <strong>¥${document.getElementById('inputMoneyB').value}</strong>`; resultBox.style.display='block'; }
+function calculateProfit(){ const stats=updateDashboard(); const tw=stats.totalWeight, tc=stats.totalCost; const sp=parseFloat(document.getElementById('sellPrice').value)||0; let fee=parseFloat(document.getElementById('feeRate').value)||0.4; const gross=tw*sp, feeAmt=gross*(fee/100), net=gross-feeAmt, profit=net-tc, percent=tc>0?(profit/tc)*100:0; document.getElementById('profitGross').innerText='¥'+gross.toFixed(2); document.getElementById('profitFee').innerText='-¥'+feeAmt.toFixed(2); document.getElementById('profitNet').innerText='¥'+net.toFixed(2); document.getElementById('profitCost').innerText='¥'+tc.toFixed(2); const pv=document.getElementById('profitValue'); pv.innerText=(profit>=0?'+':'')+'¥'+profit.toFixed(2); pv.className='profit-val '+(profit>0?'text-up':(profit<0?'text-down':'text-neutral')); document.getElementById('profitPercent').innerHTML=`收益率 ${percent.toFixed(2)}%`; }
+function runStrategies(){ if(!['C','D','E'].includes(currentStrategyMode)) return; const stats=updateDashboard(); const W=stats.totalWeight, avg=stats.avgPrice, cost=stats.totalCost; let market=parseFloat(document.getElementById('marketPrice').value)||avg; const tbody=document.getElementById('resultBody'), summaryDiv=document.getElementById('resultSummary'); tbody.innerHTML=''; summaryDiv.style.display='none'; if(currentStrategyMode==='C'){ const step=parseFloat(document.getElementById('gridStep').value)/100, base=parseFloat(document.getElementById('gridBaseWeight').value), layers=parseInt(document.getElementById('gridLayers').value), multi=parseInt(document.getElementById('gridMultiplier').value); let totalInv=0,totalW=0; for(let i=1;i<=layers;i++){ let price=market*(1-i*step), wgt=base*(multi>1?Math.pow(multi,i-1):base); let costLayer=price*wgt; totalInv+=costLayer; totalW+=wgt; let newAvg=(cost+totalInv)/(W+totalW); tbody.insertRow().innerHTML=`<td>第 ${i} 层</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${wgt.toFixed(3)} g</td><td>¥${costLayer.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; } summaryDiv.innerHTML=`<strong>网格总结：</strong> 共需资金 ¥${totalInv.toFixed(2)}，累计买入 ${totalW.toFixed(3)}g，最终均价 ¥${((cost+totalInv)/(W+totalW)).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='D'){ const totalMoney=parseFloat(document.getElementById('pyraTotalMoney').value), stepPct=parseFloat(document.getElementById('pyraStep').value)/100, mode=document.getElementById('pyraMode').value; let ratios=[]; if(mode==='equal') ratios=[0.25,0.25,0.25,0.25]; else if(mode==='aggressive') ratios=[0.1,0.2,0.3,0.4]; else { let fib=[1,2,3,5], sum=fib.reduce((a,b)=>a+b,0); ratios=fib.map(x=>x/sum); } let curCost=cost, curWeight=W; ratios.forEach((r,i)=>{ let money=totalMoney*r, price=avg*(1-(i+1)*stepPct), weight=money/price; curCost+=money; curWeight+=weight; let newAvg=curCost/curWeight; tbody.insertRow().innerHTML=`<td>第 ${i+1} 跌 (${((i+1)*stepPct*100).toFixed(0)}%)</td><td style="color:var(--profit-color);">¥${price.toFixed(2)}</td><td>买入 ${weight.toFixed(3)} g</td><td>¥${money.toFixed(2)}</td><td>¥${newAvg.toFixed(2)}</td>`; }); summaryDiv.innerHTML=`<strong>金字塔总结：</strong> 总预算 ¥${totalMoney}，最终持仓 ${curWeight.toFixed(3)}g，均价 ¥${(curCost/curWeight).toFixed(2)}`; summaryDiv.style.display='block'; } else if(currentStrategyMode==='E'){ let rebound=parseFloat(document.getElementById('beRebound').value)/100, fee=parseFloat(document.getElementById('beFee').value)/100; let targetGross=market*(1+rebound), targetNet=targetGross*(1-fee); let denominator=targetNet-market; if(Math.abs(denominator)<0.0001){ summaryDiv.innerHTML='无法计算：预期反弹净价几乎等于当前市价'; } else { let X=(cost-targetNet*W)/denominator; if(X<0){ summaryDiv.innerHTML=`🎉 恭喜！无需补仓。若反弹 ${rebound*100}%，当前持仓即可回本盈利。`; } else { let addCost=X*market, newWeight=W+X, newCost=cost+addCost; summaryDiv.innerHTML=`若金价反弹 ${(rebound*100).toFixed(1)}% 至 ¥${targetGross.toFixed(2)}，需补仓 <strong>${X.toFixed(3)} g</strong> (≈ ¥${addCost.toFixed(2)}) 即可回本。新均价 ¥${(newCost/newWeight).toFixed(2)}。`; tbody.insertRow().innerHTML=`<td>当前情景</td><td>¥${market.toFixed(2)}</td><td>补仓 ${X.toFixed(3)} g</td><td>¥${addCost.toFixed(2)}</td><td>¥${(newCost/newWeight).toFixed(2)}</td>`; } } summaryDiv.style.display='block'; } }
+function updatePositionProfits(){ if(document.getElementById('portfolioModal').style.display==='flex') renderModalTable(); }
+function renderModalTable(){ const container=document.getElementById('positionListContainer'), emptyDiv=document.getElementById('modalEmpty'); if(savedPositions.length===0){ emptyDiv.style.display='block'; container.innerHTML=''; return; } emptyDiv.style.display='none'; container.innerHTML=''; const market=parseFloat(document.getElementById('marketPrice').value)||0; savedPositions.forEach((pos,idx)=>{ const avg=pos.totalWeight>0?pos.totalCost/pos.totalWeight:0; let profitVal='0.00', profitColor='#C2A288'; if(market>0){ const profit=pos.totalWeight*market-pos.totalCost; profitVal=profit.toFixed(2); profitColor=profit>=0?'var(--danger-color)':'var(--success-color)'; } const div=document.createElement('div'); div.className='position-item'; div.innerHTML=`<div class="position-info" onclick="loadPosition(${idx})"><h3>${escapeHtml(pos.name)}</h3><div class="position-meta">保存于：${pos.savedAt}</div></div><div class="position-stats" style="display:flex; gap:12px;"><div><div class="position-stat-val">${pos.totalWeight.toFixed(4)} g</div><div class="position-stat-label">总克重</div></div><div><div class="position-stat-val">¥${pos.totalCost.toFixed(2)}</div><div class="position-stat-label">总成本</div></div><div><div class="position-stat-val" style="color:var(--primary-color);">¥${avg.toFixed(2)}</div><div class="position-stat-label">持仓均价</div></div><div><div class="position-stat-val" style="color:${profitColor};">¥${profitVal}</div><div class="position-stat-label">盈亏</div></div></div><div><button class="btn-load" onclick="loadPosition(${idx})">加载</button><button class="btn-delete-pos" onclick="deletePosition(${idx}, event)">删除</button></div>`; container.appendChild(div); }); }
+function loadPosition(idx){ if(confirm(`加载“${savedPositions[idx].name}”? 将覆盖当前数据。`)){ holdings=JSON.parse(JSON.stringify(savedPositionsDetails[idx])); saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); toggleModal(false); alert(`已加载：${savedPositions[idx].name}`); } }
+function deletePosition(idx,ev){ ev.stopPropagation(); if(confirm(`删除“${savedPositions[idx].name}”?`)){ savedPositions.splice(idx,1); savedPositionsDetails.splice(idx,1); savePositions(); savePositionsDetails(); renderModalTable(); } }
+function toggleModal(show){ document.getElementById('portfolioModal').style.display=show?'flex':'none'; if(show) renderModalTable(); }
+function openSaveModal(){ if(holdings.length===0){ alert("暂无数据可保存"); return; } document.getElementById('positionNameInput').value=''; document.getElementById('saveNameModal').style.display='flex'; }
+function toggleSaveModal(show){ document.getElementById('saveNameModal').style.display=show?'flex':'none'; }
+function confirmSavePosition(){ let name=document.getElementById('positionNameInput').value.trim(); if(!name){ alert("请输入仓位名称"); return; } const totalWeight=holdings.reduce((s,i)=>s+(parseFloat(i.weight)||0),0); const totalCost=holdings.reduce((s,i)=>s+((parseFloat(i.weight)||0)*(parseFloat(i.price)||0)),0); const now=new Date(); const dateStr=`${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`; savedPositions.unshift({id:Date.now(),name:name,totalWeight,totalCost,savedAt:dateStr}); savedPositionsDetails.unshift(JSON.parse(JSON.stringify(holdings))); savePositions(); savePositionsDetails(); toggleSaveModal(false); alert(`✅ 仓位“${name}”已保存`); }
+function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+async function handleImageUpload(input){ if(!input.files[0]) return; const overlay=document.getElementById('loadingOverlay'); overlay.style.display='flex'; try{ const {data:{text}}=await Tesseract.recognize(input.files[0],'chi_sim+eng',{logger:m=>{if(m.status==='recognizing text') document.getElementById('loadingText').innerText=`识别中 ${(m.progress*100).toFixed(0)}%`;}}); const parsed=parseOCRText(text); if(parsed.length) holdings=parsed; saveData(); renderTable(); updateDashboard(); calculateStrategy(); calculateProfit(); runStrategies(); alert(`识别 ${parsed.length} 条记录`); }catch(e){ alert("识别失败，请手动输入"); }finally{ overlay.style.display='none'; input.value=''; } }
+function parseOCRText(text){ const lines=text.split('\n'), res=[]; let curDate=new Date().toISOString().split('T')[0]; for(let line of lines){ const dMatch=line.match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/); if(dMatch) curDate=dMatch[1].replace(/\//g,'-'); const wMatch=line.match(/(\d+\.\d{3,4})/); let weight=wMatch?parseFloat(wMatch[1]):null; const pMatches=line.match(/(\d+\.\d{2})/g); let price=null; if(pMatches) for(let p of pMatches){ let v=parseFloat(p); if(v>100 && v<5000){ price=v; break; } } if(weight && price) res.push({date:curDate,weight,price}); } return res; }
+function cancelOCR(){ document.getElementById('loadingOverlay').style.display='none'; document.getElementById('fileInput').value=''; }
 </script>
 </body>
 </html>
