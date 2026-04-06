@@ -4,135 +4,616 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>黄金持仓助手 (专业策略版)</title>
-<!-- 引入 Tesseract.js -->
 <script src='https://cdn.staticfile.org/tesseract.js/5.0.5/tesseract.min.js'></script>
 <style>
-:root { --primary: #f97316; --primary-hover: #ea580c; --bg: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937; --text-sub: #6b7280; --border: #e5e7eb; --danger: #ef4444; --success: #10b981; --profit-up: #059669; --profit-down: #dc2626; --info: #3b82f6; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.5; }
-.container { max-width: 900px; margin: 0 auto; }
-header { text-align: center; margin-bottom: 30px; position: relative; }
-h1 { color: var(--primary); margin-bottom: 5px; font-size: 1.8rem; }
-p.subtitle { color: var(--text-sub); font-size: 0.9rem; }
-/* 顶部按钮组 */
-.header-actions { position: absolute; top: 0; right: 0; display: flex; gap: 10px; }
-.card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; gap: 10px; }
-.card-title { font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
-.btn-group { display: flex; gap: 10px; }
-.btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; }
-.btn-primary { background-color: var(--primary); color: white; }
-.btn-primary:hover { background-color: var(--primary-hover); }
-.btn-outline { background-color: white; border: 1px solid var(--border); color: var(--text-main); }
-.btn-outline:hover { background-color: #f9fafb; border-color: var(--text-sub); }
-.btn-danger { background-color: #fee2e2; color: var(--danger); padding: 4px 8px; font-size: 0.8rem; }
-.btn-danger:hover { background-color: #fecaca; }
-.btn-sm { padding: 6px 12px; font-size: 0.85rem; }
-.btn-save-position { background-color: var(--primary); color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3); }
-.btn-save-position:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-.table-responsive { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-th { background-color: #f9fafb; color: var(--text-sub); font-weight: 600; text-align: left; padding: 12px; font-size: 0.85rem; text-transform: uppercase; }
-td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+:root {
+  /* Element UI Colors */
+  --el-primary-color: #409EFF;
+  --el-success-color: #67C23A;
+  --el-warning-color: #E6A23C;
+  --el-danger-color: #F56C6C;
+  --el-info-color: #909399;
+  /* Background & Text */
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+  --text-placeholder: #a8abb2;
+  --border-color: #dcdfe6;
+  /* Layout */
+  --border-radius: 4px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  --header-height: 60px;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+}
+h1 {
+  color: var(--el-primary-color);
+  margin-bottom: 5px;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+p.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+/* Header Actions */
+.header-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+/* Card */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+/* Button Styles */
+.btn {
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  border: 1px solid #dcdfe6;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  outline: none;
+}
+.btn:focus {
+  outline: none;
+}
+.btn-primary {
+  background-color: var(--el-primary-color);
+  color: white;
+  border-color: var(--el-primary-color);
+}
+.btn-primary:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
+}
+.btn-outline {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.btn-outline:hover {
+  background-color: #ecf5ff;
+  border-color: var(--el-primary-color);
+  color: var(--el-primary-color);
+}
+.btn-danger {
+  background-color: #fef0f0;
+  color: var(--el-danger-color);
+  border-color: #fde2e2;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+.btn-danger:hover {
+  background-color: #fde2e2;
+  border-color: #fbdada;
+  color: #dd524d;
+}
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+.btn-save-position {
+  background-color: var(--el-success-color);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(103, 194, 58, 0.3);
+  border-color: var(--el-success-color);
+}
+.btn-save-position:hover {
+  background-color: #85ce66;
+  border-color: #85ce66;
+  transform: translateY(-1px);
+}
+/* Table */
+.table-responsive {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+th {
+  background-color: #f5f7fa;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-color);
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
 input.editable-input {
-width: 100%;
-padding: 8px;
-border: 1px solid transparent;
-border-radius: 4px;
-background: transparent;
-font-size: 0.95rem;
-color: var(--text-main);
-font-family: inherit;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  box-sizing: border-box;
 }
-input.editable-input:hover { background-color: #f9fafb; border-color: #e5e7eb; }
+input.editable-input:hover {
+  background-color: #f5f7fa;
+  border-color: #c0c4cc;
+}
 input.editable-input:focus {
-background: #fff;
-border-color: var(--primary);
-outline: none;
-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+  background: white;
+  border-color: var(--el-primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
 }
-.total-row td { font-weight: bold; background-color: #fffbeb; border-top: 2px solid var(--primary); color: var(--text-main); }
-.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-.stat-box { background: #f9fafb; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--border); }
-.stat-label { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 5px; }
-.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
-.stat-value.highlight { color: var(--primary); }
-.calculator-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 600px) { .calculator-form { grid-template-columns: 1fr; } }
-.form-group { margin-bottom: 15px; }
-.form-label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 500; }
-.form-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
-.form-input[readonly] { background-color: #f3f4f6; color: #4b5563; font-weight: bold; }
-select.form-input { background-color: white; }
-/* 收益卡片样式 */
-.profit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
-.profit-item { background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0; }
-.profit-label { font-size: 0.8rem; color: #64748b; margin-bottom: 4px; }
-.profit-val { font-size: 1.2rem; font-weight: 700; }
-.text-up { color: var(--profit-up); }
-.text-down { color: var(--profit-down); }
-.text-neutral { color: #64748b; }
-/* 策略模式切换样式 */
-.strategy-tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; background: #f3f4f6; padding: 5px; border-radius: 8px; }
+.total-row td {
+  font-weight: bold;
+  background-color: #f5f7fa;
+  border-top: 2px solid var(--el-primary-color);
+  color: var(--text-primary);
+}
+/* Dashboard */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+.stat-box {
+  background: #f5f7fa;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stat-value.highlight {
+  color: var(--el-primary-color);
+}
+/* Calculator Form */
+.calculator-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 600px) {
+  .calculator-form {
+    grid-template-columns: 1fr;
+  }
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.form-input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  background-color: white;
+  transition: border-color 0.2s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--el-primary-color);
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+}
+.form-input[readonly] {
+  background-color: #f5f7fa;
+  color: var(--text-placeholder);
+  cursor: not-allowed;
+}
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-allow;
+  background-size: 16px 16px;
+}
+/* Profit Grid */
+.profit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.profit-item {
+  background: #f5f7fa;
+  padding: 12px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+.profit-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.profit-val {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.text-up {
+  color: var(--el-danger-color); /* Red for profit */
+}
+.text-down {
+  color: var(--el-success-color); /* Green for loss */
+}
+.text-neutral {
+  color: var(--text-secondary);
+}
+/* Strategy Tabs */
+.strategy-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  background: #f5f7fa;
+  padding: 4px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
 .strategy-tab {
-flex: 1;
-padding: 10px 5px;
-text-align: center;
-background: transparent;
-border-radius: 6px;
-cursor: pointer;
-font-size: 0.9rem;
-border: 1px solid transparent;
-user-select: none;
-transition: all 0.2s;
-min-width: 80px;
+  flex: 1;
+  padding: 10px 5px;
+  text-align: center;
+  background: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  user-select: none;
+  transition: all 0.2s;
+  min-width: 80px;
+  color: var(--text-secondary);
 }
-.strategy-tab.active { background: white; border-color: var(--border); color: var(--primary); font-weight: bold; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.strategy-tab:hover:not(.active) { background: #e5e7eb; }
-.result-box { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; font-size: 0.95rem; line-height: 1.6; }
-.result-box.success { background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; display: block; }
-.result-box.error { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; display: block; }
-.result-title { font-weight: bold; margin-bottom: 5px; display: block; font-size: 1.05rem; }
-.result-highlight { font-weight: bold; font-size: 1.1em; color: var(--primary); }
-#fileInput { display: none; }
-.loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; text-align: center; backdrop-filter: blur(2px); }
-.spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.progress-bar { width: 280px; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; margin: 10px 0; }
-.progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-.loading-status { font-size: 0.95rem; color: #1d5b85; margin-bottom: 5px; font-weight: 600; }
-.loading-hint { font-size: 0.8rem; color: #5a7e99; max-width: 300px; line-height: 1.4; }
-.empty-state { text-align: center; padding: 40px; color: var(--text-sub); border: 2px dashed var(--border); border-radius: 8px; margin-top: 20px; }
-.refresh-hint { font-size: 0.8rem; color: #9ca3af; text-align: right; margin-top: 5px; }
-/* 模态框样式 */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
-.modal-content { background: white; width: 90%; max-width: 800px; max-height: 85vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: slideUp 0.3s ease-out; }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: 20px; overflow-y: auto; flex: 1; }
-.modal-footer { padding: 15px 20px; border-top: 1px solid var(--border); text-align: right; background: #f9fafb; border-radius: 0 0 12px 12px; }
-.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-sub); }
-.close-modal:hover { color: var(--text-main); }
-.data-status { font-size: 0.8rem; color: var(--success); margin-left: 10px; display: none; }
-.data-status.visible { display: inline-block; }
-/* 仓位列表样式 */
-.position-list { display: grid; gap: 10px; }
-.position-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid var(--border); border-radius: 8px; background: #f9fafb; transition: all 0.2s; cursor: pointer; }
-.position-item:hover { border-color: var(--primary); background: #fff7ed; transform: translateX(5px); }
-.position-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-main); }
-.position-meta { font-size: 0.85rem; color: var(--text-sub); }
-.position-stats { text-align: right; }
-.position-stat-val { font-weight: bold; color: var(--text-main); font-size: 0.95rem; }
-.position-stat-label { font-size: 0.75rem; color: var(--text-sub); }
-.btn-load { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; cursor: pointer; margin-left: 10px; }
-.btn-load:hover { background: var(--primary-hover); }
-.btn-delete-pos { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; margin-left: 5px; }
-.btn-delete-pos:hover { background: var(--danger); color: white; }
-.save-footer { display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
-.save-hint { font-size: 0.85rem; color: var(--text-sub); }
+.strategy-tab.active {
+  background: white;
+  border-color: var(--border-color);
+  color: var(--el-primary-color);
+  font-weight: bold;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.strategy-tab:hover:not(.active) {
+  background: #e6f1ff;
+  color: var(--el-primary-color);
+}
+/* Result Box */
+.result-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  display: none;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border: 1px solid;
+}
+.result-box.success {
+  background-color: #f0f9ff;
+  border-color: #b3d8ff;
+  color: #2b6cb0;
+  display: block;
+}
+.result-box.error {
+  background-color: #fef0f0;
+  border-color: #fbc4c4;
+  color: #c62828;
+  display: block;
+}
+.result-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 1.05rem;
+}
+.result-highlight {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: var(--el-primary-color);
+}
+#fileInput {
+  display: none;
+}
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
+  text-align: center;
+  backdrop-filter: blur(2px);
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--el-primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.progress-bar {
+  width: 280px;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--el-primary-color);
+  width: 0%;
+  transition: width 0.3s;
+}
+.loading-status {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.loading-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  max-width: 300px;
+  line-height: 1.4;
+}
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-placeholder);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+}
+.refresh-hint {
+  font-size: 0.8rem;
+  color: var(--text-placeholder);
+  text-align: right;
+  margin-top: 5px;
+}
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+.modal-content {
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  max-height: 85vh;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+  text-align: right;
+  background: #f5f7fa;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-placeholder);
+}
+.close-modal:hover {
+  color: var(--text-primary);
+}
+/* Data Status */
+.data-status {
+  font-size: 0.8rem;
+  color: var(--el-success-color);
+  margin-left: 10px;
+  display: none;
+}
+.data-status.visible {
+  display: inline-block;
+}
+/* Position List */
+.position-list {
+  display: grid;
+  gap: 10px;
+}
+.position-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: #f5f7fa;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.position-item:hover {
+  border-color: var(--el-primary-color);
+  background: #ecf5ff;
+  transform: translateX(5px);
+}
+.position-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+.position-meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.position-stats {
+  text-align: right;
+}
+.position-stat-val {
+  font-weight: bold;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.position-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.btn-load {
+  background: var(--el-primary-color);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.btn-load:hover {
+  background: #66b1ff;
+}
+.btn-delete-pos {
+  background: transparent;
+  color: var(--el-danger-color);
+  border: 1px solid var(--el-danger-color);
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.btn-delete-pos:hover {
+  background: var(--el-danger-color);
+  color: white;
+}
+.save-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--border-color);
+}
+.save-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+/* Special Cards */
+.card-profit {
+  border-left: 5px solid var(--el-success-color);
+}
+.card-strategy {
+  border-left: 5px solid var(--el-info-color);
+}
 </style>
 </head>
 <body>
-<!-- OCR 加载遮罩 -->
 <div class="loading-overlay" id="loadingOverlay">
 <div class="spinner"></div>
 <div class="loading-status" id="loadingText">正在初始化 OCR 引擎...</div>
@@ -144,14 +625,14 @@ min-width: 80px;
 <div class="modal-overlay" id="portfolioModal">
 <div class="modal-content">
 <div class="modal-header">
-<h2 style="margin:0; font-size:1.2rem; color:var(--text-main);">📂 我的持仓仓库</h2>
+<h2 style="margin:0; font-size:1.2rem; color:var(--text-primary);">📂 我的持仓仓库</h2>
 <button class="close-modal" onclick="toggleModal(false)">&times;</button>
 </div>
 <div class="modal-body">
 <div id="positionListContainer" class="position-list">
 <!-- 动态生成仓位列表 -->
 </div>
-<div id="modalEmpty" style="text-align:center; padding: 30px; color: var(--text-sub); display:none;">
+<div id="modalEmpty" style="text-align:center; padding: 30px; color: var(--text-placeholder); display:none;">
 暂无保存的仓位记录<br>
 <span style="font-size:0.85rem">请在主界面编辑好数据后，点击右下角"💾 保存当前持仓"</span>
 </div>
@@ -172,7 +653,7 @@ min-width: 80px;
 <div class="form-group">
 <label class="form-label">请输入仓位名称</label>
 <input type="text" id="positionNameInput" class="form-input" placeholder="例如：春节建仓、定投计划 A" onkeypress="if(event.keyCode==13) confirmSavePosition()">
-<p style="font-size:0.8rem; color:var(--text-sub); margin-top:5px;">名称将用于在"我的持仓"中标识此笔记录。</p>
+<p style="font-size:0.8rem; color:var(--text-secondary); margin-top:5px;">名称将用于在"我的持仓"中标识此笔记录。</p>
 </div>
 </div>
 <div class="modal-footer">
@@ -192,7 +673,6 @@ min-width: 80px;
 </button>
 </div>
 </header>
-<!-- 1. 持仓数据录入区 -->
 <div class="card">
 <div class="card-header">
 <div class="card-title">📷 持仓明细编辑</div>
@@ -232,7 +712,6 @@ min-width: 80px;
 </tr>
 </tfoot>
 </table>
-<!-- 保存按钮区域 -->
 <div class="save-footer">
 <span class="save-hint">💡 输入完成后按回车或点击空白处，数据将自动保存并更新计算</span>
 <button class="btn btn-save-position" onclick="openSaveModal()">
@@ -241,18 +720,16 @@ min-width: 80px;
 </div>
 </div>
 </div>
-<!-- 2. 仪表盘 -->
 <div class="card">
 <div class="card-header"><div class="card-title">📊 实时概况</div></div>
 <div class="dashboard-grid">
 <div class="stat-box"><div class="stat-label">总持仓克数</div><div class="stat-value" id="dashWeight">0.0000 g</div></div>
 <div class="stat-box"><div class="stat-label">总投入成本</div><div class="stat-value" id="dashCost">¥0.00</div></div>
 <div class="stat-box"><div class="stat-label">当前持仓均价</div><div class="stat-value highlight" id="dashAvgPrice">¥0.00</div></div>
-<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; border:none; background:transparent; font-weight:bold; font-size:1.5rem; color:#6b7280;" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
+<div class="stat-box"><div class="stat-label">参考市价 (可选)</div><input type="number" id="marketPrice" placeholder="输入当前金价" class="form-input" style="text-align:center; border:none; background:transparent; font-weight:bold; font-size:1.5rem; color:var(--text-secondary);" oninput="calculateStrategy(); runStrategies(); updatePositionProfits()"></div>
 </div>
 </div>
-<!-- 3. 智能持仓策略中心 (整合版) -->
-<div class="card" style="border-left: 5px solid var(--info);">
+<div class="card card-strategy">
 <div class="card-header">
 <div class="card-title">🎯 智能持仓策略中心</div>
 </div>
@@ -260,7 +737,6 @@ min-width: 80px;
 <label class="form-label">目标持仓均价 (元/g)</label>
 <input type="number" id="targetAvg" class="form-input" placeholder="例如：1050" oninput="calculateStrategy()">
 </div>
-<!-- 统一策略标签页 -->
 <div class="strategy-tabs">
 <div class="strategy-tab active" id="tabA" onclick="switchStrategyMode('A')">A: 固定克数</div>
 <div class="strategy-tab" id="tabB" onclick="switchStrategyMode('B')">B: 固定金额</div>
@@ -268,7 +744,6 @@ min-width: 80px;
 <div class="strategy-tab" id="tabD" onclick="switchStrategyMode('D')">D: 金字塔建仓</div>
 <div class="strategy-tab" id="tabE" onclick="switchStrategyMode('E')">E: 回本测算</div>
 </div>
-<!-- 模式 A: 固定买入克数 -->
 <div id="modeAInputs" class="calculator-form">
 <div class="form-group">
 <label class="form-label">计划买入克数 (g)</label>
@@ -280,10 +755,9 @@ min-width: 80px;
 </div>
 <div class="form-group">
 <label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary);">
+<input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--el-primary-color);">
 </div>
 </div>
-<!-- 模式 B: 固定投入金额 -->
 <div id="modeBInputs" class="calculator-form" style="display:none;">
 <div class="form-group">
 <label class="form-label">计划投入总金额 (元)</label>
@@ -291,19 +765,18 @@ min-width: 80px;
 </div>
 <div class="form-group">
 <label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary);">
+<input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--el-primary-color);">
 </div>
 <div class="form-group">
 <label class="form-label">预计买入克数</label>
 <input type="text" id="resultWeightB" class="form-input" readonly placeholder="0.0000 g">
 </div>
 </div>
-<!-- 模式 C: 网格交易 -->
 <div id="modeCInputs" class="calculator-form" style="display:none;">
 <div class="form-group">
 <label class="form-label">网格间距 (%)</label>
 <input type="number" id="gridStep" class="form-input" value="2" step="0.5" oninput="runStrategies()">
-<small style="color:#666">每跌 2% 买入一档</small>
+<small style="color:var(--text-secondary)">每跌 2% 买入一档</small>
 </div>
 <div class="form-group">
 <label class="form-label">基础单笔克数 (g)</label>
@@ -321,7 +794,6 @@ min-width: 80px;
 </select>
 </div>
 </div>
-<!-- 模式 D: 金字塔建仓 -->
 <div id="modeDInputs" class="calculator-form" style="display:none;">
 <div class="form-group">
 <label class="form-label">总预备资金 (元)</label>
@@ -340,19 +812,17 @@ min-width: 80px;
 </select>
 </div>
 </div>
-<!-- 模式 E: 回本测算 -->
 <div id="modeEInputs" class="calculator-form" style="display:none;">
 <div class="form-group">
 <label class="form-label">预期反弹幅度 (%)</label>
 <input type="number" id="beRebound" class="form-input" value="5" step="0.5" oninput="runStrategies()">
-<small style="color:#666">假设金价从当前位置反弹多少？</small>
+<small style="color:var(--text-secondary)">假设金价从当前位置反弹多少？</small>
 </div>
 <div class="form-group">
 <label class="form-label">手续费率 (%)</label>
 <input type="number" id="beFee" class="form-input" value="0.4" step="0.01" oninput="runStrategies()">
 </div>
 </div>
-<!-- 结果展示区 -->
 <div id="strategyOutput" class="table-responsive" style="margin-top: 20px; max-height: 400px;">
 <table id="resultTable">
 <thead>
@@ -366,19 +836,17 @@ min-width: 80px;
 </thead>
 <tbody id="resultBody"></tbody>
 </table>
-<div id="resultSummary" style="padding: 15px; background: #eff6ff; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; color: #1e40af; display:none;"></div>
+<div id="resultSummary" style="padding: 15px; background: #f0f9ff; border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem; color: #2b6cb0; display:none;"></div>
 </div>
-<!-- 基础策略结果框 (仅用于 A/B 模式) -->
 <div id="strategyResult" class="result-box">
 <span class="result-title" id="resultTitle"></span>
 <div id="resultMessage"></div>
 </div>
 </div>
-<!-- 4. 收益测算卡片 -->
-<div class="card" style="border-left: 5px solid var(--success);">
+<div class="card card-profit">
 <div class="card-header">
 <div class="card-title">💰 累计收益测算</div>
-<div style="font-size:0.85rem; color:#64748b;">模拟卖出全部持仓，计算净利润</div>
+<div style="font-size:0.85rem; color:var(--text-secondary);">模拟卖出全部持仓，计算净利润</div>
 </div>
 <div class="calculator-form">
 <div class="form-group">
@@ -386,7 +854,7 @@ min-width: 80px;
 <input type="number" id="sellPrice" class="form-input" placeholder="例如：600" oninput="calculateProfit()">
 </div>
 <div class="form-group">
-<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.8rem; color:#94a3b8;">(默认 0.4%)</span></label>
+<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.8rem; color:var(--text-placeholder);">(默认 0.4%)</span></label>
 <input type="number" id="feeRate" class="form-input" value="0.4" step="0.01" oninput="calculateProfit()">
 </div>
 </div>
@@ -407,7 +875,7 @@ min-width: 80px;
 <div class="profit-label">持仓成本</div>
 <div class="profit-val" id="profitCost">¥0.00</div>
 </div>
-<div class="profit-item" style="grid-column: span 2; background: #f0fdf4; border-color: #bbf7d0;">
+<div class="profit-item" style="grid-column: span 2; background: #f0f9ff; border-color: #b3d8ff;">
 <div class="profit-label">累计收益 (元)</div>
 <div class="profit-val" id="profitValue">¥0.00</div>
 <div class="profit-label" style="margin-top:4px; font-size:0.75rem;" id="profitPercent">收益率 0.00%</div>
@@ -418,24 +886,22 @@ min-width: 80px;
 <script>
 let holdings = [];
 let savedPositions = [];
-let savedPositionsDetails = []; // 存储详细持仓数据
-let currentStrategyMode = 'A'; // A, B, C, D, E
+let savedPositionsDetails = [];
+let currentStrategyMode = 'A';
 let loadTimeout = null;
 const STORAGE_KEY_DATA = 'gold_portfolio_data_v2';
 const STORAGE_KEY_POSITIONS = 'gold_portfolio_positions_v2';
 const STORAGE_KEY_POSITIONS_DETAILS = 'gold_portfolio_positions_details_v2';
 
-// 页面加载完成后初始化
 window.onload = function() {
   loadData(); 
   loadPositions();
   loadPositionsDetails();
   renderTable();
   updateDashboard();
-  switchStrategyMode('A'); // 初始化策略标签
+  switchStrategyMode('A');
 };
 
-// --- 核心功能：数据持久化 ---
 function saveData() {
   try {
     localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(holdings));
@@ -506,7 +972,6 @@ function showSaveStatus() {
   }, 2000);
 }
 
-// --- 核心功能：添加行 ---
 function addRow() {
   holdings.push({ date: new Date().toISOString().split('T')[0], weight: 1.0, price: 0 });
   saveData();
@@ -518,7 +983,6 @@ function addRow() {
   setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
 }
 
-// --- 核心功能：删除行 ---
 function removeRow(index) {
   if(confirm('确定删除此记录？')) {
     holdings.splice(index, 1);
@@ -531,7 +995,6 @@ function removeRow(index) {
   }
 }
 
-// --- 核心功能：渲染表格 ---
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   const emptyState = document.getElementById('emptyState');
@@ -551,7 +1014,7 @@ function renderTable() {
       <td><input type="date" class="editable-input" value="${item.date}" onchange="triggerGlobalUpdate()"></td>
       <td><input type="number" step="0.0001" class="editable-input" value="${item.weight}" oninput="updateRowTotal(this, ${index})" onchange="triggerGlobalUpdate()"></td>
       <td><input type="number" step="0.01" class="editable-input" value="${item.price}" oninput="updateRowTotal(this, ${index})" onchange="triggerGlobalUpdate()"></td>
-      <td style="color:#666;" id="rowTotal-${index}">${((item.weight||0)*(item.price||0)).toFixed(2)}</td>
+      <td style="color:var(--text-secondary);" id="rowTotal-${index}">${((item.weight||0)*(item.price||0)).toFixed(2)}</td>
       <td><button class="btn btn-danger" onclick="removeRow(${index})">删除</button></td>
     `;
     tbody.appendChild(tr);
@@ -561,7 +1024,6 @@ function renderTable() {
   updateTotals(totalWeight, totalCost);
 }
 
-// 渲染模态框表格 (已修改：增加盈亏显示)
 function renderModalTable() {
   const container = document.getElementById('positionListContainer');
   const emptyState = document.getElementById('modalEmpty');
@@ -575,26 +1037,18 @@ function renderModalTable() {
   emptyState.style.display = 'none';
   container.innerHTML = '';
   
-  // 获取当前市场价
   const currentMarketPrice = parseFloat(document.getElementById('marketPrice').value) || 0;
-  
-  // 计算所有仓位的总盈亏
   let totalOverallProfit = 0;
   
   savedPositions.forEach((pos, index) => {
-    // 计算该仓位的均价
     const avgPrice = pos.totalWeight > 0 ? (pos.totalCost / pos.totalWeight) : 0;
-    
-    // 计算盈亏
     let profitValue = '0.00';
-    let profitColor = '#6b7280'; // 默认灰色
+    let profitColor = '#a8abb2'; // Default gray
     if (currentMarketPrice > 0) {
-      const currentTotalValue = pos.totalWeight * currentMarketPrice; // 当前市值
-      const profit = currentTotalValue - pos.totalCost; // 盈亏
+      const currentTotalValue = pos.totalWeight * currentMarketPrice;
+      const profit = currentTotalValue - pos.totalCost;
       profitValue = profit.toFixed(2);
-      profitColor = profit >= 0 ? 'var(--profit-up)' : 'var(--profit-down)';
-      
-      // 累加总盈亏
+      profitColor = profit >= 0 ? 'var(--el-danger-color)' : 'var(--el-success-color)'; // Red for profit, green for loss
       totalOverallProfit += profit;
     }
     
@@ -611,7 +1065,7 @@ function renderModalTable() {
         <div class="position-stat-label">总克重</div>
         <div class="position-stat-val" style="margin-top:4px;">¥${pos.totalCost.toFixed(2)}</div>
         <div class="position-stat-label">总成本</div>
-        <div class="position-stat-val" style="margin-top:4px; color:var(--primary);">¥${avgPrice.toFixed(2)}</div>
+        <div class="position-stat-val" style="margin-top:4px; color:var(--el-primary-color);">¥${avgPrice.toFixed(2)}</div>
         <div class="position-stat-label">持仓均价</div>
         <div class="position-stat-val" style="margin-top:4px; color:${profitColor};">¥${profitValue}</div>
         <div class="position-stat-label">盈亏</div>
@@ -624,23 +1078,22 @@ function renderModalTable() {
     container.appendChild(div);
   });
   
-  // 在模态框底部添加总盈亏信息
   const totalProfitDiv = document.createElement('div');
   totalProfitDiv.style.cssText = `
     margin-top: 20px;
     padding: 15px;
-    background: #f9fafb;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    background: #f5f7fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
     text-align: center;
   `;
   
-  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--profit-up)' : 'var(--profit-down)';
+  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--el-danger-color)' : 'var(--el-success-color)'; // Red for profit, green for loss
   totalProfitDiv.innerHTML = `
     <h3 style="margin: 0 0 10px; color: ${overallProfitColor}; font-size: 1.2rem;">
       所有仓位总盈亏：¥${totalOverallProfit.toFixed(2)}
     </h3>
-    <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">
+    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
       基于当前市价：¥${currentMarketPrice > 0 ? currentMarketPrice.toFixed(2) : '--'}
     </p>
   `;
@@ -683,7 +1136,6 @@ function toggleModal(show) {
   }
 }
 
-// --- 保存仓位命名逻辑 ---
 function openSaveModal() {
   if (holdings.length === 0) {
     alert("当前没有数据可保存，请先添加持仓记录。");
@@ -769,13 +1221,10 @@ function updateDashboard() {
   return updateDashboardValues(w, c);
 }
 
-// --- 策略模式切换 ---
 function switchStrategyMode(mode) {
   currentStrategyMode = mode;
-  // 更新标签样式
   document.querySelectorAll('.strategy-tab').forEach(tab => tab.classList.remove('active'));
   document.getElementById(`tab${mode}`).classList.add('active');
-  // 隐藏所有输入区
   document.getElementById('modeAInputs').style.display = 'none';
   document.getElementById('modeBInputs').style.display = 'none';
   document.getElementById('modeCInputs').style.display = 'none';
@@ -783,7 +1232,6 @@ function switchStrategyMode(mode) {
   document.getElementById('modeEInputs').style.display = 'none';
   document.getElementById('strategyResult').style.display = 'none';
   document.getElementById('strategyOutput').style.display = 'none';
-  // 显示对应输入区
   if (mode === 'A') {
     document.getElementById('modeAInputs').style.display = 'grid';
     calculateStrategy();
@@ -805,7 +1253,6 @@ function switchStrategyMode(mode) {
   }
 }
 
-// --- 基础策略计算 (A/B) ---
 function calculateStrategy() {
   if (currentStrategyMode !== 'A' && currentStrategyMode !== 'B') return;
   const stats = updateDashboard();
@@ -855,11 +1302,11 @@ function calculateStrategy() {
   }
   const currentAvg = C/W;
   if (calculatedPrice > currentAvg && targetAvg < currentAvg) {
-    msg += `<br><br><span style="color:#b91c1c; font-size:0.9em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
+    msg += `<br><br><span style="color:var(--el-danger-color); font-size:0.9em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
     resultBox.className = 'result-box success';
   } else if (marketPrice) {
-    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:#059669; font-size:0.9em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
-    else msg += `<br><br><span style="color:#d97706; font-size:0.9em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
+    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--el-success-color); font-size:0.9em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
+    else msg += `<br><br><span style="color:var(--el-warning-color); font-size:0.9em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
     resultBox.className = 'result-box success';
   } else { resultBox.className = 'result-box success'; }
   resultTitle.textContent = '💡 策略建议';
@@ -867,7 +1314,6 @@ function calculateStrategy() {
   resultBox.style.display = 'block';
 }
 
-// --- 收益计算逻辑 ---
 function calculateProfit() {
   const stats = updateDashboard();
   const totalWeight = stats.totalWeight;
@@ -890,15 +1336,8 @@ function calculateProfit() {
   profitPerEl.textContent = `收益率 ${profitPercent.toFixed(2)}%`;
   profitValEl.className = 'profit-val ' + (profit > 0 ? 'text-up' : (profit < 0 ? 'text-down' : 'text-neutral'));
   profitPerEl.className = 'profit-label ' + (profit > 0 ? 'text-up' : (profit < 0 ? 'text-down' : 'text-neutral'));
-  const card = document.querySelector('.card[style*="border-left: 5px solid"]');
-  if(card && card.querySelector('.card-title').textContent.includes('收益')) {
-    if(profit > 0) card.style.borderLeftColor = 'var(--profit-up)';
-    else if(profit < 0) card.style.borderLeftColor = 'var(--profit-down)';
-    else card.style.borderLeftColor = '#94a3b8';
-  }
 }
 
-// --- 高级策略逻辑 (C/D/E) ---
 function runStrategies() {
   if (currentStrategyMode !== 'C' && currentStrategyMode !== 'D' && currentStrategyMode !== 'E') return;
   const stats = updateDashboard();
@@ -949,7 +1388,7 @@ function calculateGrid(P_curr, W_hold, P_avg, Cost_hold, tbody, summary) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>第 ${i} 层</td>
-      <td style="color:#dc2626; font-weight:bold;">¥${price.toFixed(2)}</td>
+      <td style="color:var(--el-danger-color); font-weight:bold;">¥${price.toFixed(2)}</td>
       <td>买入 ${weight.toFixed(3)} g</td>
       <td>¥${cost.toFixed(2)}</td>
       <td>¥${newAvg.toFixed(2)}</td>
@@ -985,7 +1424,7 @@ function calculatePyramid(P_avg, W_hold, Cost_hold, tbody, summary) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>第 ${index + 1} 跌 (${((index+1)*stepPercent*100).toFixed(0)}%)</td>
-      <td style="color:#dc2626; font-weight:bold;">¥${triggerPrice.toFixed(2)}</td>
+      <td style="color:var(--el-danger-color); font-weight:bold;">¥${triggerPrice.toFixed(2)}</td>
       <td>买入 ${weightToBuy.toFixed(3)} g</td>
       <td>¥${moneyForLayer.toFixed(2)}</td>
       <td>¥${newAvg.toFixed(2)}</td>
@@ -997,12 +1436,10 @@ function calculatePyramid(P_avg, W_hold, Cost_hold, tbody, summary) {
 }
 
 function calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary) {
-  // 自动获取仪表盘中的市价
   const dashboardMarketPrice = parseFloat(document.getElementById('marketPrice').value);
   if (dashboardMarketPrice > 0) {
     P_market = dashboardMarketPrice;
   } else {
-    // 如果仪表盘中没有市价，则使用持仓均价作为默认值
     P_market = P_avg;
   }
   
@@ -1042,7 +1479,7 @@ function calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary) 
       tr.innerHTML = `
         <td>当前情景</td>
         <td>¥${P_market.toFixed(2)}</td>
-        <td style="font-weight:bold; color:#ea580c">补仓 ${X.toFixed(3)} g</td>
+        <td style="font-weight:bold; color:var(--el-primary-color)">补仓 ${X.toFixed(3)} g</td>
         <td>¥${costToAdd.toFixed(2)}</td>
         <td>¥${newAvg.toFixed(2)}</td>
       `;
@@ -1053,15 +1490,12 @@ function calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary) 
   summary.style.display = 'block';
 }
 
-// --- 更新持仓盈亏 ---
 function updatePositionProfits() {
-  // 重新渲染模态框以更新盈亏数据
   if (document.getElementById('portfolioModal').style.display === 'flex') {
     renderModalTable();
   }
 }
 
-// --- OCR 相关功能 ---
 function cancelOCR() {
   if(loadTimeout) clearTimeout(loadTimeout);
   document.getElementById('loadingOverlay').style.display = 'none';
