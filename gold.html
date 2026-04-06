@@ -7,23 +7,27 @@
 <script src='https://cdn.staticfile.org/tesseract.js/5.0.5/tesseract.min.js'></script>
 <style>
 :root {
-  /* Element UI Colors */
-  --el-primary-color: #409EFF;
-  --el-success-color: #67C23A;
-  --el-warning-color: #E6A23C;
-  --el-danger-color: #F56C6C;
-  --el-info-color: #909399;
-  /* Background & Text */
-  --bg-color: #f5f7fa;
-  --card-bg: #ffffff;
-  --text-primary: #303133;
-  --text-secondary: #606266;
-  --text-placeholder: #a8abb2;
-  --border-color: #dcdfe6;
-  /* Layout */
-  --border-radius: 4px;
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  /* Warm Color Palette */
+  --primary-color: #FF9800; /* 主色调 - 橙色 */
+  --primary-light: #FFE0B2; /* 主色调浅色 */
+  --primary-dark: #EF6C00; /* 主色调深色 */
+  --accent-color: #FF5722; /* 强调色 - 深橙红 */
+  --success-color: #8BC34A; /* 成功色 - 浅绿 */
+  --warning-color: #FFC107; /* 警告色 - 琥珀 */
+  --danger-color: #F44336; /* 危险色 - 红 */
+  --info-color: #00BCD4; /* 信息色 - 青 */
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-disabled: #bdbdbd;
+  --bg-color: #FFF8E1; /* 页面背景 - 米白 */
+  --card-bg: #FFFFFF; /* 卡片背景 - 白 */
+  --border-color: #E0E0E0; /* 边框色 */
+  --border-radius: 6px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --header-height: 60px;
+  /* Profit/Loss Colors */
+  --profit-color: var(--danger-color); /* 红色表示盈利 */
+  --loss-color: var(--success-color); /* 绿色表示亏损 */
 }
 body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
@@ -37,6 +41,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  box-sizing: border-box;
 }
 header {
   text-align: center;
@@ -48,7 +53,7 @@ header {
   padding: 20px;
 }
 h1 {
-  color: var(--el-primary-color);
+  color: var(--primary-color);
   margin-bottom: 5px;
   font-size: 1.8rem;
   font-weight: 500;
@@ -96,7 +101,7 @@ p.subtitle {
 .btn {
   padding: 8px 16px;
   border-radius: var(--border-radius);
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--border-color);
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
@@ -105,18 +110,20 @@ p.subtitle {
   align-items: center;
   gap: 6px;
   outline: none;
+  background-color: white;
+  color: var(--text-secondary);
 }
 .btn:focus {
   outline: none;
 }
 .btn-primary {
-  background-color: var(--el-primary-color);
+  background-color: var(--primary-color);
   color: white;
-  border-color: var(--el-primary-color);
+  border-color: var(--primary-color);
 }
 .btn-primary:hover {
-  background-color: #66b1ff;
-  border-color: #66b1ff;
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
 }
 .btn-outline {
   background-color: white;
@@ -124,36 +131,36 @@ p.subtitle {
   color: var(--text-secondary);
 }
 .btn-outline:hover {
-  background-color: #ecf5ff;
-  border-color: var(--el-primary-color);
-  color: var(--el-primary-color);
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 .btn-danger {
-  background-color: #fef0f0;
-  color: var(--el-danger-color);
-  border-color: #fde2e2;
+  background-color: #ffebee;
+  color: var(--danger-color);
+  border-color: #ffcdd2;
   padding: 4px 8px;
   font-size: 0.8rem;
 }
 .btn-danger:hover {
-  background-color: #fde2e2;
-  border-color: #fbdada;
-  color: #dd524d;
+  background-color: #f3e5f5;
+  border-color: #ef9a9a;
+  color: #e53935;
 }
 .btn-sm {
   padding: 6px 12px;
   font-size: 0.85rem;
 }
 .btn-save-position {
-  background-color: var(--el-success-color);
+  background-color: var(--success-color);
   color: white;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(103, 194, 58, 0.3);
-  border-color: var(--el-success-color);
+  box-shadow: 0 2px 4px rgba(139, 195, 74, 0.3);
+  border-color: var(--success-color);
 }
 .btn-save-position:hover {
-  background-color: #85ce66;
-  border-color: #85ce66;
+  background-color: #7CB342;
+  border-color: var(--success-color);
   transform: translateY(-1px);
 }
 /* Table */
@@ -166,8 +173,8 @@ table {
   min-width: 600px;
 }
 th {
-  background-color: #f5f7fa;
-  color: var(--text-secondary);
+  background-color: var(--primary-light);
+  color: var(--text-primary);
   font-weight: 600;
   text-align: left;
   padding: 12px;
@@ -191,19 +198,19 @@ input.editable-input {
   box-sizing: border-box;
 }
 input.editable-input:hover {
-  background-color: #f5f7fa;
-  border-color: #c0c4cc;
+  background-color: #fff3e0; /* Hover background color */
+  border-color: #ffb74d; /* Hover border color */
 }
 input.editable-input:focus {
   background: white;
-  border-color: var(--el-primary-color);
+  border-color: var(--primary-color);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
 }
 .total-row td {
   font-weight: bold;
-  background-color: #f5f7fa;
-  border-top: 2px solid var(--el-primary-color);
+  background-color: var(--primary-light);
+  border-top: 2px solid var(--primary-color);
   color: var(--text-primary);
 }
 /* Dashboard */
@@ -213,11 +220,12 @@ input.editable-input:focus {
   gap: 15px;
 }
 .stat-box {
-  background: #f5f7fa;
+  background: var(--card-bg);
   padding: 15px;
   border-radius: var(--border-radius);
   text-align: center;
   border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
 }
 .stat-label {
   font-size: 0.85rem;
@@ -230,7 +238,7 @@ input.editable-input:focus {
   color: var(--text-primary);
 }
 .stat-value.highlight {
-  color: var(--el-primary-color);
+  color: var(--primary-color);
 }
 /* Calculator Form */
 .calculator-form {
@@ -266,19 +274,19 @@ input.editable-input:focus {
 }
 .form-input:focus {
   outline: none;
-  border-color: var(--el-primary-color);
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
 }
 .form-input[readonly] {
-  background-color: #f5f7fa;
-  color: var(--text-placeholder);
+  background-color: #fafafa;
+  color: var(--text-disabled);
   cursor: not-allowed;
 }
 select.form-input {
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 8px center;
-  background-repeat: no-allow;
+  background-repeat: no-repeat;
   background-size: 16px 16px;
 }
 /* Profit Grid */
@@ -289,11 +297,12 @@ select.form-input {
   margin-top: 15px;
 }
 .profit-item {
-  background: #f5f7fa;
+  background: var(--card-bg);
   padding: 12px;
   border-radius: var(--border-radius);
   text-align: center;
   border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
 }
 .profit-label {
   font-size: 0.8rem;
@@ -305,10 +314,10 @@ select.form-input {
   font-weight: 700;
 }
 .text-up {
-  color: var(--el-danger-color); /* Red for profit */
+  color: var(--profit-color); /* Red for profit */
 }
 .text-down {
-  color: var(--el-success-color); /* Green for loss */
+  color: var(--loss-color); /* Green for loss */
 }
 .text-neutral {
   color: var(--text-secondary);
@@ -318,7 +327,7 @@ select.form-input {
   display: flex;
   gap: 0;
   margin-bottom: 20px;
-  background: #f5f7fa;
+  background: #fff3e0; /* Tab background */
   padding: 4px;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
@@ -340,13 +349,13 @@ select.form-input {
 .strategy-tab.active {
   background: white;
   border-color: var(--border-color);
-  color: var(--el-primary-color);
+  color: var(--primary-color);
   font-weight: bold;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 .strategy-tab:hover:not(.active) {
-  background: #e6f1ff;
-  color: var(--el-primary-color);
+  background: var(--primary-light);
+  color: var(--primary-color);
 }
 /* Result Box */
 .result-box {
@@ -359,16 +368,14 @@ select.form-input {
   border: 1px solid;
 }
 .result-box.success {
-  background-color: #f0f9ff;
-  border-color: #b3d8ff;
-  color: #2b6cb0;
-  display: block;
+  background-color: #fff8e1; /* Warm success bg */
+  border-color: #ffd54f;
+  color: #5d4037; /* Warm text */
 }
 .result-box.error {
-  background-color: #fef0f0;
-  border-color: #fbc4c4;
+  background-color: #ffebee;
+  border-color: #ffcdd2;
   color: #c62828;
-  display: block;
 }
 .result-title {
   font-weight: bold;
@@ -379,7 +386,7 @@ select.form-input {
 .result-highlight {
   font-weight: bold;
   font-size: 1.1em;
-  color: var(--el-primary-color);
+  color: var(--primary-color);
 }
 #fileInput {
   display: none;
@@ -391,7 +398,7 @@ select.form-input {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,248,225,0.95); /* Warm bg */
   display: none;
   justify-content: center;
   align-items: center;
@@ -404,7 +411,7 @@ select.form-input {
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--el-primary-color);
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 15px;
@@ -423,7 +430,7 @@ select.form-input {
 }
 .progress-fill {
   height: 100%;
-  background: var(--el-primary-color);
+  background: var(--primary-color);
   width: 0%;
   transition: width 0.3s;
 }
@@ -443,14 +450,14 @@ select.form-input {
 .empty-state {
   text-align: center;
   padding: 40px;
-  color: var(--text-placeholder);
+  color: var(--text-disabled);
   border: 2px dashed var(--border-color);
   border-radius: var(--border-radius);
   margin-top: 20px;
 }
 .refresh-hint {
   font-size: 0.8rem;
-  color: var(--text-placeholder);
+  color: var(--text-disabled);
   text-align: right;
   margin-top: 5px;
 }
@@ -478,6 +485,7 @@ select.form-input {
   flex-direction: column;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   animation: slideUp 0.3s ease-out;
+  overflow: hidden; /* Contain rounded corners */
 }
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
@@ -489,25 +497,29 @@ select.form-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: var(--primary-light); /* Header bg */
+  border-radius: var(--border-radius) var(--border-radius) 0 0; /* Rounded top */
 }
 .modal-body {
   padding: 20px;
   overflow-y: auto;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .modal-footer {
   padding: 15px 20px;
   border-top: 1px solid var(--border-color);
   text-align: right;
-  background: #f5f7fa;
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  background: #fff3e0; /* Footer bg */
+  border-radius: 0 0 var(--border-radius) var(--border-radius); /* Rounded bottom */
 }
 .close-modal {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--text-placeholder);
+  color: var(--text-disabled);
 }
 .close-modal:hover {
   color: var(--text-primary);
@@ -515,7 +527,7 @@ select.form-input {
 /* Data Status */
 .data-status {
   font-size: 0.8rem;
-  color: var(--el-success-color);
+  color: var(--success-color);
   margin-left: 10px;
   display: none;
 }
@@ -524,8 +536,11 @@ select.form-input {
 }
 /* Position List */
 .position-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  flex-grow: 1;
+  min-height: 0; /* Needed for flex parent with overflow */
 }
 .position-item {
   display: flex;
@@ -534,14 +549,20 @@ select.form-input {
   padding: 15px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  background: #f5f7fa;
+  background: var(--card-bg);
   transition: all 0.2s;
   cursor: pointer;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .position-item:hover {
-  border-color: var(--el-primary-color);
-  background: #ecf5ff;
+  border-color: var(--primary-color);
+  background: var(--primary-light);
   transform: translateX(5px);
+}
+.position-info {
+  flex-grow: 1;
+  min-width: 150px;
 }
 .position-info h3 {
   margin: 0 0 5px 0;
@@ -553,6 +574,11 @@ select.form-input {
   color: var(--text-secondary);
 }
 .position-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 120px;
   text-align: right;
 }
 .position-stat-val {
@@ -565,7 +591,7 @@ select.form-input {
   color: var(--text-secondary);
 }
 .btn-load {
-  background: var(--el-primary-color);
+  background: var(--primary-color);
   color: white;
   border: none;
   padding: 6px 12px;
@@ -575,12 +601,12 @@ select.form-input {
   margin-left: 10px;
 }
 .btn-load:hover {
-  background: #66b1ff;
+  background: var(--primary-dark);
 }
 .btn-delete-pos {
   background: transparent;
-  color: var(--el-danger-color);
-  border: 1px solid var(--el-danger-color);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
   padding: 4px 8px;
   border-radius: var(--border-radius);
   font-size: 0.8rem;
@@ -588,7 +614,7 @@ select.form-input {
   margin-left: 5px;
 }
 .btn-delete-pos:hover {
-  background: var(--el-danger-color);
+  background: var(--danger-color);
   color: white;
 }
 .save-footer {
@@ -606,10 +632,10 @@ select.form-input {
 }
 /* Special Cards */
 .card-profit {
-  border-left: 5px solid var(--el-success-color);
+  border-left: 5px solid var(--success-color);
 }
 .card-strategy {
-  border-left: 5px solid var(--el-info-color);
+  border-left: 5px solid var(--info-color);
 }
 </style>
 </head>
@@ -625,14 +651,14 @@ select.form-input {
 <div class="modal-overlay" id="portfolioModal">
 <div class="modal-content">
 <div class="modal-header">
-<h2 style="margin:0; font-size:1.2rem; color:var(--text-primary);">📂 我的持仓仓库</h2>
+<h2 style="margin:0; font-size:1.2rem; color:var(--text-primary);">🪙 我的持仓仓库</h2>
 <button class="close-modal" onclick="toggleModal(false)">&times;</button>
 </div>
 <div class="modal-body">
 <div id="positionListContainer" class="position-list">
 <!-- 动态生成仓位列表 -->
 </div>
-<div id="modalEmpty" style="text-align:center; padding: 30px; color: var(--text-placeholder); display:none;">
+<div id="modalEmpty" style="text-align:center; padding: 30px; color: var(--text-disabled); display:none;">
 暂无保存的仓位记录<br>
 <span style="font-size:0.85rem">请在主界面编辑好数据后，点击右下角"💾 保存当前持仓"</span>
 </div>
@@ -669,7 +695,7 @@ select.form-input {
 <div class="header-actions">
 <span id="saveStatus" class="data-status">💾 已自动保存</span>
 <button class="btn btn-outline btn-sm" onclick="toggleModal(true)">
-📂 我的持仓
+🪙 我的持仓
 </button>
 </div>
 </header>
@@ -755,7 +781,7 @@ select.form-input {
 </div>
 <div class="form-group">
 <label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--el-primary-color);">
+<input type="text" id="resultPriceA" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary-color);">
 </div>
 </div>
 <div id="modeBInputs" class="calculator-form" style="display:none;">
@@ -765,7 +791,7 @@ select.form-input {
 </div>
 <div class="form-group">
 <label class="form-label">🎯 目标购入单价 (限价)</label>
-<input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--el-primary-color);">
+<input type="text" id="resultPriceB" class="form-input" readonly placeholder="¥0.00/g" style="color:var(--primary-color);">
 </div>
 <div class="form-group">
 <label class="form-label">预计买入克数</label>
@@ -836,7 +862,7 @@ select.form-input {
 </thead>
 <tbody id="resultBody"></tbody>
 </table>
-<div id="resultSummary" style="padding: 15px; background: #f0f9ff; border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem; color: #2b6cb0; display:none;"></div>
+<div id="resultSummary" style="padding: 15px; background: #fff8e1; border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem; color: #5d4037; display:none;"></div>
 </div>
 <div id="strategyResult" class="result-box">
 <span class="result-title" id="resultTitle"></span>
@@ -854,7 +880,7 @@ select.form-input {
 <input type="number" id="sellPrice" class="form-input" placeholder="例如：600" oninput="calculateProfit()">
 </div>
 <div class="form-group">
-<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.8rem; color:var(--text-placeholder);">(默认 0.4%)</span></label>
+<label class="form-label">手续费率 (%) <span style="font-weight:normal; font-size:0.8rem; color:var(--text-disabled);">(默认 0.4%)</span></label>
 <input type="number" id="feeRate" class="form-input" value="0.4" step="0.01" oninput="calculateProfit()">
 </div>
 </div>
@@ -875,7 +901,7 @@ select.form-input {
 <div class="profit-label">持仓成本</div>
 <div class="profit-val" id="profitCost">¥0.00</div>
 </div>
-<div class="profit-item" style="grid-column: span 2; background: #f0f9ff; border-color: #b3d8ff;">
+<div class="profit-item" style="grid-column: span 2; background: #fff8e1; border-color: #ffd54f;">
 <div class="profit-label">累计收益 (元)</div>
 <div class="profit-val" id="profitValue">¥0.00</div>
 <div class="profit-label" style="margin-top:4px; font-size:0.75rem;" id="profitPercent">收益率 0.00%</div>
@@ -1048,7 +1074,7 @@ function renderModalTable() {
       const currentTotalValue = pos.totalWeight * currentMarketPrice;
       const profit = currentTotalValue - pos.totalCost;
       profitValue = profit.toFixed(2);
-      profitColor = profit >= 0 ? 'var(--el-danger-color)' : 'var(--el-success-color)'; // Red for profit, green for loss
+      profitColor = profit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)'; // Red for profit, green for loss
       totalOverallProfit += profit;
     }
     
@@ -1065,12 +1091,12 @@ function renderModalTable() {
         <div class="position-stat-label">总克重</div>
         <div class="position-stat-val" style="margin-top:4px;">¥${pos.totalCost.toFixed(2)}</div>
         <div class="position-stat-label">总成本</div>
-        <div class="position-stat-val" style="margin-top:4px; color:var(--el-primary-color);">¥${avgPrice.toFixed(2)}</div>
+        <div class="position-stat-val" style="margin-top:4px; color:var(--primary-color);">¥${avgPrice.toFixed(2)}</div>
         <div class="position-stat-label">持仓均价</div>
         <div class="position-stat-val" style="margin-top:4px; color:${profitColor};">¥${profitValue}</div>
         <div class="position-stat-label">盈亏</div>
       </div>
-      <div style="display:flex; align-items:center;">
+      <div style="display:flex; align-items:center; flex-shrink: 0;">
         <button class="btn-load" onclick="loadPosition(${index})">加载</button>
         <button class="btn-delete-pos" onclick="deletePosition(${index}, event)">删除</button>
       </div>
@@ -1082,13 +1108,13 @@ function renderModalTable() {
   totalProfitDiv.style.cssText = `
     margin-top: 20px;
     padding: 15px;
-    background: #f5f7fa;
+    background: var(--primary-light);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     text-align: center;
   `;
   
-  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--el-danger-color)' : 'var(--el-success-color)'; // Red for profit, green for loss
+  const overallProfitColor = totalOverallProfit >= 0 ? 'var(--profit-color)' : 'var(--loss-color)'; // Red for profit, green for loss
   totalProfitDiv.innerHTML = `
     <h3 style="margin: 0 0 10px; color: ${overallProfitColor}; font-size: 1.2rem;">
       所有仓位总盈亏：¥${totalOverallProfit.toFixed(2)}
@@ -1302,11 +1328,11 @@ function calculateStrategy() {
   }
   const currentAvg = C/W;
   if (calculatedPrice > currentAvg && targetAvg < currentAvg) {
-    msg += `<br><br><span style="color:var(--el-danger-color); font-size:0.9em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
+    msg += `<br><br><span style="color:var(--profit-color); font-size:0.9em">⚠️ 注意：计算出的限价高于您当前均价，此操作会<strong>抬高</strong>均价。</span>`;
     resultBox.className = 'result-box success';
   } else if (marketPrice) {
-    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--el-success-color); font-size:0.9em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
-    else msg += `<br><br><span style="color:var(--el-warning-color); font-size:0.9em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
+    if (calculatedPrice <= marketPrice) msg += `<br><br><span style="color:var(--loss-color); font-size:0.9em">✅ 可行：当前市价 (¥${marketPrice}) 低于限价。</span>`;
+    else msg += `<br><br><span style="color:var(--warning-color); font-size:0.9em">⚠️ 挑战：当前市价 (¥${marketPrice}) 高于限价，需等待回调。</span>`;
     resultBox.className = 'result-box success';
   } else { resultBox.className = 'result-box success'; }
   resultTitle.textContent = '💡 策略建议';
@@ -1388,7 +1414,7 @@ function calculateGrid(P_curr, W_hold, P_avg, Cost_hold, tbody, summary) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>第 ${i} 层</td>
-      <td style="color:var(--el-danger-color); font-weight:bold;">¥${price.toFixed(2)}</td>
+      <td style="color:var(--profit-color); font-weight:bold;">¥${price.toFixed(2)}</td>
       <td>买入 ${weight.toFixed(3)} g</td>
       <td>¥${cost.toFixed(2)}</td>
       <td>¥${newAvg.toFixed(2)}</td>
@@ -1424,7 +1450,7 @@ function calculatePyramid(P_avg, W_hold, Cost_hold, tbody, summary) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>第 ${index + 1} 跌 (${((index+1)*stepPercent*100).toFixed(0)}%)</td>
-      <td style="color:var(--el-danger-color); font-weight:bold;">¥${triggerPrice.toFixed(2)}</td>
+      <td style="color:var(--profit-color); font-weight:bold;">¥${triggerPrice.toFixed(2)}</td>
       <td>买入 ${weightToBuy.toFixed(3)} g</td>
       <td>¥${moneyForLayer.toFixed(2)}</td>
       <td>¥${newAvg.toFixed(2)}</td>
@@ -1479,7 +1505,7 @@ function calculateBreakEven(P_market, W_hold, P_avg, Cost_hold, tbody, summary) 
       tr.innerHTML = `
         <td>当前情景</td>
         <td>¥${P_market.toFixed(2)}</td>
-        <td style="font-weight:bold; color:var(--el-primary-color)">补仓 ${X.toFixed(3)} g</td>
+        <td style="font-weight:bold; color:var(--primary-color)">补仓 ${X.toFixed(3)} g</td>
         <td>¥${costToAdd.toFixed(2)}</td>
         <td>¥${newAvg.toFixed(2)}</td>
       `;
