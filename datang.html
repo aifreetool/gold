@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -17,7 +20,7 @@
  --serif:"Noto Serif SC","Source Han Serif SC","STSong",serif;
 }
 html{font-family:var(--font);background:var(--bg);color:var(--text)}
-body{min-height:100vh;overflow-x:hidden}
+body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
 /* SECTION: header */
 .hdr{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0a0f1e,#131b30);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
@@ -106,12 +109,12 @@ body{min-height:100vh;overflow-x:hidden}
 .dyn-tag{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
 
 /* SECTION: timeline */
-.tl-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.tl-wrap{overflow:hidden;display:flex;position:relative;flex:1;min-height:0}
 .tl-wrap::-webkit-scrollbar{height:8px}
 .tl-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
-.tl-canvas{position:relative;min-height:200px;overflow:visible}
+.tl-canvas{position:relative;height:100%;overflow-x:auto;overflow-y:auto;flex:1;min-width:0;z-index:1;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}#pTracks{padding-top:0}
 
-.y-axis{position:relative;height:36px;border-bottom:1px solid var(--border);overflow:visible}
+.y-axis{position:sticky;top:0;z-index:10;height:36px;border-bottom:1px solid var(--border);overflow:visible;background:var(--bg)}
 .y-tick{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%)}
 .y-tick .ln{width:1px;height:14px;background:rgba(255,255,255,.12)}
 .y-tick .lb{font-size:10px;color:var(--dim);margin-top:2px;white-space:nowrap}
@@ -124,20 +127,20 @@ body{min-height:100vh;overflow-x:hidden}
 .hist-band{position:absolute;top:0;bottom:0;background:rgba(255,100,100,.04);border-left:1px dashed rgba(255,100,100,.15);border-right:1px dashed rgba(255,100,100,.15);pointer-events:none;overflow:visible}
 .hist-lb{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,150,150,.5);white-space:nowrap;font-weight:600;letter-spacing:1px;writing-mode:vertical-rl;text-orientation:mixed;min-width:20px}
 
-.p-tracks{position:relative;z-index:1;overflow:visible}
-.p-row{position:relative;margin-bottom:4px;transition:opacity .3s,max-height .3s;overflow:visible}
+.p-tracks{position:relative;z-index:1;overflow:visible;display:block;width:100%}
+.p-row{position:relative;height:52px;transition:opacity .3s;overflow:visible;transform:translateZ(0);border-bottom:1px solid rgba(255,255,255,.06)}
 .p-row.dim{display:none}
 .p-row.hl{background:rgba(233,69,96,.06);border-radius:8px}
-.p-hdr{position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--bg)}
+.p-hdr{display:flex;align-items:center;gap:8px;padding:0 10px;height:52px;margin-bottom:0;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);flex-shrink:0;min-width:110px;border-bottom:2px solid rgba(233,69,96,.25);overflow:hidden;white-space:nowrap}
 .p-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
 .p-name{font-family:var(--serif);font-size:14px;font-weight:700;white-space:nowrap}
 .p-meta{font-size:10px;color:var(--dim);white-space:nowrap}
 .p-dynasty{font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600}
-.life-bar{position:absolute;height:5px;border-radius:3px;opacity:.4;top:38px}
+.life-bar{position:absolute;height:4px;border-radius:2px;opacity:.35;top:8px}
 
-.ev-layer{position:relative;padding-top:6px;min-width:0;overflow:visible}
-.ev-row-label{position:absolute;left:0;top:0;font-size:9px;color:var(--dim);pointer-events:none;z-index:2}
-.ev-layer-work{margin-top:18px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);overflow:visible}
+.ev-layer{position:absolute;top:0;left:0;right:0;bottom:0;min-width:0;overflow:visible}
+.ev-row-label{display:none}
+.ev-layer-work{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
 .ev-dot{position:absolute;cursor:pointer;transition:transform .2s;z-index:5}
 .ev-dot:hover{transform:scale(1.6);z-index:20}
 .ev-dot.pulse{animation:dotPulse 1.5s ease 3;z-index:30}
@@ -152,8 +155,8 @@ body{min-height:100vh;overflow-x:hidden}
  50%{transform:rotate(45deg) scale(3);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}
  100%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}
 }
-.ev-dot.life{width:12px;height:12px;border-radius:50%;border:2px solid}
-.ev-dot.work{width:9px;height:9px;border-radius:2px;transform:rotate(45deg)}
+.ev-dot.life{width:10px;height:10px;border-radius:50%;border:2px solid;position:absolute;top:5px;z-index:5}
+.ev-dot.work{width:8px;height:8px;border-radius:1px;transform:rotate(45deg);position:absolute;top:22px;z-index:5;box-shadow:0 0 3px rgba(0,0,0,.3)}
 .ev-dot.work:hover{transform:rotate(45deg) scale(1.7)}
 .ev-dot.highlight{box-shadow:0 0 8px 3px rgba(233,69,96,.6);z-index:15}
 
@@ -221,33 +224,7 @@ body{min-height:100vh;overflow-x:hidden}
  .nav-btn{width:32px;height:32px;font-size:14px}
  .nav-ctrl{bottom:12px;right:12px;gap:4px}
  .search-results{max-height:300px}
- .year-picker{padding:6px 14px;gap:6px}
- .year-picker select{font-size:12px;padding:3px 8px}
- .year-summary{padding:8px 14px}
- .ys-event{max-width:100%;flex:1 1 100%}
 }
-
-/* SECTION: year picker */
-.year-picker{padding:8px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2);flex-wrap:wrap}
-.year-picker label{font-size:12px;color:var(--dim);font-weight:600}
-.year-picker select{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;outline:none;cursor:pointer;font-family:var(--font)}
-.year-picker select:focus{border-color:rgba(233,69,96,.5)}
-.year-picker .year-hint{font-size:11px;color:var(--dim)}
-
-/* SECTION: year summary */
-.year-summary{padding:10px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,0,0,.15),transparent);display:none}
-.year-summary.show{display:block}
-.year-summary-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
-.year-summary-title span{color:var(--dim);font-weight:400;font-size:12px}
-.year-summary-events{display:flex;flex-wrap:wrap;gap:8px}
-.ys-event{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;max-width:320px;flex:1 1 280px;transition:all .2s}
-.ys-event:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
-.ys-event .ys-poet{font-size:11px;color:var(--dim);margin-bottom:2px}
-.ys-event .ys-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
-.ys-event .ys-desc{font-size:12px;color:var(--dim);line-height:1.5}
-.ys-event .ys-type{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-left:4px;font-weight:600}
-.ys-event .ys-type.life{background:rgba(41,128,185,.15);color:#48c9b0}
-.ys-event .ys-type.work{background:rgba(233,160,69,.15);color:#e9a045}
 
 /* Detail panel speak button */
 .dtl-speak-bar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;padding:8px 12px;background:rgba(233,69,96,.06);border-radius:8px;border:1px solid rgba(233,69,96,.15)}
@@ -261,6 +238,22 @@ body{min-height:100vh;overflow-x:hidden}
 .dtl-speak-btn:hover{background:rgba(233,69,96,.2)}
 .dtl-speak-btn.speaking{background:#e94560;color:#fff;border-color:#e94560;animation:speakPulse 1.5s ease infinite}
 .dtl-speak-hint{font-size:11px;color:var(--dim)}
+/* SECTION: year filter */
+.year-inputs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.year-inputs label{font-size:11px;color:var(--dim);line-height:26px}
+.year-inputs input{width:70px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:12px;outline:none;text-align:center}
+.year-inputs input:focus{border-color:rgba(233,69,96,.5)}
+.year-inputs button{padding:3px 10px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:11px;cursor:pointer;transition:all .2s}
+.year-inputs button:hover{background:rgba(233,69,96,.12);border-color:rgba(233,69,96,.6)}
+.year-hint{font-size:10px;color:var(--dim);line-height:26px;margin-left:4px}
+.author-col{width:110px;flex-shrink:0;position:sticky;left:0;z-index:20;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);height:100%;overflow-y:auto;padding-top:36px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.author-col::before{content:'';position:sticky;top:0;z-index:11;height:36px;background:var(--bg);border-bottom:1px solid var(--border)}
+
+
+.ev-layer-work{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
+.work-events-layer{display:none}
+.timeline-line{position:absolute;top:10px;left:0;right:0;height:1px;background:rgba(233,69,96,.25);z-index:0}
+.work-events-layer .ev-dot-work-container{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
 </style>
 </head>
 <body>
@@ -278,26 +271,25 @@ body{min-height:100vh;overflow-x:hidden}
 
 <div class="intro">
  <p>从汉末曹操到清代龚自珍，50余位诗词大家在同一条时间线上交汇，涵盖小学到高中各年级课本经典诗词。选定任意一年，仿佛推开一扇窗——李白正举杯邀月，杜甫正登高望远，苏轼正泛舟赤壁……同一时刻，不同的诗人正在经历各自的人生。搜索诗词或诗人名字即可快速定位，点击任意节点查看诗词原文、创作背景、含义解析和使用场景。</p>
- <p class="hint">左右滑动浏览 · 点击圆点查看详情（含使用场景）· 上行●生平 下行◆作品 · 搜索框支持关键词搜索 · 搜索结果支持语音朗读</p>
+ <p class="hint">左右滑动浏览 · 点击圆点查看详情（含使用场景）· 上行●生平(时间线上) 下行◆作品(时间线下方菱形) · 搜索框支持关键词搜索 · 搜索结果支持语音朗读</p>
 </div>
 
-<div class="year-picker" id="yearPicker">
- <label for="yearSelect">选定年份：</label>
- <select id="yearSelect"></select>
- <span class="year-hint" id="yearHint">← 选择年份查看当年诗坛动态</span>
-</div>
-<div class="year-summary" id="yearSummary"></div>
+
+
 <div class="fbar" id="filterBar"></div>
 <div class="fbar" id="gradeBar" style="display:none"></div>
 <div class="fbar" id="emotionBar" style="display:none"></div>
+<div class="fbar" id="yearBar" style="display:block"></div>
 <div class="dyn-bar" id="dynastyBar"></div>
 <div class="qnav" id="quickNav"></div>
 
 <div class="tl-wrap" id="tlWrap">
+ <div class="author-col" id="authorCol"></div>
  <div class="tl-canvas" id="tlCanvas">
  <div class="y-axis" id="yAxis"></div>
  <div id="bands" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:visible"></div>
  <div class="p-tracks" id="pTracks"></div>
+ <div class="work-events-layer" id="workEventsLayer"></div>
  </div>
 </div>
 
@@ -409,7 +401,17 @@ libai:{name:'李白',dynasty:'tang',born:701,died:762,avatar:'李',color:'#e9456
 {year:752,type:'work',title:'将进酒',desc:'与友人在嵩山宴饮时作。',poem:'君不见黄河之水天上来，奔流到海不复回。\n君不见高堂明镜悲白发，朝如青丝暮成雪。\n人生得意须尽欢，莫使金樽空对月。\n天生我材必有用，千金散尽还复来。',bg:'酒酣之际所作，既有"人生几何"的感慨，更有"天生我材必有用"的自信。',use:["珍惜当下/及时行乐","自信/天生我材必有用","豪迈饮酒/朋友聚会"]},
 {year:755,type:'life',title:'安史之乱',desc:'安史之乱爆发，隐居庐山，后入永王幕府，获罪流放夜郎。'},
 {year:759,type:'work',title:'早发白帝城',desc:'流放途中遇大赦，狂喜东归时所作。',poem:'朝辞白帝彩云间，千里江陵一日还。\n两岸猿声啼不住，轻舟已过万重山。',bg:'李白因永王案被流放夜郎，行至白帝城时忽遇大赦。全诗节奏轻快，写出归心似箭的喜悦。',use:["劫后余生的喜悦","归心似箭/急切回家","轻快愉悦的心情"]},
-{year:762,type:'life',title:'病逝当涂',desc:'六十二岁病逝于安徽当涂。'}
+{year:723,type:'work',title:'古朗月行（节选）',desc:'童年时所作，以儿童视角描写月亮。',poem:'小时不识月，呼作白玉盘。\n又疑瑶台镜，飞在青云端。',bg:'李白童年时所作，以儿童的视角和想象描写月亮，将月亮比作白玉盘和瑶台镜，充满童趣和想象力。',use:["童年/童趣","描写月亮","丰富的想象力"]},
+{year:725,type:'work',title:'峨眉山月歌',desc:'出蜀时所作，描写月夜行舟的江景。',poem:'峨眉山月半轮秋，影入平羌江水流。\n夜发清溪向三峡，思君不见下渝州。',bg:'李白二十五岁出蜀时所作，描写月夜行舟于清溪、三峡之间的景色，表达对友人的思念。',use:["离别/思念友人","月夜行舟","出蜀远游"]},
+{year:725,type:'work',title:'望天门山',desc:'出蜀途中望天门山所作。',poem:'天门中断楚江开，碧水东流至此回。\n两岸青山相对出，孤帆一片日边来。',bg:'李白二十五岁出蜀，途经天门山时所作。全诗以壮阔的笔触描绘天门山的雄奇景色。',use:["描写山水/壮丽景色","勇往直前","大自然的鬼斧神工"]},
+{year:725,type:'work',title:'渡荆门送别',desc:'二十五岁出蜀，渡荆门时所作。',poem:'渡远荆门外，来从楚国游。\n山随平野尽，江入大荒流。\n月下飞天镜，云生结海楼。\n仍怜故乡水，万里送行舟。',bg:'李白二十五岁出蜀，渡荆门山时所作。前六句写壮阔的长江景色，最后两句表达对故乡的眷恋。',use:["离别/思乡","壮阔的自然景色","远游/出蜀"]},
+{year:743,type:'work',title:'夜宿山寺',desc:'夜宿高山寺庙时所作。',poem:'危楼高百尺，手可摘星辰。\n不敢高声语，恐惊天上人。',bg:'诗人夜宿高山寺庙，以夸张手法写出楼之高，仿佛可以摘到星星，不敢大声说话怕惊动天上的人。',use:["描写高楼/高山","夸张手法","夜晚的宁静"]},
+{year:745,type:'work',title:'春夜洛城闻笛',desc:'在洛阳春夜听到笛声而作。',poem:'谁家玉笛暗飞声，散入春风满洛城。\n此夜曲中闻折柳，何人不起故园情。',bg:'李白在洛阳春夜听到远处飘来的笛声，笛曲中传来《折杨柳》的调子，勾起了深深的思乡之情。',use:["思乡/思念故乡","春夜闻笛","离愁别绪"]},
+{year:750,type:'work',title:'独坐敬亭山',desc:'在宣城敬亭山独坐时所作。',poem:'众鸟高飞尽，孤云独去闲。\n相看两不厌，只有敬亭山。',bg:'李白在宣城时，独自坐在敬亭山上，感到世间孤独，只有敬亭山相伴。表达诗人超然物外、与自然合一的心境。',use:["独处/孤独中的宁静","与自然合一","超然物外"]},
+{year:750,type:'work',title:'送友人',desc:'送别友人时所作。',poem:'青山横北郭，白水绕东城。\n此地一为别，孤蓬万里征。\n浮云游子意，落日故人情。\n挥手自兹去，萧萧班马鸣。',bg:'李白在宣城送别友人时所作。以浮云比喻游子漂泊，以落日比喻不舍之情，情景交融。',use:["送别友人","离别的不舍","友情/漂泊"]},
+{year:754,type:'work',title:'闻王昌龄左迁龙标遥有此寄',desc:'听说友人王昌龄被贬龙标，遥寄此诗。',poem:'杨花落尽子规啼，闻道龙标过五溪。\n我寄愁心与明月，随君直到夜郎西。',bg:'李白得知好友王昌龄被贬为龙标尉，遥寄此诗表达思念和关切。我寄愁心与明月随君直到夜郎西将愁心托付给明月想象奇特而深情。',use:["思念友人","友情/牵挂","对友人的关切"]},
+{year:755,type:'work',title:'赠汪伦',desc:'赴泾县游历时，汪伦来送别，李白作此诗赠之。',poem:'李白乘舟将欲行，忽闻岸上踏歌声。\n桃花潭水深千尺，不及汪伦送我情。',bg:'李白游泾县时当地友人汪伦以美酒相赠。李白临别作此诗以桃花潭水之深比喻友情之深。',use:["送别友人/深厚友情","感恩友情","真挚的友谊"]},{year:762,type:'life',title:'病逝当涂',desc:'六十二岁病逝于安徽当涂。'},
+{year:745,type:'work',title:'梦游天姥吟留别',desc:'以梦境写理想，表达对权贵的蔑视和对自由的追求。',poem:'海客谈瀛洲，烟涛微茫信难求。\n越人语天姥，云霞明灭或可睹。\n天姥连天向天横，势拔五岳掩赤城。\n天台四万八千丈，对此欲倒东南倾。\n我欲因之梦吴越，一夜飞度镜湖月。\n湖月照我影，送我至剡溪。\n安能摧眉折腰事权贵，使我不得开心颜！',bg:'李白在长安受到权贵排挤后即将离开，以此诗告别友人。全诗以梦游天姥山的奇幻经历为主线，描绘了一个瑰丽壮阔的仙境世界。最后两句安能摧眉折腰事权贵使我不得开心颜直抒胸臆，表达了诗人蔑视权贵追求自由的傲岸精神，是李白人格魅力的集中体现。',use:["追求自由/不屈服权贵","梦境与现实的对比","豪迈不羁"]}
 ]},
 dufu:{name:'杜甫',dynasty:'tang',born:712,died:770,avatar:'杜',color:'#2471a3',events:[
 {year:712,type:'life',title:'出生',desc:'字子美，自号少陵野老，"诗圣"，其诗被誉为"诗史"。'},
@@ -483,7 +485,7 @@ luyou:{name:'陆游',dynasty:'song',born:1125,died:1210,avatar:'陆',color:'#16a
 {year:1167,type:'work',title:'游山西村',desc:'罢官归乡后在山西村做客时所作。',poem:'莫笑农家腊酒浑，丰年留客足鸡豚。\n山重水复疑无路，柳暗花明又一村。\n箫鼓追随春社近，衣冠简朴古风存。\n从今若许闲乘月，拄杖无时夜叩门。',bg:'"山重水复疑无路，柳暗花明又一村"成为比喻绝处逢生的经典名句。',use:["绝处逢生/困境中看到希望","山重水复后的转机","乡村淳朴生活"]},
 {year:1192,type:'work',title:'十一月四日风雨大作',desc:'六十八岁闲居山阴时所作。',poem:'僵卧孤村不自哀，尚思为国戍轮台。\n夜阑卧听风吹雨，铁马冰河入梦来。',bg:'年迈的陆游想的仍然是为国戍守边疆。深夜听着风雨声入梦，梦中又回到了铁骑踏冰河的战场。',use:["老骥伏枥/壮志不减","爱国情怀","梦中仍在奋斗"]},
 {year:1200,type:'work',title:'示儿',desc:'临终绝笔。',poem:'死去元知万事空，但悲不见九州同。\n王师北定中原日，家祭无忘告乃翁。',bg:'陆游八十五岁临终前所作，嘱咐儿子们等到北伐胜利时祭祀告诉他。',use:["爱国/至死不渝","临终遗言/最后心愿","期盼统一/国家复兴"]},
-{year:1210,type:'life',title:'病逝',desc:'八十六岁病逝于山阴。'}
+{year:1177,type:'work',title:'书愤',desc:'回忆早年抗金壮志，感叹壮志难酬。',poem:'早岁那知世事艰，中原北望气如山。\n楼船夜雪瓜洲渡，铁马秋风大散关。\n塞上长城空自许，镜中衰鬓已先斑。\n出师一表真名世，千载谁堪伯仲间！',bg:'陆游回忆年轻时立志收复中原的豪情壮志对比如今镜中白发斑斑的自己楼船夜雪瓜洲渡铁马秋风大散关以两组意象概括南宋抗金的两大战场气势雄壮最后以诸葛亮自比表达至死不渝的报国之志。',use:['壮志难酬的悲愤','回忆往昔豪情','以古人自勉']},{year:1210,type:'life',title:'病逝',desc:'八十六岁病逝于山阴。'}
 ]},
 xinqiji:{name:'辛弃疾',dynasty:'song',born:1140,died:1207,avatar:'辛',color:'#d4ac0d',events:[
 {year:1140,type:'life',title:'出生',desc:'字幼安，号稼轩，南宋豪放派词人代表。'},
@@ -491,7 +493,7 @@ xinqiji:{name:'辛弃疾',dynasty:'song',born:1140,died:1207,avatar:'辛',color:
 {year:1174,type:'work',title:'水龙吟·登建康赏心亭',desc:'在建康赏心亭登高远望。',poem:'楚天千里清秋，水随天去秋无际。\n把吴钩看了，栏杆拍遍，无人会，登临意。\n可惜流年，忧愁风雨，树犹如此！\n倩何人唤取，红巾翠袖，揾英雄泪？',bg:'辛弃疾南归后一直不被重用，"把吴钩看了，栏杆拍遍"写出满腔壮志无处施展的悲愤。',use:["壮志难酬的悲愤","怀才不遇","无人理解的孤独"]},
 {year:1188,type:'work',title:'破阵子·为陈同甫赋壮词以寄之',desc:'写给好友陈亮的"壮词"。',poem:'醉里挑灯看剑，梦回吹角连营。\n八百里分麾下炙，五十弦翻塞外声，沙场秋点兵。\n马作的卢飞快，弓如霹雳弦惊。\n了却君王天下事，赢得生前身后名。\n可怜白发生！',bg:'前九句酣畅淋漓地写军中生活，最后一句"可怜白发生"戛然而止——一切不过是一场梦。',use:["追忆往昔荣光","理想与现实的落差","壮志未酬的不甘"]},
 {year:1203,type:'work',title:'西江月·夜行黄沙道中',desc:'闲居上饶时描写夏夜乡村景色。',poem:'明月别枝惊鹊，清风半夜鸣蝉。\n稻花香里说丰年，听取蛙声一片。\n七八个星天外，两三点雨山前。\n旧时茅店社林边，路转溪桥忽见。',bg:'以清新活泼的笔调描绘乡村夜景，展现了难得的宁静与喜悦。',use:["乡村夏夜的美好","田园生活的宁静","丰收的喜悦"]},
-{year:1207,type:'life',title:'病逝',desc:'六十八岁病逝。临终大呼"杀贼！杀贼！"'}
+{year:1205,type:'work',title:'永遇乐·京口北固亭怀古',desc:'登京口北固亭怀古，借孙权、刘裕等历史人物抒发壮志。',poem:'千古江山，英雄无觅孙仲谋处。\n舞榭歌台，风流总被雨打风吹去。\n斜阳草树，寻常巷陌，人道寄奴曾住。\n想当年，金戈铁马，气吞万里如虎。\n元嘉草草，封狼居胥，赢得仓皇北顾。\n四十三年，望中犹记，烽火扬州路。\n可堪回首，佛狸祠下，一片神鸦社鼓。\n凭谁问：廉颇老矣，尚能饭否？',bg:'辛弃疾六十六岁登京口北固亭借古讽今上片追忆孙权刘裕的英雄业绩下片以南朝宋文帝草率北伐失败的典故警告当朝不可冒进最后以廉颇老矣尚能饭否自比表达老当益壮却不被重用的悲愤全词用典精当气势磅礴被誉为辛词压卷之作。',use:['怀古伤今','老当益壮','壮志难酬']},{year:1207,type:'life',title:'病逝',desc:'六十八岁病逝。临终大呼"杀贼！杀贼！"'}
 ]},
 luobinwang:{name:'骆宾王',dynasty:'tang',born:619,died:684,avatar:'骆',color:'#f39c12',events:[
 {year:619,type:'life',title:'出生',desc:'字观光，婺州义乌人，"初唐四杰"之一。'},
@@ -692,22 +694,6 @@ liyu:{name:'李煜',dynasty:'song',born:937,died:978,avatar:'李',color:'#c0392b
 {year:976,type:'work',title:'虞美人',desc:'亡国后所作，以春花秋月感叹故国之思，被誉为"词中之帝"的绝唱。',poem:'春花秋月何时了？往事知多少。\n小楼昨夜又东风，故国不堪回首月明中。\n雕栏玉砌应犹在，只是朱颜改。\n问君能有几多愁？恰似一江春水向东流。',bg:'李煜亡国后被囚禁于汴京，面对春花秋月的美景却感叹"往事知多少"。"问君能有几多愁？恰似一江春水向东流"以滔滔江水比喻无尽的愁绪，是千古传诵的名句。据传此词写成后不久，李煜即被宋太宗赐毒酒鸩杀。',use:["亡国之痛/故国之思","人生无常的感慨","愁绪如江水"]},
 {year:976.5,type:'work',title:'相见欢',desc:'亡国后所作，写深秋离愁与亡国之痛。',poem:'无言独上西楼，月如钩。\n寂寞梧桐深院锁清秋。\n剪不断，理还乱，是离愁。\n别是一般滋味在心头。',bg:'李煜被囚禁后，独自登上西楼，面对如钩残月和寂寞庭院。"剪不断，理还乱，是离愁"以丝线比喻愁绪的纷繁复杂，"别是一般滋味在心头"写出难以言说的复杂心境。全词以极简笔墨写深沉的亡国之痛。',use:["离愁别绪","难以言说的苦闷","孤独寂寞"]}
 ]},
-/* 陆游补充高中诗词 */
-luyou2:{name:'陆游',dynasty:'song',born:1125,died:1210,avatar:'陆',color:'#16a085',events:[
-{year:1125,type:'life',title:'出生',desc:'字务观，号放翁，越州山阴人，南宋最伟大的爱国诗人。'},
-{year:1177,type:'work',title:'书愤',desc:'回忆早年抗金壮志，感叹壮志难酬。',poem:'早岁那知世事艰，中原北望气如山。\n楼船夜雪瓜洲渡，铁马秋风大散关。\n塞上长城空自许，镜中衰鬓已先斑。\n出师一表真名世，千载谁堪伯仲间！',bg:'陆游回忆年轻时立志收复中原的豪情壮志，对比如今镜中白发斑斑的自己。"楼船夜雪瓜洲渡，铁马秋风大散关"以两组意象概括南宋抗金的两大战场，气势雄壮。最后以诸葛亮自比，表达至死不渝的报国之志。',use:["壮志难酬的悲愤","回忆往昔豪情","以古人自勉"]},
-{year:1210,type:'life',title:'病逝',desc:'八十六岁病逝于山阴。'}
-]},
-/* 辛弃疾补充高中诗词 */
-xinqiji2:{name:'辛弃疾',dynasty:'song',born:1140,died:1207,avatar:'辛',color:'#d4ac0d',events:[
-{year:1140,type:'life',title:'出生',desc:'字幼安，号稼轩，历城人，南宋豪放派词人代表。'},
-{year:1205,type:'work',title:'永遇乐·京口北固亭怀古',desc:'登京口北固亭怀古，借孙权、刘裕等历史人物抒发壮志。',poem:'千古江山，英雄无觅孙仲谋处。\n舞榭歌台，风流总被雨打风吹去。\n斜阳草树，寻常巷陌，人道寄奴曾住。\n想当年，金戈铁马，气吞万里如虎。\n元嘉草草，封狼居胥，赢得仓皇北顾。\n四十三年，望中犹记，烽火扬州路。\n可堪回首，佛狸祠下，一片神鸦社鼓。\n凭谁问：廉颇老矣，尚能饭否？',bg:'辛弃疾六十六岁登京口北固亭，借古讽今。上片追忆孙权、刘裕的英雄业绩，下片以南朝宋文帝草率北伐失败的典故警告当朝不可冒进。最后以"廉颇老矣，尚能饭否"自比，表达老当益壮却不被重用的悲愤。全词用典精当、气势磅礴，被誉为辛词压卷之作。',use:["怀古伤今","老当益壮","壮志难酬"]}
-]},
-/* 李白补充高中诗词 */
-libai2:{name:'李白',dynasty:'tang',born:701,died:762,avatar:'李',color:'#e94560',events:[
-{year:701,type:'life',title:'出生',desc:'字太白，号青莲居士，"诗仙"。'},
-{year:745,type:'work',title:'梦游天姥吟留别',desc:'以梦境写理想，表达对权贵的蔑视和对自由的追求。',poem:'海客谈瀛洲，烟涛微茫信难求。\n越人语天姥，云霞明灭或可睹。\n天姥连天向天横，势拔五岳掩赤城。\n天台四万八千丈，对此欲倒东南倾。\n我欲因之梦吴越，一夜飞度镜湖月。\n湖月照我影，送我至剡溪。\n安能摧眉折腰事权贵，使我不得开心颜！',bg:'李白在长安受到权贵排挤后即将离开，以此诗告别友人。全诗以梦游天姥山的奇幻经历为主线，描绘了一个瑰丽壮阔的仙境世界。最后两句"安能摧眉折腰事权贵，使我不得开心颜"直抒胸臆，表达了诗人蔑视权贵、追求自由的傲岸精神，是李白人格魅力的集中体现。',use:["追求自由/不屈服权贵","梦境与现实的对比","豪迈不羁"]}
-]}
 };
 
 /* === SECTION: render === */
@@ -723,8 +709,7 @@ Object.keys(P).forEach(function(k){allKeys.push(k);activeSet.add(k)});
 
 function renderAll(){
  var tw=y2x(YE)+60;
- canvas.style.minWidth=tw+'px';
- renderYearAxis(tw);
+ canvas.style.minWidth='0';pTracks.style.width=tw+'px'; renderYearAxis(tw);
  renderBands(tw);
  renderFilters();
  renderDynastyBar();
@@ -733,6 +718,7 @@ function renderAll(){
  buildSearchIndex();
  renderGradeFilters();
  renderEmotionFilters();
+ renderYearFilter();
 }
 
 function renderYearAxis(){
@@ -840,6 +826,33 @@ addPoemMeta('永遇乐·京口北固亭怀古','高中三年级','爱国');
 addPoemMeta('梦游天姥吟留别','高中一年级','山水');
 addPoemMeta('回乡偶书','小学六年级','思乡');
 
+addPoemMeta('咏柳','小学一年级','山水');
+addPoemMeta('过故人庄','小学','田园');
+addPoemMeta('送元二使安西','小学','送别');
+addPoemMeta('山居秋暝','初中','山水');
+addPoemMeta('春夜喜雨','小学','田园');
+addPoemMeta('三吏三别·石壕吏','初中','爱国');
+addPoemMeta('江雪','小学','山水');
+addPoemMeta('泊秦淮','小学','爱国');
+addPoemMeta('饮湖上初晴后雨','小学','山水');
+addPoemMeta('如梦令·昨夜雨疏风骤','小学','闺怨爱情');
+addPoemMeta('十一月四日风雨大作','小学','爱国');
+addPoemMeta('渔家傲·秋思','初中','边塞');
+addPoemMeta('泊船瓜洲','小学','思乡');
+addPoemMeta('雨霖铃','高中','送别');
+addPoemMeta('望海潮','高中','山水');
+addPoemMeta('破阵子·为陈同甫赋壮词以寄之','初中','爱国');
+addPoemMeta('西江月·夜行黄沙道中','小学','田园');
+addPoemMeta('古朗月行（节选）','小学','山水');
+addPoemMeta('峨眉山月歌','小学','思乡');
+addPoemMeta('望天门山','小学','山水');
+addPoemMeta('赠汪伦','小学','送别');
+addPoemMeta('夜宿山寺','小学','山水');
+addPoemMeta('独坐敬亭山','小学','山水');
+addPoemMeta('春夜洛城闻笛','初中','思乡');
+addPoemMeta('渡荆门送别','初中','送别');
+addPoemMeta('送友人','初中','送别');
+addPoemMeta('闻王昌龄左迁龙标遥有此寄','初中','送别');
 function renderGradeFilters(){
  var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年级：</span>';
  h+='<button class="fbtn on" data-grade="all">全部</button>';
@@ -892,6 +905,46 @@ function renderEmotionFilters(){
  });
 }
 
+
+var yearRangeStart = null;
+var yearRangeEnd = null;
+
+function renderYearFilter(){
+ var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年份范围：</span>';
+ h+='<div class="year-inputs">';
+ h+='<label>起始年</label><input type="number" id="yearStart" placeholder="如 618" min="-500" max="1900">';
+ h+='<label>终止年</label><input type="number" id="yearEnd" placeholder="如 907" min="-500" max="1900">';
+ h+='<button id="yearApplyBtn">筛选</button>';
+ h+='<button id="yearResetBtn">重置</button>';
+ h+='<span class="year-hint" id="yearHint"></span>';
+ h+='</div>';
+ document.getElementById('yearBar').innerHTML=h;
+ document.getElementById('yearBar').style.display='block';
+
+ document.getElementById('yearApplyBtn').addEventListener('click',function(){
+  var s=parseInt(document.getElementById('yearStart').value);
+  var e=parseInt(document.getElementById('yearEnd').value);
+  if(isNaN(s)||isNaN(e)||s>e){
+   document.getElementById('yearHint').textContent='请输入有效的年份范围（起始年<=终止年）';
+   return;
+  }
+  yearRangeStart=s;yearRangeEnd=e;
+  document.getElementById('yearHint').textContent='筛选: '+s+'年 - '+e+'年';
+  applyFilters();
+ });
+
+ document.getElementById('yearResetBtn').addEventListener('click',function(){
+  yearRangeStart=null;yearRangeEnd=null;
+  document.getElementById('yearStart').value='';
+  document.getElementById('yearEnd').value='';
+  document.getElementById('yearHint').textContent='';
+  applyFilters();
+ });
+
+ document.getElementById('yearStart').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('yearApplyBtn').click()});
+ document.getElementById('yearEnd').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('yearApplyBtn').click()});
+}
+
 function getFilteredPoems(){
  var keyword=document.getElementById('searchInput').value.trim().toLowerCase();
  var filtered=[];
@@ -916,6 +969,12 @@ function getFilteredPoems(){
  var emotionFilterActive=false,emotionSelected=[];
  emotionBtns.forEach(function(b){if(b.dataset.emotion!=='all'&&b.classList.contains('on')){emotionSelected.push(b.dataset.emotion);emotionFilterActive=true;}});
  if(emotionFilterActive&&emotionSelected.length>0&&!emotionSelected.includes(evEmotion))match=false;
+ if(!match)return;
+ // 年份范围筛选
+ if(yearRangeStart!==null&&yearRangeEnd!==null){
+  var evYear=Math.floor(ev.year);
+  if(evYear<yearRangeStart||evYear>yearRangeEnd)match=false;
+ }
  if(match)filtered.push({poetKey:k,eventIdx:i,poet:p,event:ev,grade:evGrade,emotion:evEmotion});
  });
  });
@@ -925,7 +984,7 @@ function getFilteredPoems(){
 function renderDynastyBar(){
  var h='<span>朝代：</span>';
  Object.keys(dynasties).forEach(function(k){var d=dynasties[k];h+='<span class="dyn-tag" style="background:'+d.bg+';color:'+d.color+'">'+d.name+' '+d.start+'–'+d.end+'</span>';});
- h+='<span style="margin-left:8px">● 生平 ◆ 作品</span>';
+ h+='<span style="margin-left:8px">● 生平(时间线上) ◆ 作品(时间线下方菱形)</span>';
  dynBar.innerHTML=h;
 }
 
@@ -934,109 +993,65 @@ function renderQuickNav(){
  var h='<span style="font-size:11px;color:var(--dim);line-height:26px">快速跳转：</span>';
  qn.forEach(function(q){h+='<button class="qnav-btn" data-y="'+q.y+'">'+q.l+'</button>';});
  qnav.innerHTML=h;
- qnav.addEventListener('click',function(e){var btn=e.target.closest('.qnav-btn');if(btn)wrap.scrollTo({left:vY2X(+btn.dataset.y)-80,behavior:'smooth'});});
+ qnav.addEventListener('click',function(e){var btn=e.target.closest('.qnav-btn');if(btn)canvas.scrollTo({left:vY2X(+btn.dataset.y)-80,behavior:'smooth'});});
 }
 
 function renderPoetTracks(){
  var h='';
  allKeys.forEach(function(k){
- var p=P[k],d=dynasties[p.dynasty];
- var bl=y2x(p.born),bw=(p.died-p.born)*PPY;
- h+='<div class="p-row" data-k="'+k+'">';
- h+='<div class="p-hdr"><div class="p-avatar" style="background:linear-gradient(135deg,'+p.color+','+p.color+'cc)">'+p.avatar+'</div>';
- h+='<span class="p-name" style="color:'+p.color+'">'+p.name+'</span>';
- h+='<span class="p-dynasty" style="background:'+d.bg+';color:'+d.color+'">'+d.name+'</span>';
- h+='<span class="p-meta">'+p.born+'–'+p.died+'</span></div>';
- h+='<div class="life-bar" style="left:'+bl+'px;width:'+bw+'px;background:'+p.color+'"></div>';
- var lifeEvents=[],workEvents=[];
- p.events.forEach(function(ev,i){if(ev.type==='work')workEvents.push({ev:ev,idx:i});else lifeEvents.push({ev:ev,idx:i});});
- h+='<div class="ev-layer ev-layer-life"><div class="ev-row-label">● 生平</div>';
- var usedLife=[];var maxRowLife=0;
- lifeEvents.forEach(function(item){
- var ev=item.ev,i=item.idx;var x=y2x(ev.year),row=0,gap=22;
- while(true){var ok=true;for(var s=0;s<usedLife.length;s+=2){if(usedLife[s]===row&&Math.abs(usedLife[s+1]-x)<gap){ok=false;break}}if(ok)break;row++;}
- usedLife.push(row,x);if(row>maxRowLife)maxRowLife=row;
- var top=row*18+4;var st='border-color:'+p.color+';background:transparent';
- h+='<div class="ev-dot life" style="left:'+(x-6)+'px;top:'+top+'px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
- });
- var layerHLife=Math.max((maxRowLife+1)*18+10,28);
- h+='<div class="ev-layer-h" style="height:'+layerHLife+'px"></div></div>';
- h+='<div class="ev-layer ev-layer-work"><div class="ev-row-label">◆ 作品</div>';
- var usedWork=[];var maxRowWork=0;
- workEvents.forEach(function(item){
- var ev=item.ev,i=item.idx;var x=y2x(ev.year),row=0,gap=22;
- while(true){var ok=true;for(var s=0;s<usedWork.length;s+=2){if(usedWork[s]===row&&Math.abs(usedWork[s+1]-x)<gap){ok=false;break}}if(ok)break;row++;}
- usedWork.push(row,x);if(row>maxRowWork)maxRowWork=row;
- var top=row*18+4;var st='background:'+p.color+'cc';
- h+='<div class="ev-dot work" style="left:'+(x-6)+'px;top:'+top+'px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
- });
- var layerHWork=Math.max((maxRowWork+1)*18+10,28);
- h+='<div class="ev-layer-h" style="height:'+layerHWork+'px"></div></div>';
- h+='</div>';
+  var p=P[k],d=dynasties[p.dynasty];
+  var bl=y2x(p.born),bw=(p.died-p.born)*PPY;
+  h+='<div class="p-row" data-k="'+k+'">';
+  h+='<div class="life-bar" style="left:'+bl+'px;width:'+bw+'px;background:'+p.color+'"></div>';
+  h+='<div class="timeline-line"></div>';
+  var lifeEvents=[];var workEvents=[];  p.events.forEach(function(ev,i){   if(ev.type==='work')workEvents.push({ev:ev,idx:i});   else lifeEvents.push({ev:ev,idx:i});  });
+  h+='<div class="ev-layer ev-layer-life">';
+  lifeEvents.forEach(function(item){
+   var ev=item.ev,i=item.idx;
+   var x=y2x(ev.year);
+   var st='border-color:'+p.color+';background:transparent';
+   h+='<div class="ev-dot life" style="left:'+(x-5)+'px;top:5px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
+  });
+  h+='</div>';
+  h+='<div class="ev-layer ev-layer-work">';
+  workEvents.forEach(function(item){
+   var ev=item.ev,i=item.idx;
+   var x=y2x(ev.year);
+   var st='background:'+p.color+'cc';
+   h+='<div class="ev-dot work" style="left:'+(x-4)+'px;top:22px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
+  });
+  h+='</div>';
+  h+='</div>';
  });
  pTracks.innerHTML=h;
-}
-
-function getVisibleRange(){
+}function getVisibleRange(){
  var mn=Infinity,mx=-Infinity;
- allKeys.forEach(function(k){
- if(!activeSet.has(k))return;var p=P[k];
- if(p.born<mn)mn=p.born;if(p.died>mx)mx=p.died;
- p.events.forEach(function(ev){var ey=Math.floor(ev.year);if(ey<mn)mn=ey;if(ey>mx)mx=ey});
- });
+ /* 只选中一个诗人时，只显示该诗人的在世年份 */
+ if(activeSet.size===1){
+  var sk=Array.from(activeSet)[0];
+  var sp=P[sk];
+  mn=sp.born;mx=sp.died;
+ }else{
+  allKeys.forEach(function(k){
+   if(!activeSet.has(k))return;var p=P[k];
+   if(p.born<mn)mn=p.born;if(p.died>mx)mx=p.died;
+   p.events.forEach(function(ev){var ey=Math.floor(ev.year);if(ey<mn)mn=ey;if(ey>mx)mx=ey});
+  });
+ }
  if(mn===Infinity)return{ys:YS,ye:YE};
  return{ys:Math.max(YS,mn-10),ye:Math.min(YE,mx+10)};
 }
 function vY2X(y){var r=getVisibleRange();return BL+(y-r.ys)*PPY}
 
-function reflowTimeline(){
- var r=getVisibleRange();var tw=vY2X(r.ye)+60;canvas.style.minWidth=tw+'px';
- var step=10;var span=r.ye-r.ys;if(span>600)step=50;else if(span>300)step=20;
- var yh='',start=Math.ceil(r.ys/step)*step;
- for(var y=start;y<=r.ye;y+=step){var mj=y%100===0,x=vY2X(y);yh+='<div class="y-tick'+(mj?' mj':'')+'" style="left:'+x+'px"><div class="ln"></div><div class="lb">'+y+'</div></div>';}
- yAxis.innerHTML=yh;
- var bh='';
- Object.keys(dynasties).forEach(function(dk){
- var d=dynasties[dk],s1=Math.max(d.start,r.ys),s2=Math.min(d.end,r.ye);
- if(s1>=s2)return;var x1=vY2X(s1),x2=vY2X(s2);
- bh+='<div class="dyn-band" style="left:'+x1+'px;width:'+(x2-x1)+'px;background:'+d.bg+'"><div class="dyn-band-lb" style="color:'+d.color+'">'+d.name+'</div></div>';
- });
- historyEvents.forEach(function(ev){
- var s1=Math.max(ev.s,r.ys),s2=Math.max(ev.e,ev.s);s2=Math.min(s2,r.ye);
- if(s1>r.ye||s2<r.ys)return;var x1=vY2X(s1),w=Math.max((s2-s1)*PPY,20);
- bh+='<div class="hist-band" style="left:'+x1+'px;width:'+w+'px"><div class="hist-lb">'+ev.l+'</div></div>';
- });
- bandsEl.innerHTML=bh;
- allKeys.forEach(function(k){
- var p=P[k],row=pTracks.querySelector('[data-k="'+k+'"]');if(!row)return;
- var bar=row.querySelector('.life-bar');
- if(bar){bar.style.left=vY2X(p.born)+'px';bar.style.width=((p.died-p.born)*PPY)+'px'}
- var usedLife2=[],maxRowLife2=0;
- p.events.forEach(function(ev,i){
- if(ev.type!=='work'){
- var x=vY2X(ev.year),rw=0,gap=22;
- while(true){var ok=true;for(var s=0;s<usedLife2.length;s+=2){if(usedLife2[s]===rw&&Math.abs(usedLife2[s+1]-x)<gap){ok=false;break}}if(ok)break;rw++;}
- usedLife2.push(rw,x);if(rw>maxRowLife2)maxRowLife2=rw;
- var dot=row.querySelector('.ev-dot.life[data-i="'+i+'"]');
- if(dot){dot.style.left=(x-6)+'px';dot.style.top=(rw*18+4)+'px'}
- }
- });
- var layerLife=row.querySelector('.ev-layer-life');
- if(layerLife)layerLife.style.minHeight=Math.max((maxRowLife2+1)*18+10,28)+'px';
- var usedWork2=[],maxRowWork2=0;
- p.events.forEach(function(ev,i){
- if(ev.type==='work'){
- var x=vY2X(ev.year),rw=0,gap=22;
- while(true){var ok=true;for(var s=0;s<usedWork2.length;s+=2){if(usedWork2[s]===rw&&Math.abs(usedWork2[s+1]-x)<gap){ok=false;break}}if(ok)break;rw++;}
- usedWork2.push(rw,x);if(rw>maxRowWork2)maxRowWork2=rw;
- var dot=row.querySelector('.ev-dot.work[data-i="'+i+'"]');
- if(dot){dot.style.left=(x-6)+'px';dot.style.top=(rw*18+4)+'px'}
- }
- });
- var layerWork=row.querySelector('.ev-layer-work');
- if(layerWork)layerWork.style.minHeight=Math.max((maxRowWork2+1)*18+10,28)+'px';
- });
-}
+function reflowTimeline(){ var r=getVisibleRange();var tw=vY2X(r.ye)+60;canvas.style.minWidth='0';pTracks.style.width=tw+'px'; var step=10;var span=r.ye-r.ys;if(span>600)step=50;else if(span>300)step=20; var yh='',start=Math.ceil(r.ys/step)*step; for(var y=start;y<=r.ye;y+=step){var mj=y%100===0,x=vY2X(y);yh+='<div class="y-tick'+(mj?' mj':'')+'" style="left:'+x+'px"><div class="ln"></div><div class="lb">'+y+'</div></div>';} yAxis.innerHTML=yh; var bh=''; Object.keys(dynasties).forEach(function(dk){ var d=dynasties[dk],s1=Math.max(d.start,r.ys),s2=Math.min(d.end,r.ye); if(s1>=s2)return;var x1=vY2X(s1),x2=vY2X(s2); bh+='<div class="dyn-band" style="left:'+x1+'px;width:'+(x2-x1)+'px;background:'+d.bg+'"><div class="dyn-band-lb" style="color:'+d.color+'">'+d.name+'</div></div>'; }); historyEvents.forEach(function(ev){ var s1=Math.max(ev.s,r.ys),s2=Math.max(ev.e,ev.s);s2=Math.min(s2,r.ye); if(s1>r.ye||s2<r.ys)return;var x1=vY2X(s1),w=Math.max((s2-s1)*PPY,20); bh+='<div class="hist-band" style="left:'+x1+'px;width:'+w+'px"><div class="hist-lb">'+ev.l+'</div></div>'; }); bandsEl.innerHTML=bh; allKeys.forEach(function(k){ var p=P[k],row=pTracks.querySelector('[data-k="'+k+'"]');if(!row)return; var bar=row.querySelector('.life-bar'); if(bar){bar.style.left=vY2X(p.born)+'px';bar.style.width=((p.died-p.born)*PPY)+'px'} p.events.forEach(function(ev,i){ if(ev.type==='work'){
+  var dot=row.querySelector('.ev-dot.work[data-i="'+i+'"]');
+  if(dot){dot.style.left=(vY2X(ev.year)-4)+'px'}
+ }else{
+  var dot=row.querySelector('.ev-dot.life[data-i="'+i+'"]');
+  if(dot){dot.style.left=(vY2X(ev.year)-5)+'px'}
+ } }); });};
+
+function renderWorkEvents(){}
 
 function applyFilters(){
  var filtered=getFilteredPoems();
@@ -1048,6 +1063,7 @@ function applyFilters(){
  if(hasVisible&&activeSet.has(k)){r.classList.remove('dim');}else{r.classList.add('dim');}
  });
  reflowTimeline();
+ window.syncAuthorColumn();
 }
 
 /* === SECTION: search === */
@@ -1125,7 +1141,7 @@ searchResults.addEventListener('click',function(e){
  var item=e.target.closest('.sr-item');
  if(!item)return;
  var k=item.dataset.k, y=+item.dataset.y;
- wrap.scrollTo({left:vY2X(y)-200,behavior:'smooth'});
+ canvas.scrollTo({left:vY2X(y)-200,behavior:'smooth'});
  searchResults.classList.remove('show');
  searchInput.value='';
  stopAllSpeaking();
@@ -1416,78 +1432,117 @@ pTracks.addEventListener('click',function(e){
 });
 
 /* === SECTION: nav === */
-document.getElementById('navL').addEventListener('click',function(){wrap.scrollBy({left:-500,behavior:'smooth'})});
-document.getElementById('navR').addEventListener('click',function(){wrap.scrollBy({left:500,behavior:'smooth'})});
+document.getElementById('navL').addEventListener('click',function(){canvas.scrollBy({left:-500,behavior:'smooth'})});
+document.getElementById('navR').addEventListener('click',function(){canvas.scrollBy({left:500,behavior:'smooth'})});
 
-/* === SECTION: year picker === */
-var yearSelect=document.getElementById('yearSelect');
-var yearHint=document.getElementById('yearHint');
-var yearSummary=document.getElementById('yearSummary');
 
-(function(){
- var opts='';
- for(var y=YS;y<=YE;y++){opts+='<option value="'+y+'">'+y+'年</option>';}
- yearSelect.innerHTML=opts;
- yearSelect.value=701;
+/* === 点击作者头像跳转到对应诗人行 === */
+window.scrollToAuthor = function(key) {
+    var row = pTracks.querySelector('[data-k="' + key + '"]');
+    if (!row) return;
+    // 如果该行被过滤隐藏了，不做跳转
+    if (row.classList.contains('dim')) return;
+    
+    // 获取该行第一个生平事件圆点的位置
+    var dot = row.querySelector('.ev-dot.life');
+    if (!dot) {
+        dot = row.querySelector('.ev-dot.work');
+    }
+    if (!dot) return;
+    
+    // 获取dot的left值（像素）
+    var dotLeft = parseFloat(dot.style.left);
+    if (isNaN(dotLeft)) return;
+    
+    // 平滑滚动到该位置（减去20px偏移让作者列不完全贴边）
+    canvas.scrollTo({left: dotLeft - 20, behavior: 'smooth'});
+    
+    // 高亮该行
+    row.classList.add('hl');
+    setTimeout(function(){row.classList.remove('hl')}, 2000);
+};
+
+/* === JS 作者列同步 === */
+(function() {
+    var authorCol = document.getElementById('authorCol');
+    var pTracks = document.getElementById('pTracks');
+    if (!authorCol || !pTracks) return;
+    window.syncAuthorColumn = function() {
+        var rows = pTracks.querySelectorAll('.p-row');
+        var html = '';
+        rows.forEach(function(row) {
+            var k = row.dataset.k;
+            var p = P[k];
+            if (!p) return;
+            var d = dynasties[p.dynasty];
+            var dim = row.classList.contains('dim') ? 'display:none;' : '';
+            html += '<div class="p-hdr" data-k="' + k + '" style="' + dim + '" onclick="scrollToAuthor(\'' + k + '\')">';
+            html += '<div class="p-avatar" style="background:linear-gradient(135deg,' + p.color + ',' + p.color + 'cc)">' + p.avatar + '</div>';
+            html += '<span class="p-name" style="color:' + p.color + '">' + p.name + '</span>';
+            html += '<span class="p-dynasty" style="background:' + d.bg + ';color:' + d.color + '">' + d.name + '</span>';
+            html += '<span class="p-meta">' + p.born + '–' + p.died + '</span>';
+            html += '</div>';
+        });
+        var _sc = authorCol.scrollTop;
+        authorCol.innerHTML = html;
+        // 恢复筛选前的滚动位置，避免跳动
+        try{authorCol.scrollTop = _sc || 0;}catch(e){}
+    };
+    window.syncAuthorColumn();
+    if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function() {
+            window.syncAuthorColumn();
+        });
+        observer.observe(pTracks, { childList: true, subtree: true });
+    }
+    window.addEventListener('resize', function() {
+        window.syncAuthorColumn();
+    });
 })();
 
-function showYearSummary(year){
- yearSummary.classList.add('show');
- yearHint.textContent=year+'年';
- var events=[];var seen=new Set();
- Object.keys(P).forEach(function(k){
- var p=P[k];if(!activeSet.has(k))return;
- p.events.forEach(function(ev){
- if(ev.year>=year&&ev.year<year+1){
- var key=k+'|'+ev.title;
- if(!seen.has(key)){seen.add(key);
- var evGrade='',evEmotion='';
- if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[ev.title].emotion||'';}
- events.push({poet:p.name,color:p.color,dynasty:dynasties[p.dynasty].name,type:ev.type,title:ev.title,desc:ev.desc||'',grade:evGrade,emotion:evEmotion});
- }}
- });
- });
- if(!events.length){
- yearSummary.innerHTML='<div class="year-summary-title">这一年 <span>暂无记录</span></div><div style="font-size:12px;color:var(--dim)">尝试选择其他年份</div>';
- return;
- }
- var h='<div class="year-summary-title">'+year+'年 <span>— 诗坛动态</span></div>';
- h+='<div class="year-summary-events">';
- events.forEach(function(ev){
- var typeLabel=ev.type==='life'?'生平':'作品';var typeClass=ev.type==='life'?'life':'work';
- h+='<div class="ys-event" style="border-left:3px solid '+ev.color+'">';
- h+='<div class="ys-poet">'+ev.poet+' · '+ev.dynasty+(ev.grade?' · '+ev.grade:'')+(ev.emotion?' · '+ev.emotion:'')+'</div>';
- h+='<div class="ys-title">'+ev.title+'<span class="ys-type '+typeClass+'">'+typeLabel+'</span></div>';
- if(ev.desc)h+='<div class="ys-desc">'+ev.desc+'</div>';
- h+='</div>';
- });
- h+='</div>';
- yearSummary.innerHTML=h;
-}
 
-yearSelect.addEventListener('change',function(){
- var y=+this.value;
- wrap.scrollTo({left:y2x(y)-200,behavior:'smooth'});
- showYearSummary(y);
-});
-
-yAxis.addEventListener('click',function(e){
- var tick=e.target.closest('.y-tick');if(!tick)return;
- var lb=tick.querySelector('.lb');if(!lb)return;
- var yearText=lb.textContent.trim();var year=parseInt(yearText);
- if(isNaN(year))return;
- yearSelect.value=year;
- wrap.scrollTo({left:y2x(year)-200,behavior:'smooth'});
- showYearSummary(year);
-});
-
-yearSelect.addEventListener('focus',function(){this.select()});
+/* === JS 作者列与时间轴滚动同步 === */
+(function() {
+    var authorCol = document.getElementById('authorCol');
+    var tlCanvas = document.getElementById('tlCanvas');
+    if (!authorCol || !tlCanvas) return;
+    
+    var syncing = false;
+    
+    // 时间轴滚动时同步作者列
+    tlCanvas.addEventListener('scroll', function() {
+        if (syncing) return;
+        syncing = true;
+        authorCol.scrollTop = tlCanvas.scrollTop;
+        syncing = false;
+    });
+    
+    // 作者列滚动时同步时间轴
+    authorCol.addEventListener('scroll', function() {
+        if (syncing) return;
+        syncing = true;
+        tlCanvas.scrollTop = authorCol.scrollTop;
+        syncing = false;
+    });
+    
+    // 窗口大小改变时重新同步
+    window.addEventListener('resize', function() {
+        // 确保滚动位置不超出范围
+        authorCol.scrollTop = Math.min(authorCol.scrollTop, tlCanvas.scrollHeight - tlCanvas.clientHeight);
+        tlCanvas.scrollTop = Math.min(tlCanvas.scrollTop, authorCol.scrollHeight - authorCol.clientHeight);
+    });
+})();
 
 /* === SECTION: init === */
 renderAll();
-wrap.scrollTo({left:y2x(680)-40,behavior:'auto'});
-window.addEventListener('resize',function(){canvas.style.minWidth=(y2x(YE)+60)+'px'});
-showYearSummary(701);
-</script>
-</body>
-</html>
+window.syncAuthorColumn();
+canvas.scrollTo({left:y2x(680)-40,behavior:'auto'});
+// 设置pTracks宽度以支持横向滚动
+var tracksEl=document.getElementById('pTracks');
+if(tracksEl){tracksEl.style.width=(y2x(YE)-y2x(YS)+150)+'px';}
+canvas.style.minWidth='0';
+window.addEventListener('resize',function(){
+    var t=document.getElementById('pTracks');
+    if(t){t.style.width=(y2x(YE)-y2x(YS)+150)+'px';}
+    canvas.style.minWidth='0';
+});</script></body></html>
