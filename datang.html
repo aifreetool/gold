@@ -1,3 +1,9 @@
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7,23 +13,23 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
- --bg:#0f1629;--surface:#162038;--text:#e8e8e8;--dim:#7a8ba0;
- --border:rgba(255,255,255,.08);--card:#1a2744;
+ --bg:#f5f2e9;--surface:#e8e0d0;--text:#2c2c2c;--dim:#6b6b6b;
+ --border:rgba(0,0,0,.05);--card:#fffef8;
  --font:-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
  --serif:"Noto Serif SC","Source Han Serif SC","STSong",serif;
 }
 html{font-family:var(--font);background:var(--bg);color:var(--text)}
-body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.hdr{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0a0f1e,#131b30);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;height:100vh;overflow:hidden;background-color:#f5f2e9;background-image:radial-gradient(ellipse at 10% 20%, rgba(80,80,80,.04) 0%, transparent 40%),radial-gradient(ellipse at 90% 80%, rgba(60,60,60,.03) 0%, transparent 40%),radial-gradient(ellipse at 50% 50%, rgba(100,100,100,.02) 0%, transparent 60%)}
+.hdr{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,rgba(245,242,233,.98),rgba(235,230,218,.98));border-bottom:1px solid rgba(0,0,0,.05);padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;backdrop-filter:blur(5px)}
 .hdr h1{font-family:var(--serif);font-size:20px;background:linear-gradient(135deg,#e94560,#e9a045);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .search-box{position:relative;margin-left:auto;flex:0 1 360px}
-.search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:14px;outline:none;transition:border .2s}
+.search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.8);color:var(--text);font-size:14px;outline:none;transition:border .2s}
 .search-box input:focus{border-color:rgba(233,69,96,.5)}
 .search-box .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px}
-.search-results{position:absolute;top:100%;left:0;right:0;margin-top:4px;max-height:400px;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.6);display:none;z-index:200}
+.search-results{position:absolute;top:100%;left:0;right:0;margin-top:4px;max-height:400px;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.06);display:none;z-index:200}
 .search-results.show{display:block}
 .sr-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
-.sr-item:hover{background:rgba(255,255,255,.05)}
+.sr-item:hover{background:rgba(0,0,0,.03)}
 .sr-item:last-child{border-bottom:none}
 .sr-title{font-weight:600;font-size:13px}
 .sr-poet{font-size:11px;color:var(--dim);margin-top:2px}
@@ -39,7 +45,7 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .sr-stop-all.show{display:block}
 .sr-stop-all button{padding:6px 20px;border-radius:16px;border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.15);color:#e94560;font-size:12px;cursor:pointer;transition:all .2s}
 .sr-stop-all button:hover{background:rgba(233,69,96,.3)}
-.fbar{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
+.fbar{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.03)}
 .fbtn{padding:4px 12px;border-radius:16px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .fbtn:hover{border-color:rgba(255,255,255,.3);color:var(--text)}
 .fbtn.on{color:#fff;border-color:currentColor;background:rgba(255,255,255,.12)}
@@ -47,7 +53,7 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .fbtn[data-grade].on{background:#5B9BD5;border-color:#3A7BBF;color:#fff}
 .fbtn[data-emotion]{border-color:#E8956A;color:#E8956A}
 .fbtn[data-emotion].on{background:#E8956A;border-color:#C97A4F;color:#fff}
-.dyn-bar{padding:6px 20px;display:flex;gap:12px;font-size:11px;color:var(--dim);border-bottom:1px solid var(--border);background:rgba(0,0,0,.15);flex-wrap:wrap;align-items:center}
+.dyn-bar{padding:6px 20px;display:flex;gap:12px;font-size:11px;color:var(--dim);border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);flex-wrap:wrap;align-items:center}
 .dyn-tag{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
 .tl-wrap{overflow:hidden;display:flex;position:relative;flex:1;min-height:0}
 .tl-wrap::-webkit-scrollbar{height:8px}
@@ -68,7 +74,7 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .p-row{position:relative;height:52px;transition:opacity .3s;overflow:visible;transform:translateZ(0);border-bottom:1px solid rgba(255,255,255,.06);pointer-events:none}
 .p-row.dim{display:none}
 .p-row.hl{background:rgba(233,69,96,.06);border-radius:8px}
-.p-hdr{display:flex;align-items:center;gap:8px;padding:0 10px;height:52px;margin-bottom:0;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);flex-shrink:0;min-width:110px;border-bottom:2px solid rgba(233,69,96,.25);overflow:hidden;white-space:nowrap}
+.p-hdr{display:flex;align-items:center;gap:8px;padding:0 10px;height:52px;margin-bottom:0;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.08);flex-shrink:0;min-width:110px;border-bottom:2px solid rgba(233,69,96,.25);overflow:hidden;white-space:nowrap}
 .p-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
 .p-name{font-family:var(--serif);font-size:14px;font-weight:700;white-space:nowrap}
 .p-meta{font-size:10px;color:var(--dim);white-space:nowrap}
@@ -82,11 +88,11 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .ev-dot.work.pulse{animation:dotPulseWork 1.5s ease 3}
 @keyframes dotPulseWork{0%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,.7)}50%{transform:rotate(45deg) scale(3);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}100%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}}
 .ev-dot.life{width:10px;height:10px;border-radius:50%;border:2px solid;position:absolute;top:5px;z-index:5}
-.ev-dot.work{width:8px;height:8px;border-radius:1px;transform:rotate(45deg);position:absolute;top:22px;z-index:5;box-shadow:0 0 3px rgba(0,0,0,.3)}
+.ev-dot.work{width:8px;height:8px;border-radius:1px;transform:rotate(45deg);position:absolute;top:22px;z-index:5;box-shadow:0 0 3px rgba(0,0,0,.1)}
 .ev-dot.work:hover{transform:rotate(45deg) scale(1.7)}
 .hist-band:hover{background:rgba(255,100,100,.12)}
 .hist-band.active{background:rgba(255,100,100,.18)}
-.hist-detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:400;display:none;justify-content:center;align-items:center}
+.hist-detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:400;display:none;justify-content:center;align-items:center}
 .hist-detail-overlay.show{display:flex}
 .hist-detail-panel{width:100%;max-width:600px;max-height:80vh;overflow-y:auto;background:var(--card);border-radius:16px;padding:24px 28px 32px;animation:slideUp .25s ease;position:relative}
 .hist-detail-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer;padding:4px 8px}
@@ -99,7 +105,7 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .hist-detail-body{font-size:13px;line-height:1.8;color:var(--dim)}
 .hist-detail-poet{display:inline-block;padding:3px 10px;margin:3px 4px 3px 0;background:rgba(233,69,96,.1);border-radius:14px;font-size:12px;color:#e94560;border:1px solid rgba(233,69,96,.2)}
 .hist-detail-poem{display:inline-block;padding:3px 10px;margin:3px 4px 3px 0;background:rgba(233,160,69,.1);border-radius:14px;font-size:12px;color:#e9a045;border:1px solid rgba(233,160,69,.2)}
-.detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;justify-content:center;align-items:flex-end}
+.detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.2);z-index:300;display:none;justify-content:center;align-items:flex-end}
 .detail-overlay.show{display:flex}
 .detail-panel{width:100%;max-width:560px;max-height:80vh;overflow-y:auto;background:var(--card);border-radius:16px 16px 0 0;padding:20px 24px 30px;animation:slideUp .25s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -115,43 +121,67 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .dtl-use{margin-top:10px;padding:10px 14px;background:rgba(233,160,69,.08);border-radius:8px;border-left:3px solid #e9a045}
 .dtl-use .dtl-label{color:#e9a045;margin-bottom:6px}
 .dtl-use-item{display:inline-block;font-size:12px;padding:2px 8px;margin:2px 4px 2px 0;background:rgba(233,160,69,.12);border-radius:12px;color:#e9a045;border:1px solid rgba(233,160,69,.2)}
-.qnav{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.1)}
+.qnav{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.02)}
 .qnav-btn{padding:3px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:11px;cursor:pointer;transition:all .15s}
 .qnav-btn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
 .nav-ctrl{position:fixed;bottom:16px;right:16px;z-index:100;display:none;gap:6px}
 .nav-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .nav-btn:hover{background:rgba(255,255,255,.08)}
-.intro{padding:14px 20px;background:linear-gradient(180deg,rgba(0,0,0,.3),transparent);border-bottom:1px solid var(--border)}
+.intro{padding:14px 20px;background:linear-gradient(180deg,rgba(0,0,0,.03),transparent);border-bottom:1px solid var(--border);max-height:200px;overflow-y:auto}
 .intro p{font-size:12px;color:var(--dim);line-height:1.6}
 .intro .hint{font-size:11px;margin-top:6px;color:rgba(255,255,255,.25)}
 @media(min-width:769px){.detail-overlay{align-items:center}.detail-panel{border-radius:16px;max-height:85vh}}
+/* 桌面端隐藏筛选弹框 */
+@media(min-width:769px){
+ .filter-modal-overlay{display:none !important}
+ .intro-toggle-wrapper{display:none}
+}
 @media(max-width:768px){
- .hdr{flex-direction:column;align-items:stretch;gap:8px;padding:10px 14px}
- .hdr h1{font-size:17px;text-align:center}
- .search-box{flex:none;width:100%;max-width:none}
- .fbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 14px;scrollbar-width:none}
- .fbar::-webkit-scrollbar{display:none}
- .fbtn{flex-shrink:0;font-size:11px;padding:4px 10px}
- .dyn-bar{padding:4px 14px;gap:6px;font-size:10px}
- .dyn-tag{font-size:10px;padding:1px 5px}
- .qnav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:6px 14px;scrollbar-width:none}
+ /* Header: 汉堡菜单 + 标题居中 + 朗读开关 */
+ .hdr{flex-direction:row;align-items:center;gap:6px;padding:8px 12px}
+ .hdr h1{font-size:16px;text-align:center;flex:1}
+ .menu-btn{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 8px;z-index:101}
+ .read-toggle-btn{background:none;border:none;color:#e94560;font-size:18px;cursor:pointer;padding:4px 8px}
+ /* 搜索框移到 header 下方 */
+ .search-box{position:relative;flex:none;width:100%;margin:0;padding:0 12px 8px}
+ .search-box input{border-radius:20px}
+ /* 显示移动端筛选面板 */
+ .filter-modal-overlay{display:flex}
+ /* 隐藏原始筛选栏(桌面用) */
+ #filterBar,.fbar#gradeBar,.fbar#emotionBar{display:none !important}
+ #yearBar{display:none !important}
+ /* 筛选面板紧凑化 */
+ .filter-scroll{padding:6px 10px;gap:5px}
+ .filter-scroll .fbtn{font-size:10px;padding:3px 8px}
+ /* dyn-bar 和 qnav 保持显示 */
+ .dyn-bar{padding:4px 14px;gap:4px;font-size:9px}
+ .dyn-tag{font-size:9px;padding:1px 4px}
+ .qnav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 14px;scrollbar-width:none}
  .qnav::-webkit-scrollbar{display:none}
- .intro{padding:10px 14px}
- .intro p{font-size:11px}
- .p-hdr{padding:3px 6px;gap:6px}
- .p-avatar{width:26px;height:26px;font-size:13px}
- .p-name{font-size:12px}
- .p-meta{font-size:9px}
- .p-dynasty{font-size:9px}
- .ev-layer{padding-top:4px}
- .detail-panel{max-height:75vh;padding:16px 18px 24px;border-radius:14px 14px 0 0}
- .dtl-title{font-size:17px}
- .dtl-poem{font-size:14px;line-height:1.9;padding:12px}
- .dtl-desc{font-size:12px}
- .dtl-body{font-size:12px}
- .nav-btn{width:32px;height:32px;font-size:14px;display:none}
- .nav-ctrl{bottom:12px;right:12px;gap:4px}
- .search-results{max-height:300px}
+ .qnav-btn{font-size:10px;padding:2px 6px}
+ /* intro */
+ .intro{padding:8px 14px}
+ .intro p{font-size:10px;line-height:1.5}
+ .intro .hint{font-size:9px}
+ .intro-toggle-wrapper{padding:0 14px 4px;display:flex;justify-content:flex-end}
+ .intro-toggle-btn{display:inline-flex}
+ /* timeline */
+ .p-hdr{padding:2px 4px;gap:4px}
+ .p-avatar{width:22px;height:22px;font-size:11px}
+ .p-name{font-size:10px}
+ .p-meta{font-size:8px}
+ .p-dynasty{font-size:8px}
+ .ev-layer{padding-top:2px}
+ .tl-wrap{flex:1 1 0%;min-height:0}
+ /* detail panel */
+ .detail-panel{max-height:75vh;padding:14px 16px 20px;border-radius:12px 12px 0 0}
+ .dtl-title{font-size:16px}
+ .dtl-poem{font-size:13px;line-height:1.8;padding:10px}
+ .dtl-desc{font-size:11px}
+ .dtl-body{font-size:11px}
+ .nav-btn{width:30px;height:30px;font-size:13px;display:none}
+ .nav-ctrl{bottom:10px;right:10px;gap:3px}
+ .search-results{max-height:250px}
 }
 .dtl-speak-bar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;padding:8px 12px;background:rgba(233,69,96,.06);border-radius:8px;border:1px solid rgba(233,69,96,.15)}
 .dtl-speak-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.1);color:#e94560;font-size:12px;cursor:pointer;transition:all .25s;font-weight:600}
@@ -160,18 +190,71 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .dtl-speak-hint{font-size:11px;color:var(--dim)}
 .year-inputs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .year-inputs label{font-size:11px;color:var(--dim);line-height:26px}
-.year-inputs input{width:70px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:12px;outline:none;text-align:center}
+.year-inputs input{width:70px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:rgba(0,0,0,.03);color:var(--text);font-size:12px;outline:none;text-align:center}
 .year-inputs input:focus{border-color:rgba(233,69,96,.5)}
 .year-inputs button{padding:3px 10px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:11px;cursor:pointer;transition:all .2s}
 .year-inputs button:hover{background:rgba(233,69,96,.12);border-color:rgba(233,69,96,.6)}
 .year-hint{font-size:10px;color:var(--dim);line-height:26px;margin-left:4px}
-.author-col{width:110px;flex-shrink:0;position:sticky;left:0;z-index:20;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);height:100%;overflow-y:auto;padding-top:36px;scrollbar-width:thin;scrollbar-color:rgba(233,69,96,.5) rgba(255,255,255,.05)}
+.author-col{width:110px;flex-shrink:0;position:sticky;left:0;z-index:20;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.08);height:100%;overflow-y:auto;padding-top:36px;scrollbar-width:thin;scrollbar-color:rgba(233,69,96,.5) rgba(0,0,0,.05)}
 .author-col::before{content:'';position:sticky;top:0;z-index:11;height:36px;background:var(--bg);border-bottom:1px solid var(--border)}
+
+/* Mobile filter modal */
+.filter-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:500;display:none;justify-content:center;align-items:flex-end}
+.filter-modal-overlay.show{display:flex}
+.filter-modal{width:100%;max-width:500px;max-height:85vh;background:var(--card);border-radius:16px 16px 0 0;animation:slideUp .25s ease;display:flex;flex-direction:column}
+.filter-modal-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+.filter-modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.filter-modal-close{background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;padding:4px 8px}
+.filter-modal-close:hover{color:var(--text)}
+.filter-modal-body{flex:1;overflow-y:auto;padding:16px 20px}
+.filter-section{margin-bottom:20px}
+.filter-section-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+.filter-scroll{display:flex;gap:6px;flex-wrap:wrap}
+.filter-scroll .fbtn{font-size:11px;padding:4px 10px}
+.year-inputs-modal{display:flex;flex-direction:column;gap:8px}
+.year-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.year-input-row label{font-size:12px;color:var(--dim);min-width:50px}
+.year-input-row input{flex:1;min-width:80px;padding:6px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(0,0,0,.03);color:var(--text);font-size:13px;outline:none}
+.year-input-row input:focus{border-color:rgba(233,69,96,.5)}
+.year-input-row button{padding:6px 14px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:12px;cursor:pointer;transition:all .2s}
+.year-input-row button:hover{background:rgba(233,69,96,.12);border-color:rgba(233,69,96,.6)}
+.year-hint-modal{font-size:11px;color:var(--dim);margin-top:4px}
+.filter-modal-footer{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+.filter-modal-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:14px;cursor:pointer;transition:all .2s}
+.filter-modal-btn-cancel:hover{background:rgba(0,0,0,.03)}
+.filter-modal-btn-confirm{background:rgba(233,69,96,.15);border-color:rgba(233,69,96,.4);color:#e94560}
+.filter-modal-btn-confirm:hover{background:rgba(233,69,96,.25)}
+
+/* Mobile intro toggle */
+.intro-toggle-btn{display:none;padding:4px 12px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:11px;cursor:pointer;align-self:flex-end}
+@media(max-width:768px){
+ .intro-toggle-btn{display:inline-flex}
+ .intro.collapsed{max-height:0;height:0!important;overflow:hidden;padding:0 14px;border-bottom:none}
+ .intro{max-height:200px;overflow-y:auto;transition:max-height .3s ease,padding .3s ease,border-color .3s ease;padding:10px 14px;border-bottom:1px solid var(--border)}
+ /* Make filter bars more compact on mobile */
+ .fbar{padding:4px 14px;height:auto}
+ .dyn-bar{padding:3px 14px}
+ .qnav{padding:4px 14px}
+ /* Ensure timeline gets max space */
+ .tl-wrap{flex:1 1 0%;min-height:0}
+}
+
+/* 水墨画风格装饰 */
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E")}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='blur'%3E%3CfeGaussianBlur stdDeviation='80'/%3E%3C/filter%3E%3Cellipse cx='200' cy='300' rx='300' ry='200' fill='rgba(80,80,80,0.15)' filter='url(%23blur)'/%3E%3Cellipse cx='900' cy='200' rx='250' ry='180' fill='rgba(60,60,60,0.1)' filter='url(%23blur)'/%3E%3Cellipse cx='600' cy='450' rx='350' ry='150' fill='rgba(100,100,100,0.08)' filter='url(%23blur)'/%3E%3C/svg%3E")}
+
+/* 移动端时间轴高度修复 - 确保 tl-wrap 填满剩余空间 */
+@media(max-width:768px){
+ .tl-wrap{flex:1 1 0%!important;min-height:0!important;display:flex!important}
+ .tl-canvas{height:100%!important}
+}
 </style>
 </head>
 <body>
 <div class="hdr">
+ <button class="menu-btn" id="menuBtn" title="筛选菜单">☰</button>
  <h1>历史的相遇</h1>
+ <button class="read-toggle-btn" id="readToggle" title="朗读开关">🔊</button>
  <div class="search-box">
  <span class="icon">🔍</span>
  <input type="text" id="searchInput" placeholder="搜索诗词、诗人、标题…">
@@ -180,14 +263,58 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
  </div>
  </div>
 </div>
-<div class="intro">
+<div class="intro-toggle-wrapper"><button class="intro-toggle-btn" id="introToggle">▼ 展开介绍</button></div><div class="intro collapsed" id="introSection">
  <p>从先秦屈原到清代龚自珍，50余位诗词大家在同一条时间线上交汇，涵盖小学到高中各年级课本经典诗词。选定任意一年，仿佛推开一扇窗——李白正举杯邀月，杜甫正登高望远，苏轼正泛舟赤壁……同一时刻，不同的诗人正在经历各自的人生。搜索诗词或诗人名字即可快速定位，点击任意节点查看诗词原文、创作背景、含义解析和使用场景。</p>
  <p class="hint">拖拽底部滚动条左右滑动浏览 · 点击历史事件色带查看详情 · 点击圆点查看详情（含使用场景）· 上行●生平(时间线上) 下行◆作品(时间线下方菱形) · 搜索框支持关键词搜索 · 搜索结果支持语音朗读</p>
 </div>
+<!-- 移动端筛选弹框 -->
+<div class="filter-modal-overlay" id="filterModalOverlay">
+ <div class="filter-modal" id="filterModal">
+  <div class="filter-modal-header">
+   <span class="filter-modal-title">筛选</span>
+   <button class="filter-modal-close" id="filterModalClose">✕</button>
+  </div>
+  <div class="filter-modal-body">
+   <!-- 年级筛选 -->
+   <div class="filter-section">
+    <div class="filter-section-title">年级</div>
+    <div class="filter-scroll" id="gradeBarModal"></div>
+   </div>
+   <!-- 情感筛选 -->
+   <div class="filter-section">
+    <div class="filter-section-title">情感</div>
+    <div class="filter-scroll" id="emotionBarModal"></div>
+   </div>
+   <!-- 时间起止日期筛选 -->
+   <div class="filter-section">
+    <div class="filter-section-title">时间范围</div>
+    <div class="year-inputs-modal">
+     <div class="year-input-row">
+      <label>起始年</label>
+      <input type="number" id="modalYearStart" placeholder="如 618" min="-500" max="1900">
+     </div>
+     <div class="year-input-row">
+      <label>终止年</label>
+      <input type="number" id="modalYearEnd" placeholder="如 907" min="-500" max="1900">
+     </div>
+     <div class="year-input-row">
+      <button id="modalYearApplyBtn">应用筛选</button>
+      <button id="modalYearResetBtn">重置</button>
+     </div>
+     <div class="year-hint-modal" id="modalYearHint"></div>
+    </div>
+   </div>
+  </div>
+  <div class="filter-modal-footer">
+   <button class="filter-modal-btn filter-modal-btn-cancel" id="filterModalCancel">取消</button>
+   <button class="filter-modal-btn filter-modal-btn-confirm" id="filterModalConfirm">确定</button>
+  </div>
+ </div>
+</div>
+<div class="fbar" id="yearBar" style="display:none"></div>
 <div class="fbar" id="filterBar"></div>
-<div class="fbar" id="gradeBar" style="display:none;background:rgba(91,155,213,.05);border-right:2px solid rgba(255,255,255,.1);padding-right:12px"></div>
-<div class="fbar" id="emotionBar" style="display:none;background:rgba(232,149,106,.05);border-left:2px solid rgba(255,255,255,.1);padding-left:12px"></div>
-<div class="fbar" id="yearBar" style="display:block"></div>
+<div class="fbar" id="gradeBar"></div>
+<div class="fbar" id="emotionBar"></div>
 <div class="dyn-bar" id="dynastyBar"></div>
 <div class="qnav" id="quickNav"></div>
 <div class="tl-wrap" id="tlWrap">
@@ -567,11 +694,15 @@ var activeSet=new Set(), allKeys=[];
 Object.keys(P).forEach(function(k){allKeys.push(k);activeSet.add(k)});
 
 function renderAll(){
+try{
 var tw=y2x(YE)+60;
 canvas.style.minWidth='0';pTracks.style.width=tw+'px';
 renderYearAxis(tw);renderBands(tw);renderFilters();renderDynastyBar();
 renderQuickNav();renderPoetTracks();buildSearchIndex();
 renderGradeFilters();renderEmotionFilters();renderYearFilter();applyFilters();
+}catch(e){console.warn('renderAll error:',e);
+try{renderPoetTracks();applyFilters();}catch(e2){console.warn('fallback render error:',e2);}
+}
 }
 
 function renderYearAxis(){
@@ -608,6 +739,7 @@ band.classList.add('active');
 }
 
 function renderFilters(){
+if(!filterBar) return;
 var h='<button class="fbtn on" data-k="all">全部</button>';
 allKeys.forEach(function(k){var p=P[k];h+='<button class="fbtn on" data-k="'+k+'">'+p.name+'</button>';});
 filterBar.innerHTML=h;
@@ -712,12 +844,14 @@ addPoemMeta('送友人','初中','送别');
 addPoemMeta('闻王昌龄左迁龙标遥有此寄','初中','送别');
 
 function renderGradeFilters(){
+var gradeBarEl=document.getElementById('gradeBar');
+if(!gradeBarEl) return;
 var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年级：</span>';
 h+='<button class="fbtn on" data-grade="all">全部</button>';
 GRADES.forEach(function(g){h+='<button class="fbtn" data-grade="'+g+'">'+g+'</button>';});
-document.getElementById('gradeBar').innerHTML=h;
-document.getElementById('gradeBar').style.display='block';
-document.getElementById('gradeBar').addEventListener('click',function(e){
+gradeBarEl.innerHTML=h;
+gradeBarEl.style.display='block';
+gradeBarEl.addEventListener('click',function(e){
 var btn=e.target.closest('.fbtn');if(!btn)return;
 var g=btn.dataset.grade;
 if(g==='all'){
@@ -738,12 +872,14 @@ applyFilters();
 }
 
 function renderEmotionFilters(){
+var emotionBarEl=document.getElementById('emotionBar');
+if(!emotionBarEl) return;
 var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">情感：</span>';
 h+='<button class="fbtn on" data-emotion="all">全部</button>';
 EMOTIONS.forEach(function(e){h+='<button class="fbtn" data-emotion="'+e+'">'+e+'</button>';});
-document.getElementById('emotionBar').innerHTML=h;
-document.getElementById('emotionBar').style.display='block';
-document.getElementById('emotionBar').addEventListener('click',function(e){
+emotionBarEl.innerHTML=h;
+emotionBarEl.style.display='block';
+emotionBarEl.addEventListener('click',function(e){
 var btn=e.target.closest('.fbtn');if(!btn)return;
 var em=btn.dataset.emotion;
 if(em==='all'){
@@ -765,6 +901,8 @@ applyFilters();
 
 var yearRangeStart=null;var yearRangeEnd=null;
 function renderYearFilter(){
+var yearBarEl=document.getElementById('yearBar');
+if(!yearBarEl) return;
 var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年份范围：</span>';
 h+='<div class="year-inputs">';
 h+='<label>起始年</label><input type="number" id="yearStart" placeholder="如 618" min="-500" max="1900">';
@@ -773,7 +911,7 @@ h+='<button id="yearApplyBtn">筛选</button>';
 h+='<button id="yearResetBtn">重置</button>';
 h+='<span class="year-hint" id="yearHint"></span>';
 h+='</div>';
-document.getElementById('yearBar').innerHTML=h;
+yearBarEl.innerHTML=h;
 document.getElementById('yearBar').style.display='block';
 document.getElementById('yearApplyBtn').addEventListener('click',function(){
 var s=parseInt(document.getElementById('yearStart').value);
@@ -810,14 +948,12 @@ if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[e
 if(evGrade==='小学')evGrade='小学一年级';
 else if(evGrade==='初中')evGrade='初中一年级';
 else if(evGrade==='高中')evGrade='高中一年级';
-var gradeBtns=document.querySelectorAll('#gradeBar .fbtn');
-var gradeFilterActive=false,gradeSelected=[];
-gradeBtns.forEach(function(b){if(b.dataset.grade!=='all'&&b.classList.contains('on')){gradeSelected.push(b.dataset.grade);gradeFilterActive=true;}});
+var gradeSelected=Object.keys(selectedGrades);
+var gradeFilterActive=gradeSelected.length>0;
 if(gradeFilterActive&&gradeSelected.length>0){if(evGrade===''||!gradeSelected.includes(evGrade))match=false;}
 if(!match)return;
-var emotionBtns=document.querySelectorAll('#emotionBar .fbtn');
-var emotionFilterActive=false,emotionSelected=[];
-emotionBtns.forEach(function(b){if(b.dataset.emotion!=='all'&&b.classList.contains('on')){emotionSelected.push(b.dataset.emotion);emotionFilterActive=true;}});
+var emotionSelected=Object.keys(selectedEmotions);
+var emotionFilterActive=emotionSelected.length>0;
 if(emotionFilterActive&&emotionSelected.length>0){if(evEmotion===''||!emotionSelected.includes(evEmotion))match=false;}
 if(!match)return;
 if(yearRangeStart!==null&&yearRangeEnd!==null){
@@ -934,10 +1070,10 @@ var h='';
 hits.forEach(function(hitObj){
 var item=hitObj.item,origIdx=hitObj.origIdx;
 if(item.type==='poet'){
-h+='<div class="sr-item" data-k="'+item.key+'" data-y="'+item.year+'"><div class="sr-title">👤 '+hl(item.text,q)+'</div><div class="sr-poet">跳转至诗人</div></div>';
+h+='<div class="sr-item" data-k="'+item.key+'" data-y="'+item.year+'" data-poem="" data-type="poet"><div class="sr-title">👤 '+hl(item.text,q)+'</div><div class="sr-poet">跳转至诗人</div></div>';
 }else{
 var poemPreview=item.poem?item.poem.split('\n').slice(0,2).join(' '):'';
-h+='<div class="sr-item" data-k="'+item.key+'" data-i="'+item.idx+'" data-y="'+item.year+'" data-orig="'+origIdx+'">';
+h+='<div class="sr-item" data-k="'+item.key+'" data-i="'+item.idx+'" data-y="'+item.year+'" data-orig="'+origIdx+'" data-poem="'+escHtml(item.poem)+'" data-type="event">';
 h+='<div class="sr-title">'+hl(item.title,q)+'</div>';
 h+='<div class="sr-poet">'+item.poet+' · '+Math.floor(item.year)+'年</div>';
 if(poemPreview)h+='<div class="sr-poem">'+hl(poemPreview,q)+'</div>';
@@ -946,6 +1082,7 @@ h+='</div>';
 });
 searchResults.innerHTML=h;
 searchResults.classList.add('show');
+addSpeakButtonsToSearchResults();
 }
 
 function hl(text,q){
@@ -996,7 +1133,9 @@ h+='<div class="dtl-use"><div class="dtl-label">💡 可以用在</div>';
 ev.use.forEach(function(u){h+='<span class="dtl-use-item">'+escHtml(u)+'</span>';});
 h+='</div>';
 }
+if(ev.poem||ev.desc){h+='<div class="dtl-speak-bar"><button class="dtl-speak-btn" id="detailSpeakBtn">\u{1F5A5} 朗读内容</button><span class="dtl-speak-hint">点击朗读诗词内容</span></div>';}
 dtlContent.innerHTML=h;detailOv.classList.add('show');
+setTimeout(function(){var sb=document.getElementById('detailSpeakBtn');if(sb){sb.addEventListener('click',function(){speakText(ev.poem||ev.title+(ev.desc?'\n'+ev.desc:''));sb.classList.add('speaking');setTimeout(function(){sb.classList.remove('speaking')},10000);});}},100);
 }
 
 document.getElementById('dtlClose').addEventListener('click',function(){detailOv.classList.remove('show');});
@@ -1088,11 +1227,416 @@ document.getElementById('histDetailOverlay').addEventListener('click',function(e
 if(e.target===this){this.classList.remove('show');bandsEl.querySelectorAll('.hist-band').forEach(function(b){b.classList.remove('active');});}
 });
 
+
+/* ===== Voice/Speech Functions ===== */
+var currentUtterance = null;
+var isSpeaking = false;
+var voicesLoaded = false;
+var availableVoices = [];
+
+// Fix: Properly load voices - in Chrome getVoices() returns empty array initially
+// Voices are loaded asynchronously and fire a 'voiceschanged' event
+function loadVoices() {
+    availableVoices = window.speechSynthesis.getVoices();
+    if (availableVoices.length > 0) {
+        voicesLoaded = true;
+    }
+}
+
+// Try to load voices immediately (some browsers have them ready)
+if (window.speechSynthesis) {
+    loadVoices();
+    // Fix: Register listener for when voices become available
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speakText(text) {
+    if (!text) return;
+    
+    // Fix: Check if browser supports speech synthesis
+    if (!window.speechSynthesis) {
+        alert('您的浏览器不支持语音朗读功能，请使用Chrome、Edge或Safari等现代浏览器。');
+        return;
+    }
+    
+    // Stop any current speech
+    window.speechSynthesis.cancel();
+    
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    
+    // Fix: Try to find a Chinese voice, with fallback to any available voice
+    var chineseVoiceFound = false;
+    
+    // First try: use voices we already loaded via voiceschanged event
+    if (voicesLoaded && availableVoices.length > 0) {
+        for (var i = 0; i < availableVoices.length; i++) {
+            if (availableVoices[i].lang && availableVoices[i].lang.indexOf('zh') !== -1) {
+                utterance.voice = availableVoices[i];
+                chineseVoiceFound = true;
+                break;
+            }
+        }
+    }
+    
+    // Second try: if voices not loaded yet, try getVoices() again
+    if (!chineseVoiceFound) {
+        var voices = window.speechSynthesis.getVoices();
+        for (var i = 0; i < voices.length; i++) {
+            if (voices[i].lang && voices[i].lang.indexOf('zh') !== -1) {
+                utterance.voice = voices[i];
+                chineseVoiceFound = true;
+                break;
+            }
+        }
+    }
+    
+    // Fix: If no Chinese voice found, try any available voice 
+    // (browser may still be able to synthesize Chinese with any voice)
+    if (!chineseVoiceFound) {
+        var allVoices = window.speechSynthesis.getVoices();
+        if (allVoices.length > 0) {
+            utterance.voice = allVoices[0];
+        }
+    }
+    
+    utterance.onstart = function() {
+        isSpeaking = true;
+        // Update all speak buttons to speaking state
+        document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
+            btn.classList.add('speaking');
+            btn.innerHTML = '\u23F8 停止朗读';
+        });
+        // Show stop all button
+        var stopAll = document.getElementById('srStopAll');
+        if (stopAll) stopAll.classList.add('show');
+    };
+    
+    utterance.onend = function() {
+        isSpeaking = false;
+        document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
+            btn.classList.remove('speaking');
+            btn.innerHTML = '\u266B 朗读';
+        });
+        var stopAll = document.getElementById('srStopAll');
+        if (stopAll) stopAll.classList.remove('show');
+    };
+    
+    utterance.onerror = function(event) {
+        isSpeaking = false;
+        document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
+            btn.classList.remove('speaking');
+            btn.innerHTML = '\u266B 朗读';
+        });
+        var stopAll = document.getElementById('srStopAll');
+        if (stopAll) stopAll.classList.remove('show');
+        
+        // Fix: Show user-friendly error message in console
+        if (event.error === 'no-speech') {
+            console.warn('语音合成：没有可用的语音引擎。请检查系统语音设置。');
+        } else if (event.error === 'network') {
+            console.warn('语音合成：网络错误。');
+        } else {
+            console.warn('语音合成错误：', event.error);
+        }
+    };
+    
+    // Fix: Handle case where voices may not be ready yet
+    // Some browsers need a small delay after user gesture to initialize speech synthesis
+    var trySpeak = function() {
+        // Reload voices one more time right before speaking
+        var freshVoices = window.speechSynthesis.getVoices();
+        if (freshVoices.length > 0 && !chineseVoiceFound) {
+            for (var i = 0; i < freshVoices.length; i++) {
+                if (freshVoices[i].lang && freshVoices[i].lang.indexOf('zh') !== -1) {
+                    utterance.voice = freshVoices[i];
+                    break;
+                }
+            }
+        }
+        window.speechSynthesis.speak(utterance);
+        currentUtterance = utterance;
+    };
+    
+    // Fix: In some browsers (Chrome), we need to wait for voices to load
+    if (!voicesLoaded && availableVoices.length === 0) {
+        // Voices not loaded yet, wait for the event
+        window.speechSynthesis.onvoiceschanged = function() {
+            loadVoices();
+            trySpeak();
+        };
+        // Also try immediately in case event already fired
+        setTimeout(trySpeak, 100);
+    } else {
+        trySpeak();
+    }
+}
+
+function stopSpeaking() {
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+    }
+    isSpeaking = false;
+    document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
+        btn.classList.remove('speaking');
+        btn.innerHTML = '\u266B 朗读';
+    });
+    var stopAll = document.getElementById('srStopAll');
+    if (stopAll) stopAll.classList.remove('show');
+}
+/* ===== Intro Toggle ===== */
+function toggleIntro() {
+    var intro = document.getElementById('introSection');
+    var btn = document.getElementById('introToggle');
+    if (!intro || !btn) return;
+    intro.classList.toggle('collapsed');
+    if (intro.classList.contains('collapsed')) {
+        btn.innerHTML = '\u25BC 展开介绍';
+    } else {
+        btn.innerHTML = '\u25B2 收起介绍';
+    }
+}
+
+/* ===== Search Result Speak Buttons ===== */
+function addSpeakButtonsToSearchResults() {
+    var items = document.querySelectorAll('#searchResults .sr-item[data-k]');
+    items.forEach(function(item) {
+        // Check if speak button already exists
+        if (item.querySelector('.sr-speak-btn')) return;
+        
+        var k = item.dataset.k;
+        var idx = item.dataset.i;
+        var titleEl = item.querySelector('.sr-title');
+        var poetEl = item.querySelector('.sr-poet');
+        
+        
+        // 获取诗人名称和标题用于降级方案
+        var poetName = '';
+        if (poetEl) {
+            poetName = poetEl.textContent.replace('跳转至诗人', '').trim();
+        }
+        var titleText = titleEl ? titleEl.textContent.replace(/[\ud800-\udbff][\udc00-\udfff]/g, '').trim() : '';
+        
+        var textToSpeak = '';
+        // 优先从data-poem属性获取完整诗词文本
+        var dataPoem = item.getAttribute('data-poem');
+        if (dataPoem && dataPoem.trim()) {
+            textToSpeak = dataPoem;
+        }
+        if (!textToSpeak) return;
+        
+        var speakBtn = document.createElement('button');
+        speakBtn.className = 'sr-speak-btn';
+        speakBtn.innerHTML = '\u{1F5A5} 朗读';
+        speakBtn.title = '朗读此条内容';
+        speakBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            speakText(textToSpeak);
+            // Auto-remove speaking class after 10s
+            var btn = this;
+            setTimeout(function() { btn.classList.remove('speaking'); }, 10000);
+        });
+        
+        // Add actions container if not exists
+        var actions = item.querySelector('.sr-actions');
+        if (!actions) {
+            actions = document.createElement('div');
+            actions.className = 'sr-actions';
+            item.appendChild(actions);
+        }
+        actions.appendChild(speakBtn);
+    });
+}
+
+/* Override doSearch to add speak buttons */
+// Initialize intro toggle
+document.getElementById('introToggle').addEventListener('click', toggleIntro);
+// Initialize stop speaking button
+document.getElementById('srStopBtn').addEventListener('click', stopSpeaking);
 renderAll();
 canvas.scrollTo({left:y2x(680)-40,behavior:'auto'});
+
+/* ===== 移动端筛选弹框 ===== */
+(function(){
+ var filterOverlay = document.getElementById('filterModalOverlay');
+ var filterModal = document.getElementById('filterModal');
+ var filterClose = document.getElementById('filterModalClose');
+ var filterCancel = document.getElementById('filterModalCancel');
+ var filterConfirm = document.getElementById('filterModalConfirm');
+ var menuBtn = document.getElementById('menuBtn');
+ 
+ // 打开弹框
+ if(menuBtn){
+  menuBtn.addEventListener('click',function(){
+   filterOverlay.classList.add('show');
+   document.body.style.overflow = 'hidden';
+  });
+ }
+ 
+ // 关闭弹框
+ function closeFilterModal(){
+  filterOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+ }
+ 
+ if(filterClose) filterClose.addEventListener('click', closeFilterModal);
+ if(filterCancel) filterCancel.addEventListener('click', closeFilterModal);
+ 
+ // 点击遮罩层关闭
+ if(filterOverlay){
+  filterOverlay.addEventListener('click',function(e){
+   if(e.target === filterOverlay){
+    closeFilterModal();
+   }
+  });
+ }
+ 
+ // 确定按钮：应用筛选并关闭
+ if(filterConfirm){
+  filterConfirm.addEventListener('click',function(){
+   // 触发年份筛选
+   var s = parseInt(document.getElementById('modalYearStart').value);
+   var e = parseInt(document.getElementById('modalYearEnd').value);
+   if(!isNaN(s) && !isNaN(e) && s <= e){
+    yearRangeStart = s;
+    yearRangeEnd = e;
+    document.getElementById('yearHint').textContent = '筛选: ' + s + '年 - ' + e + '年';
+    applyFilters();
+   }
+   closeFilterModal();
+  });
+ }
+})();
+
+/* ===== 朗读开关: 全局语音朗读开关 ===== */
+(function(){
+ var readToggle = document.getElementById('readToggle');
+ if(readToggle){
+  var speechEnabled = true;
+  readToggle.addEventListener('click',function(){
+   speechEnabled = !speechEnabled;
+   if(speechEnabled){
+    readToggle.textContent = '🔊';
+    readToggle.title = '朗读已开启';
+   }else{
+    readToggle.textContent = '🔇';
+    readToggle.title = '朗读已关闭';
+    window.speechSynthesis && window.speechSynthesis.cancel();
+   }
+  });
+ }
+})();
+
+/* ===== 弹框内年级/情感/年份筛选事件 ===== */
+(function(){
+ // 年级筛选（弹框版本）
+ var gradeBarModal = document.getElementById('gradeBarModal');
+ if(gradeBarModal){
+  // 复制桌面版gradeBar的HTML到弹框
+  var gradeBarSrc = document.getElementById('gradeBar');
+  if(gradeBarSrc){
+   gradeBarModal.innerHTML = gradeBarSrc.innerHTML;
+   // 重新绑定事件（深拷贝后需要重新绑定）
+   gradeBarModal.addEventListener('click', function(e){
+    var btn = e.target.closest('.fbtn');
+    if(!btn) return;
+    var g = btn.dataset.grade;
+    if(g === 'all'){
+     var allOn = btn.classList.contains('on');
+     gradeBarModal.querySelectorAll('.fbtn').forEach(function(b){
+      if(allOn) b.classList.remove('on');
+      else b.classList.add('on');
+      if(b.dataset.grade !== 'all'){
+       if(allOn) delete selectedGrades[b.dataset.grade];
+       else selectedGrades[b.dataset.grade] = true;
+      }
+     });
+    } else {
+     btn.classList.toggle('on');
+     if(btn.classList.contains('on')) selectedGrades[g] = true;
+     else delete selectedGrades[g];
+     var allBtn = gradeBarModal.querySelector('[data-grade="all"]');
+     var allActive = GRADES.every(function(gg){ return selectedGrades[gg]; });
+     if(allActive) allBtn.classList.add('on');
+     else allBtn.classList.remove('on');
+    }
+    applyFilters();
+   });
+  }
+ }
+ 
+ // 情感筛选（弹框版本）
+ var emotionBarModal = document.getElementById('emotionBarModal');
+ if(emotionBarModal){
+  var emotionBarSrc = document.getElementById('emotionBar');
+  if(emotionBarSrc){
+   emotionBarModal.innerHTML = emotionBarSrc.innerHTML;
+   emotionBarModal.addEventListener('click', function(e){
+    var btn = e.target.closest('.fbtn');
+    if(!btn) return;
+    var em = btn.dataset.emotion;
+    if(em === 'all'){
+     var allOn = btn.classList.contains('on');
+     emotionBarModal.querySelectorAll('.fbtn').forEach(function(b){
+      if(allOn) b.classList.remove('on');
+      else b.classList.add('on');
+      if(b.dataset.emotion !== 'all'){
+       if(allOn) delete selectedEmotions[b.dataset.emotion];
+       else selectedEmotions[b.dataset.emotion] = true;
+      }
+     });
+    } else {
+     btn.classList.toggle('on');
+     if(btn.classList.contains('on')) selectedEmotions[em] = true;
+     else delete selectedEmotions[em];
+     var allBtn = emotionBarModal.querySelector('[data-emotion="all"]');
+     var allActive = EMOTIONS.every(function(ee){ return selectedEmotions[ee]; });
+     if(allActive) allBtn.classList.add('on');
+     else allBtn.classList.remove('on');
+    }
+    applyFilters();
+   });
+  }
+ }
+ 
+ // 年份筛选（弹框版本）
+ var modalYearApply = document.getElementById('modalYearApplyBtn');
+ var modalYearReset = document.getElementById('modalYearResetBtn');
+ if(modalYearApply){
+  modalYearApply.addEventListener('click', function(){
+   var s = parseInt(document.getElementById('modalYearStart').value);
+   var e = parseInt(document.getElementById('modalYearEnd').value);
+   if(isNaN(s) || isNaN(e) || s > e){
+    document.getElementById('modalYearHint').textContent = '请输入有效的年份范围';
+    return;
+   }
+   yearRangeStart = s;
+   yearRangeEnd = e;
+   document.getElementById('modalYearHint').textContent = '筛选: ' + s + '年 - ' + e + '年';
+   // 同步到桌面版
+   document.getElementById('yearStart').value = s;
+   document.getElementById('yearEnd').value = e;
+   document.getElementById('yearHint').textContent = '筛选: ' + s + '年 - ' + e + '年';
+   applyFilters();
+  });
+ }
+ if(modalYearReset){
+  modalYearReset.addEventListener('click', function(){
+   yearRangeStart = null;
+   yearRangeEnd = null;
+   document.getElementById('modalYearStart').value = '';
+   document.getElementById('modalYearEnd').value = '';
+   document.getElementById('modalYearHint').textContent = '';
+   // 同步到桌面版
+   document.getElementById('yearStart').value = '';
+   document.getElementById('yearEnd').value = '';
+   document.getElementById('yearHint').textContent = '';
+   applyFilters();
+  });
+ }
+})();
 </script>
 </body>
 </html>
-
-
-
