@@ -1,13 +1,6 @@
-
-
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<script>
-!(function(j,a,g){j.__itrace_conf = {bid: 'f43basl8-6nqu7l3w',rel: '0.0.1', spa: true, uid: '', plugins:['jserror','interface','perf','resource','flow','blank']};var b = a.createElement("script");var d = a.getElementsByTagName("script")[0];b.type = "text/javascript";b.crossorigin = true;b.async = true;b.onload = function(){j.__itrace && j.__itrace.setReady()};d.parentNode.insertBefore(b,d);b.src = g})(window, document, "https://g.alicdn.com/woodpeckerx/itrace-next/itrace.iife.js")
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>历史的相遇</title>
@@ -21,12 +14,8 @@
 }
 html{font-family:var(--font);background:var(--bg);color:var(--text)}
 body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-
-/* SECTION: header */
 .hdr{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0a0f1e,#131b30);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .hdr h1{font-family:var(--serif);font-size:20px;background:linear-gradient(135deg,#e94560,#e9a045);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-/* SECTION: search */
 .search-box{position:relative;margin-left:auto;flex:0 1 360px}
 .search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:14px;outline:none;transition:border .2s}
 .search-box input:focus{border-color:rgba(233,69,96,.5)}
@@ -40,95 +29,43 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .sr-poet{font-size:11px;color:var(--dim);margin-top:2px}
 .sr-poem{font-size:12px;color:var(--dim);margin-top:4px;font-family:var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr-hl{color:#e94560;font-weight:700}
-
-/* === Speak button styles === */
 .sr-actions{display:flex;gap:6px;margin-top:8px;align-items:center}
-.sr-speak-btn{
- display:inline-flex;align-items:center;gap:4px;
- padding:4px 12px;border-radius:14px;
- border:1px solid rgba(233,69,96,.4);background:transparent;
- color:#e94560;font-size:11px;cursor:pointer;
- transition:all .25s;white-space:nowrap;
- line-height:1.4;
-}
+.sr-speak-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:11px;cursor:pointer;transition:all .25s;white-space:nowrap;line-height:1.4}
 .sr-speak-btn:hover{background:rgba(233,69,96,.12);border-color:rgba(233,69,96,.6)}
-.sr-speak-btn.speaking{
- background:#e94560;color:#fff;
- border-color:#e94560;
- animation:speakPulse 1.5s ease infinite;
-}
-@keyframes speakPulse{
- 0%,100%{box-shadow:0 0 0 0 rgba(233,69,96,.4)}
- 50%{box-shadow:0 0 8px 4px rgba(233,69,96,.2)}
-}
+.sr-speak-btn.speaking{background:#e94560;color:#fff;border-color:#e94560;animation:speakPulse 1.5s ease infinite}
+@keyframes speakPulse{0%,100%{box-shadow:0 0 0 0 rgba(233,69,96,.4)}50%{box-shadow:0 0 8px 4px rgba(233,69,96,.2)}}
 .sr-speak-btn .speak-icon{font-size:13px;line-height:1}
-.sr-stop-all{
- display:none;position:sticky;bottom:0;left:0;right:0;
- padding:8px 14px;background:linear-gradient(0deg,var(--card) 60%,transparent);
- text-align:center;z-index:5;
-}
+.sr-stop-all{display:none;position:sticky;bottom:0;left:0;right:0;padding:8px 14px;background:linear-gradient(0deg,var(--card) 60%,transparent);text-align:center;z-index:5}
 .sr-stop-all.show{display:block}
-.sr-stop-all button{
- padding:6px 20px;border-radius:16px;
- border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.15);
- color:#e94560;font-size:12px;cursor:pointer;
- transition:all .2s;
-}
+.sr-stop-all button{padding:6px 20px;border-radius:16px;border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.15);color:#e94560;font-size:12px;cursor:pointer;transition:all .2s}
 .sr-stop-all button:hover{background:rgba(233,69,96,.3)}
-
-/* SECTION: filters */
 .fbar{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
 .fbtn{padding:4px 12px;border-radius:16px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .fbtn:hover{border-color:rgba(255,255,255,.3);color:var(--text)}
-.fbtn.on{color:#fff;border-color:currentColor;background:rgba(255,255,255,.08)}
-.fbtn[data-grade="小学一年级"]{border-color:#a8d5a2;color:#a8d5a2}
-.fbtn[data-grade="小学二年级"]{border-color:#7ec87e;color:#7ec87e}
-.fbtn[data-grade="小学三年级"]{border-color:#5cb85c;color:#5cb85c}
-.fbtn[data-grade="小学四年级"]{border-color:#4cae4c;color:#4cae4c}
-.fbtn[data-grade="小学五年级"]{border-color:#3d8b3d;color:#3d8b3d}
-.fbtn[data-grade="小学六年级"]{border-color:#2e7d32;color:#2e7d32}
-.fbtn[data-grade="初中一年级"]{border-color:#1b5e20;color:#1b5e20}
-.fbtn[data-grade="初中二年级"]{border-color:#0d4f1d;color:#0d4f1d}
-.fbtn[data-grade="初中三年级"]{border-color:#003300;color:#003300}
-.fbtn[data-grade="高中一年级"]{border-color:#4a148c;color:#4a148c}
-.fbtn[data-grade="高中二年级"]{border-color:#6a1b9a;color:#6a1b9a}
-.fbtn[data-grade="高中三年级"]{border-color:#7b1fa2;color:#7b1fa2}
-.fbtn[data-emotion="思乡"]{border-color:#e67e22;color:#e67e22}
-.fbtn[data-emotion="送别"]{border-color:#9b59b6;color:#9b59b6}
-.fbtn[data-emotion="爱国"]{border-color:#e74c3c;color:#e74c3c}
-.fbtn[data-emotion="劝学"]{border-color:#f39c12;color:#f39c12}
-.fbtn[data-emotion="田园"]{border-color:#27ae60;color:#27ae60}
-.fbtn[data-emotion="山水"]{border-color:#1abc9c;color:#1abc9c}
-.fbtn[data-emotion="边塞"]{border-color:#8d6e63;color:#8d6e63}
-.fbtn[data-emotion="咏物"]{border-color:#5d4037;color:#5d4037}
-.fbtn[data-emotion="哲理"]{border-color:#7f8c8d;color:#7f8c8d}
-.fbtn[data-emotion="闺怨爱情"]{border-color:#c0392b;color:#c0392b}
-
-/* SECTION: dynasty legend */
+.fbtn.on{color:#fff;border-color:currentColor;background:rgba(255,255,255,.12)}
+.fbtn[data-grade]{border-color:#5B9BD5;color:#5B9BD5}
+.fbtn[data-grade].on{background:#5B9BD5;border-color:#3A7BBF;color:#fff}
+.fbtn[data-emotion]{border-color:#E8956A;color:#E8956A}
+.fbtn[data-emotion].on{background:#E8956A;border-color:#C97A4F;color:#fff}
 .dyn-bar{padding:6px 20px;display:flex;gap:12px;font-size:11px;color:var(--dim);border-bottom:1px solid var(--border);background:rgba(0,0,0,.15);flex-wrap:wrap;align-items:center}
 .dyn-tag{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
-
-/* SECTION: timeline */
 .tl-wrap{overflow:hidden;display:flex;position:relative;flex:1;min-height:0}
 .tl-wrap::-webkit-scrollbar{height:8px}
-.tl-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
-.tl-canvas{position:relative;height:100%;overflow-x:auto;overflow-y:auto;flex:1;min-width:0;z-index:1;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}#pTracks{padding-top:0}
-
+.tl-wrap::-webkit-scrollbar-thumb{background:rgba(233,69,96,.4);border-radius:4px}
+.tl-canvas{position:relative;height:100%;overflow-x:auto;overflow-y:auto;flex:1;min-width:0;z-index:1;scrollbar-width:thin;scrollbar-color:rgba(233,69,96,.5) rgba(255,255,255,.05)}
+#pTracks{padding-top:0}
 .y-axis{position:sticky;top:0;z-index:10;height:36px;border-bottom:1px solid var(--border);overflow:visible;background:var(--bg)}
 .y-tick{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%)}
 .y-tick .ln{width:1px;height:14px;background:rgba(255,255,255,.12)}
 .y-tick .lb{font-size:10px;color:var(--dim);margin-top:2px;white-space:nowrap}
 .y-tick.mj .ln{height:20px;background:rgba(255,255,255,.25)}
 .y-tick.mj .lb{font-size:11px;color:var(--text);font-weight:600}
-
 .dyn-band{position:absolute;top:0;bottom:0;border-left:1px dashed rgba(255,255,255,.06);border-right:1px dashed rgba(255,255,255,.06)}
 .dyn-band-lb{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:2px;writing-mode:vertical-rl;text-orientation:mixed;opacity:.25;font-weight:700}
-
-.hist-band{position:absolute;top:0;bottom:0;background:rgba(255,100,100,.04);border-left:1px dashed rgba(255,100,100,.15);border-right:1px dashed rgba(255,100,100,.15);pointer-events:none;overflow:visible}
-.hist-lb{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,150,150,.5);white-space:nowrap;font-weight:600;letter-spacing:1px;writing-mode:vertical-rl;text-orientation:mixed;min-width:20px}
-
-.p-tracks{position:relative;z-index:1;overflow:visible;display:block;width:100%}
-.p-row{position:relative;height:52px;transition:opacity .3s;overflow:visible;transform:translateZ(0);border-bottom:1px solid rgba(255,255,255,.06)}
+.hist-band{position:absolute;top:0;bottom:0;background:rgba(255,100,100,.04);border-left:1px dashed rgba(255,100,100,.15);border-right:1px dashed rgba(255,100,100,.15);pointer-events:auto;cursor:pointer;transition:background .2s;overflow:visible}
+.hist-lb{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,150,150,.5);white-space:nowrap;font-weight:600;letter-spacing:1px;writing-mode:vertical-rl;text-orientation:mixed;min-width:20px;pointer-events:none}
+.p-tracks{position:relative;z-index:10;overflow:visible;display:block;width:100%;pointer-events:none}
+.p-row{position:relative;height:52px;transition:opacity .3s;overflow:visible;transform:translateZ(0);border-bottom:1px solid rgba(255,255,255,.06);pointer-events:none}
 .p-row.dim{display:none}
 .p-row.hl{background:rgba(233,69,96,.06);border-radius:8px}
 .p-hdr{display:flex;align-items:center;gap:8px;padding:0 10px;height:52px;margin-bottom:0;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);flex-shrink:0;min-width:110px;border-bottom:2px solid rgba(233,69,96,.25);overflow:hidden;white-space:nowrap}
@@ -137,30 +74,31 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .p-meta{font-size:10px;color:var(--dim);white-space:nowrap}
 .p-dynasty{font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600}
 .life-bar{position:absolute;height:4px;border-radius:2px;opacity:.35;top:8px}
-
-.ev-layer{position:absolute;top:0;left:0;right:0;bottom:0;min-width:0;overflow:visible}
-.ev-row-label{display:none}
-.ev-layer-work{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
-.ev-dot{position:absolute;cursor:pointer;transition:transform .2s;z-index:5}
+.ev-layer{position:absolute;top:0;left:0;right:0;bottom:0;min-width:0;overflow:visible;pointer-events:none}
+.ev-dot{position:absolute;cursor:pointer;transition:transform .2s;z-index:5;pointer-events:auto}
 .ev-dot:hover{transform:scale(1.6);z-index:20}
 .ev-dot.pulse{animation:dotPulse 1.5s ease 3;z-index:30}
-@keyframes dotPulse{
- 0%{transform:scale(1);box-shadow:0 0 0 0 rgba(233,69,96,.7)}
- 50%{transform:scale(2.8);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}
- 100%{transform:scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}
-}
+@keyframes dotPulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(233,69,96,.7)}50%{transform:scale(2.8);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}}
 .ev-dot.work.pulse{animation:dotPulseWork 1.5s ease 3}
-@keyframes dotPulseWork{
- 0%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,.7)}
- 50%{transform:rotate(45deg) scale(3);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}
- 100%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}
-}
+@keyframes dotPulseWork{0%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,.7)}50%{transform:rotate(45deg) scale(3);box-shadow:0 0 16px 8px rgba(233,69,96,.5)}100%{transform:rotate(45deg) scale(1);box-shadow:0 0 0 0 rgba(233,69,96,0)}}
 .ev-dot.life{width:10px;height:10px;border-radius:50%;border:2px solid;position:absolute;top:5px;z-index:5}
 .ev-dot.work{width:8px;height:8px;border-radius:1px;transform:rotate(45deg);position:absolute;top:22px;z-index:5;box-shadow:0 0 3px rgba(0,0,0,.3)}
 .ev-dot.work:hover{transform:rotate(45deg) scale(1.7)}
-.ev-dot.highlight{box-shadow:0 0 8px 3px rgba(233,69,96,.6);z-index:15}
-
-/* SECTION: detail panel */
+.hist-band:hover{background:rgba(255,100,100,.12)}
+.hist-band.active{background:rgba(255,100,100,.18)}
+.hist-detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:400;display:none;justify-content:center;align-items:center}
+.hist-detail-overlay.show{display:flex}
+.hist-detail-panel{width:100%;max-width:600px;max-height:80vh;overflow-y:auto;background:var(--card);border-radius:16px;padding:24px 28px 32px;animation:slideUp .25s ease;position:relative}
+.hist-detail-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer;padding:4px 8px}
+.hist-detail-close:hover{color:var(--text)}
+.hist-detail-years{font-size:12px;color:var(--dim);margin-bottom:6px}
+.hist-detail-title{font-family:var(--serif);font-size:22px;font-weight:700;color:#e94560;margin-bottom:10px}
+.hist-detail-desc{font-size:14px;line-height:1.8;color:var(--dim);margin-bottom:16px}
+.hist-detail-section{margin-bottom:16px}
+.hist-detail-label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.hist-detail-body{font-size:13px;line-height:1.8;color:var(--dim)}
+.hist-detail-poet{display:inline-block;padding:3px 10px;margin:3px 4px 3px 0;background:rgba(233,69,96,.1);border-radius:14px;font-size:12px;color:#e94560;border:1px solid rgba(233,69,96,.2)}
+.hist-detail-poem{display:inline-block;padding:3px 10px;margin:3px 4px 3px 0;background:rgba(233,160,69,.1);border-radius:14px;font-size:12px;color:#e9a045;border:1px solid rgba(233,160,69,.2)}
 .detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;justify-content:center;align-items:flex-end}
 .detail-overlay.show{display:flex}
 .detail-panel{width:100%;max-width:560px;max-height:80vh;overflow-y:auto;background:var(--card);border-radius:16px 16px 0 0;padding:20px 24px 30px;animation:slideUp .25s ease}
@@ -177,26 +115,16 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .dtl-use{margin-top:10px;padding:10px 14px;background:rgba(233,160,69,.08);border-radius:8px;border-left:3px solid #e9a045}
 .dtl-use .dtl-label{color:#e9a045;margin-bottom:6px}
 .dtl-use-item{display:inline-block;font-size:12px;padding:2px 8px;margin:2px 4px 2px 0;background:rgba(233,160,69,.12);border-radius:12px;color:#e9a045;border:1px solid rgba(233,160,69,.2)}
-
-/* SECTION: quick nav */
 .qnav{padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:rgba(0,0,0,.1)}
 .qnav-btn{padding:3px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:11px;cursor:pointer;transition:all .15s}
 .qnav-btn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
-
-/* SECTION: nav btns */
-.nav-ctrl{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;gap:6px}
-.nav-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.nav-ctrl{position:fixed;bottom:16px;right:16px;z-index:100;display:none;gap:6px}
+.nav-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .nav-btn:hover{background:rgba(255,255,255,.08)}
-
-/* SECTION: intro */
 .intro{padding:14px 20px;background:linear-gradient(180deg,rgba(0,0,0,.3),transparent);border-bottom:1px solid var(--border)}
 .intro p{font-size:12px;color:var(--dim);line-height:1.6}
 .intro .hint{font-size:11px;margin-top:6px;color:rgba(255,255,255,.25)}
-
-/* SECTION: desktop detail panel */
 @media(min-width:769px){.detail-overlay{align-items:center}.detail-panel{border-radius:16px;max-height:85vh}}
-
-/* SECTION: mobile */
 @media(max-width:768px){
  .hdr{flex-direction:column;align-items:stretch;gap:8px;padding:10px 14px}
  .hdr h1{font-size:17px;text-align:center}
@@ -221,24 +149,15 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
  .dtl-poem{font-size:14px;line-height:1.9;padding:12px}
  .dtl-desc{font-size:12px}
  .dtl-body{font-size:12px}
- .nav-btn{width:32px;height:32px;font-size:14px}
+ .nav-btn{width:32px;height:32px;font-size:14px;display:none}
  .nav-ctrl{bottom:12px;right:12px;gap:4px}
  .search-results{max-height:300px}
 }
-
-/* Detail panel speak button */
 .dtl-speak-bar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;padding:8px 12px;background:rgba(233,69,96,.06);border-radius:8px;border:1px solid rgba(233,69,96,.15)}
-.dtl-speak-btn{
- display:inline-flex;align-items:center;gap:5px;
- padding:6px 16px;border-radius:16px;
- border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.1);
- color:#e94560;font-size:12px;cursor:pointer;
- transition:all .25s;font-weight:600;
-}
+.dtl-speak-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;border:1px solid rgba(233,69,96,.5);background:rgba(233,69,96,.1);color:#e94560;font-size:12px;cursor:pointer;transition:all .25s;font-weight:600}
 .dtl-speak-btn:hover{background:rgba(233,69,96,.2)}
 .dtl-speak-btn.speaking{background:#e94560;color:#fff;border-color:#e94560;animation:speakPulse 1.5s ease infinite}
 .dtl-speak-hint{font-size:11px;color:var(--dim)}
-/* SECTION: year filter */
 .year-inputs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .year-inputs label{font-size:11px;color:var(--dim);line-height:26px}
 .year-inputs input{width:70px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:12px;outline:none;text-align:center}
@@ -246,18 +165,11 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .year-inputs button{padding:3px 10px;border-radius:14px;border:1px solid rgba(233,69,96,.4);background:transparent;color:#e94560;font-size:11px;cursor:pointer;transition:all .2s}
 .year-inputs button:hover{background:rgba(233,69,96,.12);border-color:rgba(233,69,96,.6)}
 .year-hint{font-size:10px;color:var(--dim);line-height:26px;margin-left:4px}
-.author-col{width:110px;flex-shrink:0;position:sticky;left:0;z-index:20;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);height:100%;overflow-y:auto;padding-top:36px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.author-col{width:110px;flex-shrink:0;position:sticky;left:0;z-index:20;background:var(--bg);box-shadow:2px 0 8px rgba(0,0,0,.3);height:100%;overflow-y:auto;padding-top:36px;scrollbar-width:thin;scrollbar-color:rgba(233,69,96,.5) rgba(255,255,255,.05)}
 .author-col::before{content:'';position:sticky;top:0;z-index:11;height:36px;background:var(--bg);border-bottom:1px solid var(--border)}
-
-
-.ev-layer-work{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
-.work-events-layer{display:none}
-.timeline-line{position:absolute;top:10px;left:0;right:0;height:1px;background:rgba(233,69,96,.25);z-index:0}
-.work-events-layer .ev-dot-work-container{position:absolute;top:0;left:0;right:0;bottom:0;overflow:visible}
 </style>
 </head>
 <body>
-
 <div class="hdr">
  <h1>历史的相遇</h1>
  <div class="search-box">
@@ -268,50 +180,45 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
  </div>
  </div>
 </div>
-
 <div class="intro">
- <p>从汉末曹操到清代龚自珍，50余位诗词大家在同一条时间线上交汇，涵盖小学到高中各年级课本经典诗词。选定任意一年，仿佛推开一扇窗——李白正举杯邀月，杜甫正登高望远，苏轼正泛舟赤壁……同一时刻，不同的诗人正在经历各自的人生。搜索诗词或诗人名字即可快速定位，点击任意节点查看诗词原文、创作背景、含义解析和使用场景。</p>
- <p class="hint">左右滑动浏览 · 点击圆点查看详情（含使用场景）· 上行●生平(时间线上) 下行◆作品(时间线下方菱形) · 搜索框支持关键词搜索 · 搜索结果支持语音朗读</p>
+ <p>从先秦屈原到清代龚自珍，50余位诗词大家在同一条时间线上交汇，涵盖小学到高中各年级课本经典诗词。选定任意一年，仿佛推开一扇窗——李白正举杯邀月，杜甫正登高望远，苏轼正泛舟赤壁……同一时刻，不同的诗人正在经历各自的人生。搜索诗词或诗人名字即可快速定位，点击任意节点查看诗词原文、创作背景、含义解析和使用场景。</p>
+ <p class="hint">拖拽底部滚动条左右滑动浏览 · 点击历史事件色带查看详情 · 点击圆点查看详情（含使用场景）· 上行●生平(时间线上) 下行◆作品(时间线下方菱形) · 搜索框支持关键词搜索 · 搜索结果支持语音朗读</p>
 </div>
-
-
-
 <div class="fbar" id="filterBar"></div>
-<div class="fbar" id="gradeBar" style="display:none"></div>
-<div class="fbar" id="emotionBar" style="display:none"></div>
+<div class="fbar" id="gradeBar" style="display:none;background:rgba(91,155,213,.05);border-right:2px solid rgba(255,255,255,.1);padding-right:12px"></div>
+<div class="fbar" id="emotionBar" style="display:none;background:rgba(232,149,106,.05);border-left:2px solid rgba(255,255,255,.1);padding-left:12px"></div>
 <div class="fbar" id="yearBar" style="display:block"></div>
 <div class="dyn-bar" id="dynastyBar"></div>
 <div class="qnav" id="quickNav"></div>
-
 <div class="tl-wrap" id="tlWrap">
  <div class="author-col" id="authorCol"></div>
  <div class="tl-canvas" id="tlCanvas">
  <div class="y-axis" id="yAxis"></div>
- <div id="bands" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:visible"></div>
+ <div id="bands" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:1;overflow:visible"></div>
  <div class="p-tracks" id="pTracks"></div>
- <div class="work-events-layer" id="workEventsLayer"></div>
  </div>
 </div>
-
 <div class="detail-overlay" id="detailOverlay">
  <div class="detail-panel" id="detailPanel">
  <button class="dtl-close" id="dtlClose">✕</button>
  <div id="dtlContent"></div>
  </div>
 </div>
-
+<div class="hist-detail-overlay" id="histDetailOverlay">
+ <div class="hist-detail-panel">
+  <button class="hist-detail-close" id="histDetailClose">✕</button>
+  <div id="histDetailContent"></div>
+ </div>
+</div>
 <div class="nav-ctrl">
  <button class="nav-btn" id="navL">←</button>
  <button class="nav-btn" id="navR">→</button>
 </div>
-
 <script>
-/* === SECTION: config === */
-var YS=150,YE=1900,PPY=7.2,BL=50;
+var YS=-400,YE=1900,PPY=7.2,BL=50;
 function y2x(y){return BL+(y-YS)*PPY}
-
-/* dynasty info */
 var dynasties={
+ preqin:{name:'先秦',color:'#7f8c8d',bg:'rgba(127,140,141,.08)',start:-500,end:150},
  han:{name:'汉末',color:'#8b4513',bg:'rgba(139,69,19,.08)',start:150,end:280},
  jin:{name:'魏晋',color:'#cd853f',bg:'rgba(205,133,63,.06)',start:280,end:589},
  tang:{name:'唐',color:'#2980b9',bg:'rgba(41,128,185,.06)',start:618,end:907},
@@ -320,7 +227,6 @@ var dynasties={
  ming:{name:'明',color:'#c0392b',bg:'rgba(192,57,43,.06)',start:1368,end:1644},
  qing:{name:'清',color:'#8e44ad',bg:'rgba(142,68,173,.06)',start:1644,end:1912}
 };
-
 var historyEvents=[
  {s:184,e:220,l:'汉末乱世',d:'黄巾起义、三国鼎立'},
  {s:755,e:763,l:'安史之乱',d:'唐朝由盛转衰'},
@@ -330,453 +236,405 @@ var historyEvents=[
  {s:1368,e:1644,l:'明代',d:'明朝统治'},
  {s:1644,e:1912,l:'清代',d:'清朝统治'}
 ];
-
-/* === SECTION: poet data === */
-var P={
-caocao:{name:'曹操',dynasty:'han',born:155,died:220,avatar:'曹',color:'#a0522d',events:[
-{year:155,type:'life',title:'出生',desc:'字孟德，沛国谯县（今安徽亳州）人，东汉末年政治家、军事家、文学家。'},
+var P={};
+P['quyuan']={name:'屈原',dynasty:'preqin',born:-340,died:-278,avatar:'屈',color:'#c0392b',events:[
+{year:-340,type:'life',title:'出生',desc:'名平，字原，战国时期楚国人，中国浪漫主义文学的奠基人。'},
+{year:-313,type:'life',title:'遭谗被疏',desc:'因主张联齐抗秦遭贵族排挤诽谤，被楚怀王疏远。'},
+{year:-295,type:'work',title:'离骚（节选）',desc:'中国最长的抒情诗，表达忧国忧民之情与追求理想的决心。',poem:'帝高阳之苗裔兮，朕皇考曰伯庸。\n摄提贞于孟陬兮，惟庚寅吾以降。\n长太息以掩涕兮，哀民生之多艰。\n亦余心之所善兮，虽九死其犹未悔。\n路漫漫其修远兮，吾将上下而求索。',bg:'屈原被放逐后所作，是中国文学史上第一首长篇抒情诗。',use:["追求理想/坚持不懈","忧国忧民","探索真理的精神"]},
+{year:-278,type:'life',title:'投江殉国',desc:'秦军攻破楚国郢都后，屈原悲愤交加，于五月初五投汨罗江自尽。'}
+]};
+P['caocao']={name:'曹操',dynasty:'han',born:155,died:220,avatar:'曹',color:'#a0522d',events:[
+{year:155,type:'life',title:'出生',desc:'字孟德，沛国谯县人，东汉末年政治家、军事家、文学家。'},
 {year:190,type:'life',title:'起兵讨董卓',desc:'参与讨伐董卓联军，开始登上历史舞台。'},
-{year:196,type:'life',title:'迎汉献帝',desc:'迎汉献帝于许都，"挟天子以令诸侯"，奠定霸业基础。'},
+{year:196,type:'life',title:'迎汉献帝',desc:'迎汉献帝于许都，挟天子以令诸侯，奠定霸业基础。'},
 {year:200,type:'life',title:'官渡之战',desc:'以少胜多大败袁绍，统一北方。'},
-{year:207,type:'work',title:'观沧海',desc:'北征乌桓胜利后途经碣石山所作，是《步出夏门行》的第一章。',poem:'东临碣石，以观沧海。\n水何澹澹，山岛竦峙。\n树木丛生，百草丰茂。\n秋风萧瑟，洪波涌起。\n日月之行，若出其中；\n星汉灿烂，若出其里。\n幸甚至哉，歌以咏志。',bg:'建安十二年（207年），曹操北征乌桓大获全胜，回师途中经过碣石山登山望海而作。全诗借大海吞吐日月星辰的壮丽景象，表达诗人统一天下的雄心壮志和博大胸襟。',use:['表达壮志豪情','形容胸怀博大、格局远大','登高望远的感受']},
-{year:207.5,type:'work',title:'龟虽寿',desc:'同一时期所作，表达老当益壮的进取精神。',poem:'神龟虽寿，犹有竟时。\n腾蛇乘雾，终为土灰。\n老骥伏枥，志在千里。\n烈士暮年，壮心不已。\n盈缩之期，不但在天；\n养怡之福，可得永年。',bg:'与《观沧海》同作于北征乌桓归途。诗人以千里马自喻，"老骥伏枥，志在千里"成为千古名句。',use:['老当益壮/不服老','鼓励老年人积极生活','表达永不言弃的志向']},
+{year:207,type:'work',title:'观沧海',desc:'北征乌桓胜利后途经碣石山所作。',poem:'东临碣石，以观沧海。\n水何澹澹，山岛竦峙。\n树木丛生，百草丰茂。\n秋风萧瑟，洪波涌起。\n日月之行，若出其中；\n星汉灿烂，若出其里。\n幸甚至哉，歌以咏志。',bg:'建安十二年（207年），曹操北征乌桓大获全胜，回师途中经过碣石山登山望海而作。',use:['表达壮志豪情','形容胸怀博大','登高望远的感受']},
+{year:207.5,type:'work',title:'龟虽寿',desc:'同一时期所作，表达老当益壮的进取精神。',poem:'神龟虽寿，犹有竟时。\n腾蛇乘雾，终为土灰。\n老骥伏枥，志在千里。\n烈士暮年，壮心不已。',bg:'与《观沧海》同作于北征乌桓归途。',use:['老当益壮/不服老','鼓励老年人积极生活','表达永不言弃的志向']},
 {year:208,type:'life',title:'赤壁之战',desc:'率大军南下，在赤壁被孙刘联军击败，三分天下格局初成。'},
-{year:210,type:'work',title:'短歌行',desc:'宴席上所作，抒发求贤若渴之情和统一天下的壮志。',poem:'对酒当歌，人生几何！\n譬如朝露，去日苦多。\n慨当以慷，忧思难忘。\n何以解忧？唯有杜康。\n青青子衿，悠悠我心。\n但为君故，沉吟至今。\n呦呦鹿鸣，食野之苹。\n我有嘉宾，鼓瑟吹笙。\n明明如月，何时可掇？\n忧从中来，不可断绝。\n越陌度阡，枉用相存。\n契阔谈讌，心念旧恩。\n月明星稀，乌鹊南飞。\n绕树三匝，何枝可依？\n山不厌高，海不厌深。\n周公吐哺，天下归心。',bg:'作于赤壁之战前夕的宴会上。诗人感慨人生短暂，但并非消极叹息，而是借此抒发珍惜时光、广纳贤才的迫切心情。',use:["感叹人生短暂","求贤若渴/招揽人才","珍惜时光"]},
-{year:220,type:'life',title:'病逝洛阳',desc:'六十六岁病逝于洛阳，谥号武王。一代枭雄，传奇落幕。'}
-]},
-tao:{name:'陶渊明',dynasty:'jin',born:365,died:427,avatar:'陶',color:'#cd853f',events:[
-{year:365,type:'life',title:'出生',desc:'又名陶潜，字元亮，浔阳柴桑（今江西九江）人，东晋末著名诗人，"隐逸诗人之宗"。'},
-{year:393,type:'life',title:'初仕',desc:'二十九岁出任江州祭酒，因不堪吏职不久即辞职。'},
+{year:210,type:'work',title:'短歌行',desc:'宴席上所作，抒发求贤若渴之情和统一天下的壮志。',poem:'对酒当歌，人生几何！\n譬如朝露，去日苦多。\n慨当以慷，忧思难忘。\n何以解忧？唯有杜康。\n青青子衿，悠悠我心。\n但为君故，沉吟至今。\n月明星稀，乌鹊南飞。\n绕树三匝，何枝可依？\n山不厌高，海不厌深。\n周公吐哺，天下归心。',bg:'作于赤壁之战前夕的宴会上。',use:["感叹人生短暂","求贤若渴/招揽人才","珍惜时光"]},
+{year:220,type:'life',title:'病逝洛阳',desc:'六十六岁病逝于洛阳，谥号武王。'}
+]};
+P['tao']={name:'陶渊明',dynasty:'jin',born:365,died:427,avatar:'陶',color:'#cd853f',events:[
+{year:365,type:'life',title:'出生',desc:'又名陶潜，字元亮，浔阳柴桑人，东晋末著名诗人。'},
 {year:405,type:'life',title:'辞官归隐',desc:'任彭泽令八十余日后辞官，写下千古名篇《归去来兮辞》。'},
-{year:405.5,type:'work',title:'归园田居（其一）',desc:'归隐后所作，描绘重返田园的喜悦与自由。',poem:'少无适俗韵，性本爱丘山。\n误落尘网中，一去三十年。\n羁鸟恋旧林，池鱼思故渊。\n开荒南野际，守拙归园田。\n方宅十余亩，草屋八九间。\n榆柳荫后檐，桃李罗堂前。\n暧暧远人村，依依墟里烟。\n狗吠深巷中，鸡鸣桑树颠。\n户庭无尘杂，虚室有余闲。\n久在樊笼里，复得返自然。',bg:'陶渊明辞去彭泽令后回到家乡所作。以"羁鸟""池鱼"比喻仕途中的不自由，以"樊笼"喻官场。',use:["回归自然/向往田园","厌倦城市喧嚣","辞职/转行时的心情"]},
-{year:406,type:'work',title:'饮酒（其五）',desc:'归隐后所作，写田园生活的恬淡与超然心境。',poem:'结庐在人境，而无车马喧。\n问君何能尔？心远地自偏。\n采菊东篱下，悠然见南山。\n山气日夕佳，飞鸟相与还。\n此中有真意，欲辨已忘言。',bg:'归隐田园后，于日常生活中体悟人生真谛。"采菊东篱下，悠然见南山"是最著名的田园诗句。',use:["享受独处时光","超然物外的心境","远离世俗纷扰"]},
+{year:405.5,type:'work',title:'归园田居（其一）',desc:'归隐后所作，描绘重返田园的喜悦与自由。',poem:'少无适俗韵，性本爱丘山。\n误落尘网中，一去三十年。\n羁鸟恋旧林，池鱼思故渊。\n开荒南野际，守拙归园田。\n方宅十余亩，草屋八九间。\n榆柳荫后檐，桃李罗堂前。\n暧暧远人村，依依墟里烟。\n狗吠深巷中，鸡鸣桑树颠。\n户庭无尘杂，虚室有余闲。\n久在樊笼里，复得返自然。',bg:'陶渊明辞去彭泽令后回到家乡所作。',use:["回归自然/向往田园","厌倦城市喧嚣","辞职/转行时的心情"]},
+{year:406,type:'work',title:'饮酒（其五）',desc:'归隐后所作，写田园生活的恬淡与超然心境。',poem:'结庐在人境，而无车马喧。\n问君何能尔？心远地自偏。\n采菊东篱下，悠然见南山。\n山气日夕佳，飞鸟相与还。\n此中有真意，欲辨已忘言。',bg:'归隐田园后，于日常生活中体悟人生真谛。',use:["享受独处时光","超然物外的心境","远离世俗纷扰"]},
 {year:416,type:'work',title:'桃花源记',desc:'虚构了一个没有战乱和压迫的理想社会。',poem:'土地平旷，屋舍俨然，有良田、美池、桑竹之属。\n阡陌交通，鸡犬相闻。\n其中往来种作，男女衣着，悉如外人。\n黄发垂髫，并怡然自乐。',bg:'约作于晚年，描绘了一个与世隔绝、安宁祥和的乌托邦社会。',use:["理想社会/乌托邦","世外桃源般的地方","逃避现实的美好想象"]},
-{year:427,type:'life',title:'辞世',desc:'六十三岁卒于浔阳，友人私谥"靖节先生"。'}
-]},
-he:{name:'贺知章',dynasty:'tang',born:659,died:744,avatar:'贺',color:'#48c9b0',events:[
-{year:659,type:'life',title:'出生',desc:'字季真，越州永兴（今浙江萧山）人，唐代诗人、书法家。'},
-{year:695,type:'life',title:'状元及第',desc:'考中状元，此后在朝为官数十年。'},
-{year:725,type:'work',title:'咏柳',desc:'以碧玉比喻柳树，构思巧妙。',poem:'碧玉妆成一树高，万条垂下绿丝绦。\n不知细叶谁裁出，二月春风似剪刀。',bg:'以"碧玉"喻柳树的整体形态，将无形的春风比作"剪刀"裁出细叶，构思精巧。',use:["赞美春天的到来","描写自然之美","春天的生机勃勃"]},
-{year:744,type:'work',title:'回乡偶书',desc:'八十六岁告老还乡时所作。',poem:'少小离家老大回，乡音无改鬓毛衰。\n儿童相见不相识，笑问客从何处来。',bg:'贺知章年少离家赴长安为官，八十六岁才辞官回乡。离家六十余年，乡音虽未改变但容颜已老。',use:["游子归乡的感慨","物是人非/时光流逝","多年后重返故地"]},
-{year:744.5,type:'life',title:'辞世',desc:'回乡同年即病逝，享年八十六岁。'}
-]},
-wzh:{name:'王之涣',dynasty:'tang',born:688,died:742,avatar:'王',color:'#5dade2',events:[
-{year:688,type:'life',title:'出生',desc:'字季凌，并州晋阳人，盛唐边塞诗人。存世仅六首诗，首首经典。'},
-{year:720,type:'work',title:'登鹳雀楼',desc:'登山西永济鹳雀楼所作。',poem:'白日依山尽，黄河入海流。\n欲穷千里目，更上一层楼。',bg:'前两句写登楼所见的壮阔自然景观；后两句由景入理，表达不断进取的人生哲理。',use:["鼓励不断进步/登高望远","站得高看得远","追求更高目标"]},
-{year:730,type:'work',title:'凉州词',desc:'描写边塞苍凉景象与戍边将士的思乡之情。',poem:'黄河远上白云间，一片孤城万仞山。\n羌笛何须怨杨柳，春风不度玉门关。',bg:'以"黄河远上白云间"的壮阔开篇，衬托边塞孤城的荒凉。"春风不度玉门关"暗喻朝廷的恩泽到不了边疆。',use:["边塞的苍凉壮美","戍边将士的思乡","孤寂中的坚守"]}
-]},
-meng:{name:'孟浩然',dynasty:'tang',born:689,died:740,avatar:'孟',color:'#45b39d',events:[
-{year:689,type:'life',title:'出生',desc:'名浩，字浩然，襄州襄阳人，唐代山水田园诗派代表。'},
-{year:728,type:'life',title:'赴长安应举',desc:'四十岁赴长安应进士试，落第后漫游吴越。一生未入仕途。'},
-{year:730,type:'work',title:'春晓',desc:'春日清晨醒来时的感受。',poem:'春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。',bg:'以极简的笔触写春日清晨的一瞬，蕴含对春天美好事物的珍惜之情。',use:["珍惜美好的春天","感叹时光易逝","春日清晨的慵懒"]},
-{year:733,type:'work',title:'过故人庄',desc:'应邀到农村老友家做客。',poem:'故人具鸡黍，邀我至田家。\n绿树村边合，青山郭外斜。\n开轩面场圃，把酒话桑麻。\n待到重阳日，还来就菊花。',bg:'写诗人应邀到农村朋友家做客的全过程，展现了诗人对田园生活的热爱。',use:["田园生活的惬意","老友情深/做客","乡村的宁静美好"]},
-{year:740,type:'life',title:'病逝',desc:'五十二岁因纵情宴饮、食鲜疾发而逝。'}
-]},
-wangwei:{name:'王维',dynasty:'tang',born:701,died:761,avatar:'王',color:'#1abc9c',events:[
-{year:701,type:'life',title:'出生',desc:'字摩诘，号摩诘居士，"诗佛"。'},
-{year:715,type:'life',title:'少年成名',desc:'十五岁赴长安，以诗文和音乐才华获王公贵族赏识。'},
-{year:721,type:'life',title:'进士及第',desc:'二十一岁中进士。'},
-{year:726,type:'work',title:'九月九日忆山东兄弟',desc:'十七岁时客居长安，重阳节思念故乡兄弟所作。',poem:'独在异乡为异客，每逢佳节倍思亲。\n遥知兄弟登高处，遍插茱萸少一人。',bg:'王维十七岁独自在长安求学，重阳节看到别人合家团聚，倍加思念远方的兄弟。',use:["思念家人/思乡","独在异乡的感受","重阳节/节日思亲"]},
-{year:740,type:'work',title:'送元二使安西',desc:'送友人元二出使西域安西都护府时所作。',poem:'渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。',bg:'清晨微雨润湿了尘土，诗人殷勤劝酒——"再饮一杯吧，出了阳关就再也见不到老朋友了"。',use:["送别友人","离别时的不舍","远行前的祝福"]},
-{year:750,type:'work',title:'山居秋暝',desc:'隐居辋川时所作。',poem:'空山新雨后，天气晚来秋。\n明月松间照，清泉石上流。\n竹喧归浣女，莲动下渔舟。\n随意春芳歇，王孙自可留。',bg:'写雨后秋天傍晚山中的清新景象。"明月松间照，清泉石上流"是最经典的山水诗句之一。',use:["山水田园之美","归隐山林的志趣","秋天的宁静清新"]},
-{year:752,type:'work',title:'使至塞上',desc:'奉命出使边塞慰问将士途中所作。',poem:'单车欲问边，属国过居延。\n征蓬出汉塞，归雁入胡天。\n大漠孤烟直，长河落日圆。\n萧关逢候骑，都护在燕然。',bg:'"大漠孤烟直，长河落日圆"以极简的线条勾勒大漠的苍茫壮阔。',use:["边塞的壮阔风光","旅途中的感受","大漠风光"]},
-{year:761,type:'life',title:'辞世',desc:'六十一岁病逝，临终前作书与弟王缙及友人告别，安然离世。'}
-]},
-wangcl:{name:'王昌龄',dynasty:'tang',born:698,died:757,avatar:'王',color:'#16a085',events:[
-{year:698,type:'life',title:'出生',desc:'字少伯，京兆长安人，"七绝圣手""诗家天子"。'},
-{year:727,type:'life',title:'进士及第',desc:'二十九岁中进士。'},
-{year:730,type:'work',title:'出塞',desc:'唐代边塞诗代表作。',poem:'秦时明月汉时关，万里长征人未还。\n但使龙城飞将在，不教胡马度阴山。',bg:'以"秦时明月汉时关"开篇，将时间拉到秦汉、空间拉至万里，展现边塞战争的悠久历史。',use:["保家卫国的壮志","边塞征战","期盼良将/人才"]},
-{year:735,type:'work',title:'芙蓉楼送辛渐',desc:'在芙蓉楼送别友人辛渐时所作。',poem:'寒雨连江夜入吴，平明送客楚山孤。\n洛阳亲友如相问，一片冰心在玉壶。',bg:'"一片冰心在玉壶"以冰心玉壶自喻品格高洁、清白无瑕。',use:["送别友人","自证清白/品格高洁","冰清玉洁的操守"]},
-{year:757,type:'life',title:'遇害',desc:'安史之乱中返乡途中，被濠州刺史张琰所杀。'}
-]},
-libai:{name:'李白',dynasty:'tang',born:701,died:762,avatar:'李',color:'#e94560',events:[
-{year:701,type:'life',title:'出生',desc:'字太白，号青莲居士，"诗仙"，唐代伟大的浪漫主义诗人。'},
-{year:725,type:'life',title:'仗剑去国',desc:'二十五岁出蜀漫游。'},
-{year:726,type:'work',title:'静夜思',desc:'客居扬州时所作，二十字道尽千古游子思乡之情。',poem:'床前明月光，疑是地上霜。\n举头望明月，低头思故乡。',bg:'诗人在异乡旅舍中望月思乡。以最朴素的语言表达最深沉的乡愁。',use:["思乡/想家","月夜思亲","身在异乡的夜晚"]},
-{year:730,type:'work',title:'黄鹤楼送孟浩然之广陵',desc:'三十岁于黄鹤楼送别友人孟浩然。',poem:'故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。',bg:'烟花三月的美好时节，在黄鹤楼送别好友孟浩然东去扬州。',use:["送别友人","春日送行","目送远去的惆怅"]},
-{year:742,type:'work',title:'蜀道难',desc:'以雄奇笔力写蜀道之险。',poem:'蜀道之难，难于上青天！\n蚕丛及鱼凫，开国何茫然。\n尔来四万八千岁，不与秦塞通人烟。\n西当太白有鸟道，可以横绝峨眉巅。\n地崩山摧壮士死，然后天梯石栈相钩连。',bg:'以神话传说和夸张想象描写蜀道的艰险。贺知章读后惊叹李白为"谪仙人"。',use:["形容路途艰险","面对巨大挑战","感叹事情之难"]},
-{year:744,type:'life',title:'赐金放还·遇杜甫',desc:'遭权贵谗毁被"赐金放还"，在洛阳与杜甫相遇。'},
-{year:744.5,type:'work',title:'行路难',desc:'离开长安时所作。',poem:'金樽清酒斗十千，玉盘珍羞直万钱。\n停杯投箸不能食，拔剑四顾心茫然。\n欲渡黄河冰塞川，将登太行雪满山。\n长风破浪会有时，直挂云帆济沧海。',bg:'被"赐金放还"离开长安，面对美酒佳肴却无法下咽。结尾表达对未来的坚定信念。',use:["面对困境不放弃","人生路难但有信心","励志/自我鼓励"]},
-{year:745,type:'work',title:'望庐山瀑布',desc:'以夸张手法写庐山瀑布的壮美。',poem:'日照香炉生紫烟，遥看瀑布挂前川。\n飞流直下三千尺，疑是银河落九天。',bg:'"三千尺"极言瀑布之高，"银河落九天"以天上的银河比喻人间的瀑布，想象力奇绝。',use:["描写壮观自然景观","赞美大自然的鬼斧神工","瀑布/山水之美"]},
-{year:752,type:'work',title:'将进酒',desc:'与友人在嵩山宴饮时作。',poem:'君不见黄河之水天上来，奔流到海不复回。\n君不见高堂明镜悲白发，朝如青丝暮成雪。\n人生得意须尽欢，莫使金樽空对月。\n天生我材必有用，千金散尽还复来。',bg:'酒酣之际所作，既有"人生几何"的感慨，更有"天生我材必有用"的自信。',use:["珍惜当下/及时行乐","自信/天生我材必有用","豪迈饮酒/朋友聚会"]},
-{year:755,type:'life',title:'安史之乱',desc:'安史之乱爆发，隐居庐山，后入永王幕府，获罪流放夜郎。'},
-{year:759,type:'work',title:'早发白帝城',desc:'流放途中遇大赦，狂喜东归时所作。',poem:'朝辞白帝彩云间，千里江陵一日还。\n两岸猿声啼不住，轻舟已过万重山。',bg:'李白因永王案被流放夜郎，行至白帝城时忽遇大赦。全诗节奏轻快，写出归心似箭的喜悦。',use:["劫后余生的喜悦","归心似箭/急切回家","轻快愉悦的心情"]},
-{year:723,type:'work',title:'古朗月行（节选）',desc:'童年时所作，以儿童视角描写月亮。',poem:'小时不识月，呼作白玉盘。\n又疑瑶台镜，飞在青云端。',bg:'李白童年时所作，以儿童的视角和想象描写月亮，将月亮比作白玉盘和瑶台镜，充满童趣和想象力。',use:["童年/童趣","描写月亮","丰富的想象力"]},
-{year:725,type:'work',title:'峨眉山月歌',desc:'出蜀时所作，描写月夜行舟的江景。',poem:'峨眉山月半轮秋，影入平羌江水流。\n夜发清溪向三峡，思君不见下渝州。',bg:'李白二十五岁出蜀时所作，描写月夜行舟于清溪、三峡之间的景色，表达对友人的思念。',use:["离别/思念友人","月夜行舟","出蜀远游"]},
-{year:725,type:'work',title:'望天门山',desc:'出蜀途中望天门山所作。',poem:'天门中断楚江开，碧水东流至此回。\n两岸青山相对出，孤帆一片日边来。',bg:'李白二十五岁出蜀，途经天门山时所作。全诗以壮阔的笔触描绘天门山的雄奇景色。',use:["描写山水/壮丽景色","勇往直前","大自然的鬼斧神工"]},
-{year:725,type:'work',title:'渡荆门送别',desc:'二十五岁出蜀，渡荆门时所作。',poem:'渡远荆门外，来从楚国游。\n山随平野尽，江入大荒流。\n月下飞天镜，云生结海楼。\n仍怜故乡水，万里送行舟。',bg:'李白二十五岁出蜀，渡荆门山时所作。前六句写壮阔的长江景色，最后两句表达对故乡的眷恋。',use:["离别/思乡","壮阔的自然景色","远游/出蜀"]},
-{year:743,type:'work',title:'夜宿山寺',desc:'夜宿高山寺庙时所作。',poem:'危楼高百尺，手可摘星辰。\n不敢高声语，恐惊天上人。',bg:'诗人夜宿高山寺庙，以夸张手法写出楼之高，仿佛可以摘到星星，不敢大声说话怕惊动天上的人。',use:["描写高楼/高山","夸张手法","夜晚的宁静"]},
-{year:745,type:'work',title:'春夜洛城闻笛',desc:'在洛阳春夜听到笛声而作。',poem:'谁家玉笛暗飞声，散入春风满洛城。\n此夜曲中闻折柳，何人不起故园情。',bg:'李白在洛阳春夜听到远处飘来的笛声，笛曲中传来《折杨柳》的调子，勾起了深深的思乡之情。',use:["思乡/思念故乡","春夜闻笛","离愁别绪"]},
-{year:750,type:'work',title:'独坐敬亭山',desc:'在宣城敬亭山独坐时所作。',poem:'众鸟高飞尽，孤云独去闲。\n相看两不厌，只有敬亭山。',bg:'李白在宣城时，独自坐在敬亭山上，感到世间孤独，只有敬亭山相伴。表达诗人超然物外、与自然合一的心境。',use:["独处/孤独中的宁静","与自然合一","超然物外"]},
-{year:750,type:'work',title:'送友人',desc:'送别友人时所作。',poem:'青山横北郭，白水绕东城。\n此地一为别，孤蓬万里征。\n浮云游子意，落日故人情。\n挥手自兹去，萧萧班马鸣。',bg:'李白在宣城送别友人时所作。以浮云比喻游子漂泊，以落日比喻不舍之情，情景交融。',use:["送别友人","离别的不舍","友情/漂泊"]},
-{year:754,type:'work',title:'闻王昌龄左迁龙标遥有此寄',desc:'听说友人王昌龄被贬龙标，遥寄此诗。',poem:'杨花落尽子规啼，闻道龙标过五溪。\n我寄愁心与明月，随君直到夜郎西。',bg:'李白得知好友王昌龄被贬为龙标尉，遥寄此诗表达思念和关切。我寄愁心与明月随君直到夜郎西将愁心托付给明月想象奇特而深情。',use:["思念友人","友情/牵挂","对友人的关切"]},
-{year:755,type:'work',title:'赠汪伦',desc:'赴泾县游历时，汪伦来送别，李白作此诗赠之。',poem:'李白乘舟将欲行，忽闻岸上踏歌声。\n桃花潭水深千尺，不及汪伦送我情。',bg:'李白游泾县时当地友人汪伦以美酒相赠。李白临别作此诗以桃花潭水之深比喻友情之深。',use:["送别友人/深厚友情","感恩友情","真挚的友谊"]},{year:762,type:'life',title:'病逝当涂',desc:'六十二岁病逝于安徽当涂。'},
-{year:745,type:'work',title:'梦游天姥吟留别',desc:'以梦境写理想，表达对权贵的蔑视和对自由的追求。',poem:'海客谈瀛洲，烟涛微茫信难求。\n越人语天姥，云霞明灭或可睹。\n天姥连天向天横，势拔五岳掩赤城。\n天台四万八千丈，对此欲倒东南倾。\n我欲因之梦吴越，一夜飞度镜湖月。\n湖月照我影，送我至剡溪。\n安能摧眉折腰事权贵，使我不得开心颜！',bg:'李白在长安受到权贵排挤后即将离开，以此诗告别友人。全诗以梦游天姥山的奇幻经历为主线，描绘了一个瑰丽壮阔的仙境世界。最后两句安能摧眉折腰事权贵使我不得开心颜直抒胸臆，表达了诗人蔑视权贵追求自由的傲岸精神，是李白人格魅力的集中体现。',use:["追求自由/不屈服权贵","梦境与现实的对比","豪迈不羁"]}
-]},
-dufu:{name:'杜甫',dynasty:'tang',born:712,died:770,avatar:'杜',color:'#2471a3',events:[
-{year:712,type:'life',title:'出生',desc:'字子美，自号少陵野老，"诗圣"，其诗被誉为"诗史"。'},
-{year:736,type:'work',title:'望岳',desc:'二十五岁漫游齐赵时登泰山所作。',poem:'岱宗夫如何？齐鲁青未了。\n造化钟神秀，阴阳割昏晓。\n荡胸生曾云，决眦入归鸟。\n会当凌绝顶，一览众山小。',bg:'青年杜甫登临泰山，被其雄伟气势震撼。"会当凌绝顶，一览众山小"表达立志攀登人生巅峰的壮志豪情。',use:["立志攀登高峰","少年壮志/雄心","登高望远/俯瞰一切"]},
-{year:744,type:'life',title:'洛阳遇李白',desc:'三十三岁与李白相遇于洛阳，同游梁宋。'},
-{year:755,type:'work',title:'春望',desc:'安史之乱中长安沦陷，杜甫被困城中。',poem:'国破山河在，城春草木深。\n感时花溅泪，恨别鸟惊心。\n烽火连三月，家书抵万金。\n白头搔更短，浑欲不胜簪。',bg:'756年长安被叛军占领，杜甫目睹昔日繁华帝都的满目疮痍。',use:["战争中的忧国思乡","国破家亡的悲痛","乱世中对亲人的牵挂"]},
-{year:759,type:'work',title:'三吏三别·石壕吏',desc:'目睹战乱中百姓被强行征兵的惨状而作。',poem:'暮投石壕村，有吏夜捉人。\n老翁逾墙走，老妇出门看。\n吏呼一何怒！妇啼一何苦！',bg:'杜甫从洛阳回华州途中投宿石壕村，亲眼目睹差吏半夜捉人充军。',use:["战争给百姓的苦难","同情底层人民","反对战争/征兵之痛"]},
-{year:761,type:'work',title:'春夜喜雨',desc:'在成都草堂时所作。',poem:'好雨知时节，当春乃发生。\n随风潜入夜，润物细无声。\n野径云俱黑，江船火独明。\n晓看红湿处，花重锦官城。',bg:'诗人在成都草堂安居时，一场及时的春雨让他欣喜。"润物细无声"被广泛引申为默默奉献的精神。',use:["赞美春雨/及时雨","感恩默默奉献的人","好消息/及时到来的帮助"]},
-{year:761.5,type:'work',title:'茅屋为秋风所破歌',desc:'秋风暴雨中茅屋破败，推己及人。',poem:'八月秋高风怒号，卷我屋上三重茅。\n安得广厦千万间，大庇天下寒士俱欢颜！\n风雨不动安如山。\n呜呼！何时眼前突兀见此屋，吾庐独破受冻死亦足！',bg:'秋风吹破了草堂的屋顶，但诗人想到的不只是自己——希望天下所有贫寒之人都能有安居之所。',use:["心怀天下/推己及人","为弱势群体发声","即使困难也要帮助他人"]},
-{year:767,type:'work',title:'登高',desc:'在夔州所作，被誉为"古今七律第一"。',poem:'风急天高猿啸哀，渚清沙白鸟飞回。\n无边落木萧萧下，不尽长江滚滚来。\n万里悲秋常作客，百年多病独登台。\n艰难苦恨繁霜鬓，潦倒新停浊酒杯。',bg:'杜甫晚年漂泊至夔州，重阳节独自登高。八句皆对、字字精工，被历代诗评家推为七律之冠。',use:["秋天的感慨","人生漂泊/孤独","年华老去的悲凉"]},
-{year:770,type:'life',title:'病逝湘江',desc:'五十九岁冬，病逝于潭州往岳阳的舟中。'}
-]},
-censhen:{name:'岑参',dynasty:'tang',born:715,died:770,avatar:'岑',color:'#138d75',events:[
-{year:715,type:'life',title:'出生',desc:'江陵人，盛唐边塞诗派代表，与高适并称"高岑"。'},
-{year:749,type:'life',title:'首次出塞',desc:'赴安西任高仙芝幕府掌书记。'},
-{year:754,type:'work',title:'白雪歌送武判官归京',desc:'在北庭都护府送别同僚武判官回长安时所作。',poem:'北风卷地白草折，胡天八月即飞雪。\n忽如一夜春风来，千树万树梨花开。\n散入珠帘湿罗幕，狐裘不暖锦衾薄。\n将军角弓不得控，都护铁衣冷难着。\n瀚海阑干百丈冰，愁云惨淡万里凝。\n中军置酒饮归客，胡琴琵琶与羌笛。\n纷纷暮雪下辕门，风掣红旗冻不翻。\n轮台东门送君去，去时雪满天山路。\n山回路转不见君，雪上空留马行处。',bg:'以"忽如一夜春风来，千树万树梨花开"将严寒的雪景比作春天的梨花盛放，化苦寒为壮美。',use:["边塞送别","雪景壮美/苦中作乐","冬日离别"]},
-{year:770,type:'life',title:'病逝',desc:'罢官后病逝于成都。'}
-]},
-bai:{name:'白居易',dynasty:'tang',born:772,died:846,avatar:'白',color:'#3498db',events:[
-{year:772,type:'life',title:'出生',desc:'字乐天，号香山居士，中唐最伟大的现实主义诗人之一。'},
-{year:800,type:'life',title:'进士及第',desc:'二十九岁中进士。'},
-{year:806,type:'work',title:'赋得古原草送别',desc:'十六岁时所作。',poem:'离离原上草，一岁一枯荣。\n野火烧不尽，春风吹又生。\n远芳侵古道，晴翠接荒城。\n又送王孙去，萋萋满别情。',bg:'"野火烧不尽，春风吹又生"以野草的顽强生命力闻名千古。',use:["生命力顽强/不屈不挠","送别/离别","鼓励坚持不懈"]},
-{year:816,type:'work',title:'琵琶行',desc:'被贬江州时偶遇一位琵琶女。',poem:'浔阳江头夜送客，枫叶荻花秋瑟瑟。\n大弦嘈嘈如急雨，小弦切切如私语。\n嘈嘈切切错杂弹，大珠小珠落玉盘。\n同是天涯沦落人，相逢何必曾相识！',bg:'白居易被贬为江州司马，秋夜偶遇琵琶女。全诗以音乐为线索，将个人身世之感融入对音乐的描绘中。',use:["同病相怜/知音难遇","天涯沦落人的共鸣","音乐之美"]},
-{year:846,type:'life',title:'病逝',desc:'七十五岁卒于洛阳香山。'}
-]},
-liuzy:{name:'柳宗元',dynasty:'tang',born:773,died:819,avatar:'柳',color:'#2e86c1',events:[
-{year:773,type:'life',title:'出生',desc:'字子厚，河东人，"唐宋八大家"之一。'},
-{year:793,type:'life',title:'进士及第',desc:'二十一岁中进士。'},
-{year:805,type:'life',title:'永州贬谪',desc:'参与王叔文改革失败后被贬永州司马。'},
-{year:806,type:'work',title:'江雪',desc:'被贬永州期间所作。',poem:'千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。',bg:'全诗仅二十字，写出极致的孤独与清高。渔翁在漫天风雪中独钓寒江，是诗人坚守独立人格的精神写照。',use:["孤独中的坚守","清高/不随波逐流","独处/享受安静"]},
-{year:819,type:'life',title:'病逝柳州',desc:'在柳州任上去世，年仅四十七岁。'}
-]},
-dumu:{name:'杜牧',dynasty:'tang',born:803,died:852,avatar:'杜',color:'#5499c7',events:[
-{year:803,type:'life',title:'出生',desc:'字牧之，号樊川居士，与李商隐并称"小李杜"。'},
-{year:828,type:'life',title:'进士及第',desc:'二十六岁中进士。'},
-{year:835,type:'work',title:'清明',desc:'清明时节行路遇雨。',poem:'清明时节雨纷纷，路上行人欲断魂。\n借问酒家何处有？牧童遥指杏花村。',bg:'清明时节细雨纷纷，赶路的人淋着雨心情惆怅。全诗画面感极强。',use:["清明时节/扫墓踏青","春雨中的行路","想找地方歇脚/借酒消愁"]},
-{year:840,type:'work',title:'山行',desc:'秋天登山所见。',poem:'远上寒山石径斜，白云生处有人家。\n停车坐爱枫林晚，霜叶红于二月花。',bg:'"霜叶红于二月花"一反古人悲秋的传统，展现了对秋天的赞美。',use:["赞美秋天/秋景之美","反常之美","山中漫步的闲适"]},
-{year:843,type:'work',title:'泊秦淮',desc:'夜泊秦淮河畔，感怀六朝兴亡。',poem:'烟笼寒水月笼沙，夜泊秦淮近酒家。\n商女不知亡国恨，隔江犹唱后庭花。',bg:'诗人借古讽今，批评晚唐统治者不思进取、沉迷享乐。',use:["借古讽今/警醒世人","批评不思进取","忧国忧民"]},
-{year:852,type:'life',title:'病逝',desc:'五十岁卒于长安。'}
-]},
-lishangyin:{name:'李商隐',dynasty:'tang',born:813,died:858,avatar:'李',color:'#7d3c98',events:[
-{year:813,type:'life',title:'出生',desc:'字义山，号玉溪生，晚唐最杰出的诗人之一。'},
-{year:837,type:'life',title:'进士及第',desc:'二十五岁中进士。'},
-{year:840,type:'work',title:'无题·相见时难别亦难',desc:'以爱情为主题。',poem:'相见时难别亦难，东风无力百花残。\n春蚕到死丝方尽，蜡炬成灰泪始干。\n晓镜但愁云鬓改，夜吟应觉月光寒。\n蓬山此去无多路，青鸟殷勤为探看。',bg:'"春蚕到死丝方尽，蜡炬成灰泪始干"以蚕丝和蜡泪比喻至死不渝的相思。',use:["至死不渝的爱情","奉献/鞠躬尽瘁","离别之苦/相思之深"]},
-{year:844,type:'work',title:'锦瑟',desc:'以锦瑟起兴，回忆青春年华。',poem:'锦瑟无端五十弦，一弦一柱思华年。\n庄生晓梦迷蝴蝶，望帝春心托杜鹃。\n沧海月明珠有泪，蓝田日暖玉生烟。\n此情可待成追忆？只是当时已惘然。',bg:'全诗用典精妙、意境朦胧，道出了人生中许多美好只能在失去后才懂得珍惜的感慨。',use:["追忆青春往事","人生如梦的感慨","美好事物逝去后的惆怅"]},
-{year:845,type:'work',title:'夜雨寄北',desc:'客居巴蜀时写给远方亲友的诗。',poem:'君问归期未有期，巴山夜雨涨秋池。\n何当共剪西窗烛，却话巴山夜雨时。',bg:'以未来团聚的想象反衬当下分离的凄清，构思精巧。',use:["思念远方的人","期待重逢","雨夜思人"]},
-{year:858,type:'life',title:'病逝',desc:'约四十六岁病逝于郑州。'}
-]},
-sushi:{name:'苏轼',dynasty:'song',born:1037,died:1101,avatar:'苏',color:'#8e44ad',events:[
-{year:1037,type:'life',title:'出生',desc:'字子瞻，号东坡居士，北宋文坛领袖。'},
-{year:1057,type:'life',title:'进士及第',desc:'二十一岁以《刑赏忠厚之至论》获欧阳修赏识。'},
-{year:1073,type:'work',title:'饮湖上初晴后雨',desc:'在杭州任通判时描绘西湖晴雨之美。',poem:'水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡妆浓抹总相宜。',bg:'以美女西施比喻西湖，从此西湖也被称为"西子湖"。',use:["赞美西湖/杭州","晴雨皆美/各有各的好","自然之美不分条件"]},
-{year:1076,type:'work',title:'水调歌头·明月几时有',desc:'中秋之夜思念弟弟苏辙所作。',poem:'明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。\n我欲乘风归去，又恐琼楼玉宇，高处不胜寒。\n起舞弄清影，何似在人间。\n转朱阁，低绮户，照无眠。\n不应有恨，何事长向别时圆？\n人有悲欢离合，月有阴晴圆缺，此事古难全。\n但愿人长久，千里共婵娟。',bg:'苏轼与弟弟苏辙七年未见，中秋独饮思亲。"但愿人长久，千里共婵娟"成为中国文化中表达祝愿的最美词句之一。',use:["中秋思念亲人","美好的祝愿","人生悲欢离合的释然"]},
-{year:1082,type:'work',title:'念奴娇·赤壁怀古',desc:'贬谪黄州期间游赤壁所作。',poem:'大江东去，浪淘尽，千古风流人物。\n故垒西边，人道是，三国周郎赤壁。\n乱石穿空，惊涛拍岸，卷起千堆雪。\n江山如画，一时多少豪杰。\n遥想公瑾当年，小乔初嫁了，雄姿英发。\n羽扇纶巾，谈笑间，樯橹灰飞烟灭。\n故国神游，多情应笑我，早生华发。\n人生如梦，一尊还酹江月。',bg:'借三国周瑜的英雄事迹抒发壮志难酬的感慨。此词被视为豪放词的开山之作和最高峰。',use:["怀古伤今","感叹人生如梦","壮志难酬的感慨"]},
-{year:1082.5,type:'work',title:'定风波',desc:'黄州期间出行遇雨所作。',poem:'莫听穿林打叶声，何妨吟啸且徐行。\n竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。\n料峭春风吹酒醒，微冷，山头斜照却相迎。\n回首向来萧瑟处，归去，也无风雨也无晴。',bg:'出行途中突遇大雨，苏轼却从容前行。"一蓑烟雨任平生"表达不惧风雨、随遇而安的旷达胸襟。',use:["面对逆境从容豁达","一蓑烟雨任平生","乐观面对困难"]},
-{year:1084,type:'work',title:'题西林壁',desc:'途经庐山时所作。',poem:'横看成岭侧成峰，远近高低各不同。\n不识庐山真面目，只缘身在此山中。',bg:'"不识庐山真面目，只缘身在此山中"以极通俗的语言道出深刻的哲理。',use:["当局者迷旁观者清","哲理/换个角度看问题","认知局限性"]},
-{year:1101,type:'life',title:'病逝常州',desc:'遇赦北归途中病逝于常州，享年六十五岁。'}
-]},
-liqingzhao:{name:'李清照',dynasty:'song',born:1084,died:1155,avatar:'李',color:'#e9a045',events:[
-{year:1084,type:'life',title:'出生',desc:'号易安居士，济南章丘人，被誉为"千古第一才女"。'},
-{year:1100,type:'work',title:'如梦令·昨夜雨疏风骤',desc:'十六岁时所作。',poem:'昨夜雨疏风骤，浓睡不消残酒。\n试问卷帘人，却道海棠依旧。\n知否？知否？应是绿肥红瘦。',bg:'"绿肥红瘦"以极精练的语言写出季节变化。',use:["惜春/伤春","对美好事物的敏感","春天将逝的惋惜"]},
-{year:1101,type:'life',title:'与赵明诚成婚',desc:'十八岁与太学生赵明诚成婚。'},
-{year:1127,type:'life',title:'靖康之变·南渡',desc:'金兵灭北宋，夫妇携文物南渡。'},
-{year:1129,type:'life',title:'赵明诚病逝',desc:'丈夫病逝于建康。'},
-{year:1129.5,type:'work',title:'夏日绝句',desc:'借项羽故事抒发愤慨。',poem:'生当作人杰，死亦为鬼雄。\n至今思项羽，不肯过江东。',bg:'讽刺南宋朝廷在金兵面前仓皇南逃的行为。短短二十字，巾帼气概不让须眉。',use:["宁死不屈的气节","批评软弱逃避","巾帼不让须眉"]},
-{year:1136,type:'work',title:'声声慢',desc:'晚年巅峰之作。',poem:'寻寻觅觅，冷冷清清，凄凄惨惨戚戚。\n乍暖还寒时候，最难将息。\n三杯两盏淡酒，怎敌他晚来风急。\n雁过也，正伤心，却是旧时相识。\n满地黄花堆积，憔悴损，如今有谁堪摘？\n守着窗儿，独自怎生得黑。\n梧桐更兼细雨，到黄昏点点滴滴。\n这次第，怎一个愁字了得！',bg:'开篇连用七组叠字，十四字写尽了恍惚寻找、一无所获、孤独凄凉的心境。',use:["孤独愁苦到极致","失去一切后的空虚","秋天/阴雨天的心情低落"]},
-{year:1155,type:'life',title:'辞世',desc:'在孤寂抑郁中离世，约七十一岁。'}
-]},
-luyou:{name:'陆游',dynasty:'song',born:1125,died:1210,avatar:'陆',color:'#16a085',events:[
-{year:1125,type:'life',title:'出生',desc:'字务观，号放翁，南宋最伟大的爱国诗人。一生写诗近万首。'},
-{year:1167,type:'work',title:'游山西村',desc:'罢官归乡后在山西村做客时所作。',poem:'莫笑农家腊酒浑，丰年留客足鸡豚。\n山重水复疑无路，柳暗花明又一村。\n箫鼓追随春社近，衣冠简朴古风存。\n从今若许闲乘月，拄杖无时夜叩门。',bg:'"山重水复疑无路，柳暗花明又一村"成为比喻绝处逢生的经典名句。',use:["绝处逢生/困境中看到希望","山重水复后的转机","乡村淳朴生活"]},
-{year:1192,type:'work',title:'十一月四日风雨大作',desc:'六十八岁闲居山阴时所作。',poem:'僵卧孤村不自哀，尚思为国戍轮台。\n夜阑卧听风吹雨，铁马冰河入梦来。',bg:'年迈的陆游想的仍然是为国戍守边疆。深夜听着风雨声入梦，梦中又回到了铁骑踏冰河的战场。',use:["老骥伏枥/壮志不减","爱国情怀","梦中仍在奋斗"]},
-{year:1200,type:'work',title:'示儿',desc:'临终绝笔。',poem:'死去元知万事空，但悲不见九州同。\n王师北定中原日，家祭无忘告乃翁。',bg:'陆游八十五岁临终前所作，嘱咐儿子们等到北伐胜利时祭祀告诉他。',use:["爱国/至死不渝","临终遗言/最后心愿","期盼统一/国家复兴"]},
-{year:1177,type:'work',title:'书愤',desc:'回忆早年抗金壮志，感叹壮志难酬。',poem:'早岁那知世事艰，中原北望气如山。\n楼船夜雪瓜洲渡，铁马秋风大散关。\n塞上长城空自许，镜中衰鬓已先斑。\n出师一表真名世，千载谁堪伯仲间！',bg:'陆游回忆年轻时立志收复中原的豪情壮志对比如今镜中白发斑斑的自己楼船夜雪瓜洲渡铁马秋风大散关以两组意象概括南宋抗金的两大战场气势雄壮最后以诸葛亮自比表达至死不渝的报国之志。',use:['壮志难酬的悲愤','回忆往昔豪情','以古人自勉']},{year:1210,type:'life',title:'病逝',desc:'八十六岁病逝于山阴。'}
-]},
-xinqiji:{name:'辛弃疾',dynasty:'song',born:1140,died:1207,avatar:'辛',color:'#d4ac0d',events:[
-{year:1140,type:'life',title:'出生',desc:'字幼安，号稼轩，南宋豪放派词人代表。'},
-{year:1161,type:'life',title:'起义抗金',desc:'二十一岁率领两千人加入耿京领导的抗金义军。'},
-{year:1174,type:'work',title:'水龙吟·登建康赏心亭',desc:'在建康赏心亭登高远望。',poem:'楚天千里清秋，水随天去秋无际。\n把吴钩看了，栏杆拍遍，无人会，登临意。\n可惜流年，忧愁风雨，树犹如此！\n倩何人唤取，红巾翠袖，揾英雄泪？',bg:'辛弃疾南归后一直不被重用，"把吴钩看了，栏杆拍遍"写出满腔壮志无处施展的悲愤。',use:["壮志难酬的悲愤","怀才不遇","无人理解的孤独"]},
-{year:1188,type:'work',title:'破阵子·为陈同甫赋壮词以寄之',desc:'写给好友陈亮的"壮词"。',poem:'醉里挑灯看剑，梦回吹角连营。\n八百里分麾下炙，五十弦翻塞外声，沙场秋点兵。\n马作的卢飞快，弓如霹雳弦惊。\n了却君王天下事，赢得生前身后名。\n可怜白发生！',bg:'前九句酣畅淋漓地写军中生活，最后一句"可怜白发生"戛然而止——一切不过是一场梦。',use:["追忆往昔荣光","理想与现实的落差","壮志未酬的不甘"]},
-{year:1203,type:'work',title:'西江月·夜行黄沙道中',desc:'闲居上饶时描写夏夜乡村景色。',poem:'明月别枝惊鹊，清风半夜鸣蝉。\n稻花香里说丰年，听取蛙声一片。\n七八个星天外，两三点雨山前。\n旧时茅店社林边，路转溪桥忽见。',bg:'以清新活泼的笔调描绘乡村夜景，展现了难得的宁静与喜悦。',use:["乡村夏夜的美好","田园生活的宁静","丰收的喜悦"]},
-{year:1205,type:'work',title:'永遇乐·京口北固亭怀古',desc:'登京口北固亭怀古，借孙权、刘裕等历史人物抒发壮志。',poem:'千古江山，英雄无觅孙仲谋处。\n舞榭歌台，风流总被雨打风吹去。\n斜阳草树，寻常巷陌，人道寄奴曾住。\n想当年，金戈铁马，气吞万里如虎。\n元嘉草草，封狼居胥，赢得仓皇北顾。\n四十三年，望中犹记，烽火扬州路。\n可堪回首，佛狸祠下，一片神鸦社鼓。\n凭谁问：廉颇老矣，尚能饭否？',bg:'辛弃疾六十六岁登京口北固亭借古讽今上片追忆孙权刘裕的英雄业绩下片以南朝宋文帝草率北伐失败的典故警告当朝不可冒进最后以廉颇老矣尚能饭否自比表达老当益壮却不被重用的悲愤全词用典精当气势磅礴被誉为辛词压卷之作。',use:['怀古伤今','老当益壮','壮志难酬']},{year:1207,type:'life',title:'病逝',desc:'六十八岁病逝。临终大呼"杀贼！杀贼！"'}
-]},
-luobinwang:{name:'骆宾王',dynasty:'tang',born:619,died:684,avatar:'骆',color:'#f39c12',events:[
-{year:619,type:'life',title:'出生',desc:'字观光，婺州义乌人，"初唐四杰"之一。'},
+{year:427,type:'life',title:'辞世',desc:'六十三岁卒于浔阳，友人私谥靖节先生。'}
+]};
+P['luobinwang']={name:'骆宾王',dynasty:'tang',born:619,died:684,avatar:'骆',color:'#f39c12',events:[
+{year:619,type:'life',title:'出生',desc:'字观光，婺州义乌人，初唐四杰之一。'},
 {year:670,type:'work',title:'咏鹅',desc:'相传七岁时所作。',poem:'鹅鹅鹅，曲项向天歌。\n白毛浮绿水，红掌拨清波。',bg:'以儿童视角观察白鹅，全诗仅十八字却色彩鲜明。',use:["描写动物/白鹅","儿童诗歌/童真","春天的生机"],grade:'小学一年级'},
 {year:684,type:'life',title:'辞世',desc:'兵败后失踪，传闻出家为僧。'}
-]},
-lishen:{name:'李绅',dynasty:'tang',born:772,died:846,avatar:'李',color:'#e74c3c',events:[
-{year:772,type:'life',title:'出生',desc:'字公垂，亳州谯县人，以悯农诗闻名。'},
-{year:800,type:'work',title:'悯农（其二）',desc:'悯惜农民劳动辛苦。',poem:'春种一粒粟，秋收万颗子。\n四海无闲田，农夫犹饿死。',bg:'以"春种"与"秋收"的对比，揭示农民辛勤劳作却依然饿死的社会现实。',use:["珍惜粮食/粒粒皆辛苦","同情劳动者","反思社会不公"],grade:'小学一年级'},
-{year:846,type:'life',title:'病逝',desc:'五十五岁卒于淮南节度使任上。'}
-]},
-mengjiao:{name:'孟郊',dynasty:'tang',born:751,died:814,avatar:'孟',color:'#27ae60',events:[
-{year:751,type:'life',title:'出生',desc:'字东野，湖州武康人，与贾岛并称"郊寒岛瘦"。'},
-{year:803,type:'work',title:'游子吟',desc:'母亲为游子缝衣的温情场景。',poem:'慈母手中线，游子身上衣。\n临行密密缝，意恐迟迟归。\n谁言寸草心，报得三春晖。',bg:'以小草比喻子女微小的孝心，以春日暖阳比喻母亲深恩，成为歌颂母爱的千古绝唱。',use:["感恩母爱","游子思亲","报答父母恩情"],grade:'小学二年级'},
-{year:814,type:'life',title:'病逝',desc:'六十三岁卒于郑州。'}
-]},
-zhangji:{name:'张继',dynasty:'tang',born:715,died:779,avatar:'张',color:'#3498db',events:[
-{year:715,type:'life',title:'出生',desc:'字懿孙，襄州襄阳人。'},
-{year:755,type:'work',title:'枫桥夜泊',desc:'夜泊苏州枫桥，听寒山钟声。',poem:'月落乌啼霜满天，江枫渔火对愁眠。\n姑苏城外寒山寺，夜半钟声到客船。',bg:'安史之乱后南逃途经苏州，以声衬静，以静写愁，将旅人的孤寂写得淋漓尽致。',use:["旅途中的孤独","秋夜思乡","钟声/寺庙意境"],grade:'小学三年级'},
-{year:779,type:'life',title:'辞世',desc:'约卒于贞元年间。'}
-]},
-liuyuxi:{name:'刘禹锡',dynasty:'tang',born:772,died:842,avatar:'刘',color:'#8e44ad',events:[
-{year:772,type:'life',title:'出生',desc:'字梦得，彭城人，有"诗豪"之称。'},
-{year:815,type:'work',title:'望洞庭',desc:'贬谪途中望洞庭湖。',poem:'湖光秋月两相和，潭面无风镜未磨。\n遥望洞庭山水翠，白银盘里一青螺。',bg:'以"白银盘里一青螺"将洞庭湖中的君山比作白银盘中的一颗青螺，想象奇特。',use:["描写湖面/月光","比喻新奇","乐观豁达的胸襟"],grade:'小学三年级'},
-{year:826,type:'work',title:'浪淘沙（其八）',desc:'以黄河比喻人生历程。',poem:'莫道谗言如浪深，莫言迁客似沙沉。\n千淘万漉虽辛苦，吹尽狂沙始到金。',bg:'以淘金比喻人生历练，表达历经磨难终见真金的信念。',use:["历经磨难终成功","坚持不懈","筛选/去粗取精"],grade:'小学四年级'},
-{year:828,type:'work',title:'乌衣巷',desc:'凭吊六朝古迹。',poem:'朱雀桥边野草花，乌衣巷口夕阳斜。\n旧时王谢堂前燕，飞入寻常百姓家。',bg:'以燕子为线索，写出豪门兴衰、世事无常的深刻感慨。',use:["物是人非/世事沧桑","怀古/历史感慨","豪门兴衰"],grade:'小学四年级'},
-{year:842,type:'life',title:'病逝',desc:'七十一岁卒于洛阳。'}
-]},
-weiyongwu:{name:'韦应物',dynasty:'tang',born:737,died:792,avatar:'韦',color:'#16a085',events:[
-{year:737,type:'life',title:'出生',desc:'京兆万年人，与王维、孟浩然、柳宗元并称"王孟韦柳"。'},
-{year:780,type:'work',title:'滁州西涧',desc:'任滁州刺史时游览西涧所作。',poem:'独怜幽草涧边生，上有黄鹂深树鸣。\n春潮带雨晚来急，野渡无人舟自横。',bg:'"野渡无人舟自横"以一只自在横漂的小舟，隐喻诗人超然物外的闲适心境。',use:["自然野趣/闲适","独处/自在","随遇而安"],grade:'小学四年级'},
-{year:792,type:'life',title:'病逝',desc:'五十六岁卒于苏州刺史任上。'}
-]},
-zhangzhihe:{name:'张志和',dynasty:'tang',born:730,died:810,avatar:'张',color:'#2ecc71',events:[
-{year:730,type:'life',title:'出生',desc:'字子同，婺州金华人，隐逸江湖自号"烟波钓徒"。'},
-{year:770,type:'work',title:'渔歌子',desc:'描写江南水乡春汛时的渔家生活。',poem:'西塞山前白鹭飞，桃花流水鳜鱼肥。\n青箬笠，绿蓑衣，斜风细雨不须归。',bg:'以明丽的色彩描绘江南水乡春汛美景，表达了对自由隐居生活的热爱。',use:["江南水乡美景","隐逸生活/自由自在","渔翁/垂钓意境"],grade:'小学四年级'},
-{year:810,type:'life',title:'辞世',desc:'约八十岁卒。'}
-]},
-yangwanli:{name:'杨万里',dynasty:'song',born:1127,died:1206,avatar:'杨',color:'#27ae60',events:[
-{year:1127,type:'life',title:'出生',desc:'字廷秀，吉州吉水人，"中兴四大诗人"之一。'},
-{year:1169,type:'work',title:'小池',desc:'以细腻笔触描绘初夏小池的生机。',poem:'泉眼无声惜细流，树阴照水爱晴柔。\n小荷才露尖尖角，早有蜻蜓立上头。',bg:'以细腻的观察力捕捉自然界的微小瞬间，充满童趣和生机。',use:["描写初夏/小池","新生事物/朝气蓬勃","自然界的微小瞬间"],grade:'小学一年级'},
-{year:1176,type:'work',title:'晓出净慈寺送林子方',desc:'六月西湖荷花盛景。',poem:'毕竟西湖六月中，风光不与四时同。\n接天莲叶无穷碧，映日荷花别样红。',bg:'描绘六月西湖荷花盛开的壮丽景象，展现壮美的一面。',use:["描写荷花/西湖美景","夏日风光","色彩鲜明的景色"],grade:'小学二年级'},
-{year:1206,type:'life',title:'病逝',desc:'八十岁卒于家中。'}
-]},
-fanchengda:{name:'范成大',dynasty:'song',born:1126,died:1193,avatar:'范',color:'#2980b9',events:[
-{year:1126,type:'life',title:'出生',desc:'字致能，号石湖居士，苏州吴县人。'},
-{year:1170,type:'work',title:'四时田园杂兴（其二十五）',desc:'描写初夏农村繁忙景象。',poem:'梅子金黄杏子肥，麦花雪白菜花稀。\n日长篱落无人过，惟有蜻蜓蛱蝶飞。',bg:'以白描手法展现农村宁静祥和的夏日景象。',use:["描写田园/农村生活","初夏景色","宁静的乡村"],grade:'小学二年级'},
-{year:1193,type:'life',title:'病逝',desc:'六十八岁卒于苏州石湖。'}
-]},
-zhuxi:{name:'朱熹',dynasty:'song',born:1130,died:1200,avatar:'朱',color:'#c0392b',events:[
-{year:1130,type:'life',title:'出生',desc:'字元晦，号晦庵，徽州婺源人，南宋理学集大成者。'},
-{year:1180,type:'work',title:'春日',desc:'春游胜景与哲理交融。',poem:'胜日寻芳泗水滨，无边光景一时新。\n等闲识得东风面，万紫千红总是春。',bg:'表面写春日踏青胜景，实则蕴含哲理。朱熹从未到过泗水，此诗实为借春游说理之作。',use:["春天/百花盛开","求知悟道","万象更新"],grade:'小学一年级'},
-{year:1189,type:'work',title:'观书有感（其一）',desc:'以池塘喻读书。',poem:'半亩方塘一鉴开，天光云影共徘徊。\n问渠那得清如许？为有源头活水来。',bg:'比喻人需要不断学习新知识才能保持思想的清醒和活跃。',use:["读书/学习的重要性","保持思想活跃","源头活水/不断学习"],grade:'小学三年级'},
-{year:1200,type:'life',title:'病逝',desc:'七十一岁卒于福建。'}
-]},
-yeshaoweng:{name:'叶绍翁',dynasty:'song',born:1225,died:1276,avatar:'叶',color:'#8e44ad',events:[
-{year:1225,type:'life',title:'出生',desc:'字嗣宗，号靖逸，龙泉人。'},
-{year:1250,type:'work',title:'游园不值',desc:'访友不遇却见一枝红杏出墙。',poem:'应怜屐齿印苍苔，小扣柴扉久不开。\n春色满园关不住，一枝红杏出墙来。',bg:'"春色满园关不住，一枝红杏出墙来"比喻美好事物具有不可遏制的生命力。',use:["春天/生机不可阻挡","访友不遇的遗憾","意外收获"],grade:'小学二年级'},
-{year:1276,type:'life',title:'辞世',desc:'约卒于元军南下之际。'}
-]},
-linsheng:{name:'林升',dynasty:'song',born:1150,died:1200,avatar:'林',color:'#e74c3c',events:[
-{year:1150,type:'life',title:'出生',desc:'字云友，号龙丘山樵，平阳人。'},
-{year:1176,type:'work',title:'题临安邸',desc:'讽刺南宋朝廷偏安一隅。',poem:'山外青山楼外楼，西湖歌舞几时休？\n暖风熏得游人醉，直把杭州作汴州。',bg:'诗人在临安一家旅店墙壁上题写此诗，讽刺统治者沉迷享乐、不思收复失地。',use:["讽刺/警醒世人","忧国忧民","勿忘国耻"],grade:'小学三年级'},
-{year:1200,type:'life',title:'辞世',desc:'约卒于南宋时期。'}
-]},
-yuqian:{name:'于谦',dynasty:'ming',born:1398,died:1457,avatar:'于',color:'#e74c3c',events:[
-{year:1398,type:'life',title:'出生',desc:'字廷益，号节庵，浙江杭州人，明朝名臣。'},
-{year:1449,type:'work',title:'石灰吟',desc:'以石灰自喻，表达坚贞不屈的品格。',poem:'千锤万凿出深山，烈火焚烧若等闲。\n粉骨碎身浑不怕，要留清白在人间。',bg:'以石灰自喻，表达不畏艰险、坚贞不屈、清白做人的崇高品格。',use:["坚贞不屈/清白做人","不怕牺牲的精神","咏物言志"],grade:'小学四年级'},
-{year:1457,type:'life',title:'遇害',desc:'被冤杀于北京。后平反，谥号"忠肃"。'}
-]},
-wangmian:{name:'王冕',dynasty:'yuan',born:1287,died:1359,avatar:'王',color:'#8e44ad',events:[
-{year:1287,type:'life',title:'出生',desc:'字元章，号煮石山农，诸暨人，元代画家、诗人。'},
-{year:1320,type:'work',title:'墨梅',desc:'题画诗名篇，以梅自喻。',poem:'吾家洗砚池头树，朵朵花开淡墨痕。\n不要人夸好颜色，只留清气满乾坤。',bg:'"不要人夸好颜色，只留清气满乾坤"表达不慕虚荣、只求保持清白正气的品格。',use:["高洁品格/不慕虚荣","咏物言志","梅花/清廉"],grade:'小学四年级'},
-{year:1359,type:'life',title:'病逝',desc:'七十三岁卒。拒不出仕元朝。'}
-]},
-gaoshi:{name:'高适',dynasty:'tang',born:704,died:765,avatar:'高',color:'#2980b9',events:[
-{year:704,type:'life',title:'出生',desc:'字达夫，渤海蓨人，盛唐边塞诗派代表。'},
-{year:740,type:'work',title:'别董大（其一）',desc:'送别友人董庭兰。',poem:'千里黄云白日曛，北风吹雁雪纷纷。\n莫愁前路无知己，天下谁人不识君。',bg:'以豪迈的胸襟慰勉友人，一扫送别诗的悲凉格调。',use:["送别友人/鼓励","豪迈乐观","前路广阔/知己"],grade:'小学三年级'},
-{year:765,type:'life',title:'病逝',desc:'约六十一岁卒于广州。'}
-]},
-hanyu:{name:'韩愈',dynasty:'tang',born:768,died:824,avatar:'韩',color:'#8e44ad',events:[
-{year:768,type:'life',title:'出生',desc:'字退之，河内河阳人，"唐宋八大家"之首。'},
-{year:800,type:'work',title:'早春呈水部张十八员外',desc:'描写初春细雨中的朦胧之美。',poem:'天街小雨润如酥，草色遥看近却无。\n最是一年春好处，绝胜烟柳满皇都。',bg:'以酥油比喻初春雨水的细腻润滑，"草色遥看近却无"写远望草色青青、近看却稀疏无几的早春特征。',use:["早春/初春美景","希望/新生","珍惜美好时光"],grade:'小学三年级'},
-{year:824,type:'life',title:'病逝',desc:'五十七岁卒于长安。'}
-]},
-liyi:{name:'李益',dynasty:'tang',born:748,died:829,avatar:'李',color:'#2980b9',events:[
-{year:748,type:'life',title:'出生',desc:'字君虞，陇西姑臧人，唐代边塞诗人。'},
-{year:785,type:'work',title:'夜上受降城闻笛',desc:'月下登城闻笛声。',poem:'回乐烽前沙似雪，受降城外月如霜。\n不知何处吹芦管，一夜征人尽望乡。',bg:'以景衬情，将边塞的苍凉和将士的思乡写得淋漓尽致。',use:["边塞思乡","戍边将士的孤独","月夜/笛声"],grade:'小学四年级'},
-{year:829,type:'life',title:'辞世',desc:'约八十一岁卒。'}
-]},
-wangjian2:{name:'王建',dynasty:'tang',born:766,died:830,avatar:'王',color:'#3498db',events:[
-{year:766,type:'life',title:'出生',desc:'字仲初，颍川人，以乐府诗闻名。'},
-{year:800,type:'work',title:'十五夜望月',desc:'中秋之夜望月怀人。',poem:'中庭地白树栖鸦，冷露无声湿桂花。\n今夜月明人尽望，不知秋思落谁家。',bg:'看似写他人思乡，实则表达自己的思乡之情，含蓄蕴藉。',use:["中秋思乡","团圆/思念亲人","月夜怀人"],grade:'小学四年级'},
-{year:830,type:'life',title:'辞世',desc:'约六十四岁卒。'}
-]},
-yanshu:{name:'晏殊',dynasty:'song',born:991,died:1055,avatar:'晏',color:'#27ae60',events:[
-{year:991,type:'life',title:'出生',desc:'字同叔，抚州临川人，北宋词人。'},
-{year:1030,type:'work',title:'浣溪沙',desc:'暮春时节感时伤逝。',poem:'一曲新词酒一杯，去年天气旧亭台。夕阳西下几时回？\n无可奈何花落去，似曾相识燕归来。小园香径独徘徊。',bg:'"无可奈何花落去，似曾相识燕归来"两句对仗工整、哲理深远。',use:["伤春/惜时","无可奈何的感慨","哲理/得失之间"],grade:'初中一年级'},
-{year:1055,type:'life',title:'病逝',desc:'六十五岁卒。'}
-]},
-qinguang:{name:'秦观',dynasty:'song',born:1049,died:1100,avatar:'秦',color:'#8e44ad',events:[
-{year:1049,type:'life',title:'出生',desc:'字少游，号太虚，扬州高邮人，"苏门四学士"之一。'},
-{year:1085,type:'work',title:'鹊桥仙·纤云弄巧',desc:'七夕咏牛郎织女。',poem:'纤云弄巧，飞星传恨，银汉迢迢暗度。\n金风玉露一相逢，便胜却人间无数。\n柔情似水，佳期如梦，忍顾鹊桥归路。\n两情若是久长时，又岂在朝朝暮暮。',bg:'以哲理超越离愁，"两情若是久长时，又岂在朝朝暮暮"是七夕词中的千古绝唱。',use:["七夕/爱情","远距离恋爱/思念","真挚不渝的爱情"],grade:'初中二年级'},
-{year:1100,type:'life',title:'病逝',desc:'五十二岁卒于藤州。'}
-]},
-huangtingjian:{name:'黄庭坚',dynasty:'song',born:1045,died:1105,avatar:'黄',color:'#2980b9',events:[
-{year:1045,type:'life',title:'出生',desc:'字鲁直，号山谷道人，洪州分宁人，"苏门四学士"之一。'},
-{year:1094,type:'work',title:'寄黄几复',desc:'贬谪期间思念友人。',poem:'我居北海君南海，寄雁传书谢不能。\n桃李春风一杯酒，江湖夜雨十年灯。\n持家但有四立壁，治病不蕲三折肱。\n想见读书头已白，隔溪猿哭瘴溪藤。',bg:'"桃李春风一杯酒，江湖夜雨十年灯"概括十年聚散，凝练深沉。',use:["友情/思念友人","人生聚散","读书/学问"],grade:'初中二年级'},
-{year:1105,type:'life',title:'病逝',desc:'六十一岁卒于宜州。'}
-]},
-nalanxingde:{name:'纳兰性德',dynasty:'qing',born:1655,died:1685,avatar:'纳',color:'#8e44ad',events:[
-{year:1655,type:'life',title:'出生',desc:'字容若，号楞伽山人，满洲正黄旗人，清代最著名词人。'},
-{year:1676,type:'work',title:'长相思·山一程',desc:'随康熙帝出关巡狩，途中思念故乡。',poem:'山一程，水一程，身向榆关那畔行，夜深千帐灯。\n风一更，雪一更，聒碎乡心梦不成，故园无此声。',bg:'全词语言朴素自然，感情真挚深沉，是清代词作的巅峰之作。',use:["思乡/旅途思乡","远征/离乡","风雪/寒冷中的思念"],grade:'初中二年级'},
-{year:1685,type:'life',title:'病逝',desc:'三十岁卒于北京。被誉为"清代第一词人"。'}
-]},
-zhangyanghao:{name:'张养浩',dynasty:'yuan',born:1270,died:1329,avatar:'张',color:'#e67e22',events:[
-{year:1270,type:'life',title:'出生',desc:'字希孟，号云庄，济南人，元代散曲家。'},
-{year:1329,type:'work',title:'山坡羊·潼关怀古',desc:'途经潼关凭吊古迹。',poem:'峰峦如聚，波涛如怒，山河表里潼关路。\n望西都，意踌躇。\n伤心秦汉经行处，宫阙万间都做了土。\n兴，百姓苦；亡，百姓苦！',bg:'"兴，百姓苦；亡，百姓苦"如洪钟大吕，指出无论朝代兴亡，受苦的都是普通百姓。',use:["历史兴亡/感慨","百姓苦难","忧国忧民"],grade:'初中三年级'},
-{year:1329,type:'life',title:'病逝',desc:'五十九岁卒于赈灾途中。'}
-]},
-mazhiyuan:{name:'马致远',dynasty:'yuan',born:1250,died:1321,avatar:'马',color:'#e67e22',events:[
-{year:1250,type:'life',title:'出生',desc:'字千里，号东篱，大都人，元代杂剧家、散曲家。'},
-{year:1290,type:'work',title:'天净沙·秋思',desc:'被誉为"秋思之祖"。',poem:'枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。',bg:'全曲仅二十八字，以九个意象并列叠加，不着一"愁"字却愁绪满篇。',use:["游子思乡/漂泊","秋天/萧瑟","天涯游子"],grade:'初中一年级'},
-{year:1321,type:'life',title:'辞世',desc:'约七十一岁卒。'}
-]},
-tansitong:{name:'谭嗣同',dynasty:'qing',born:1865,died:1898,avatar:'谭',color:'#e74c3c',events:[
-{year:1865,type:'life',title:'出生',desc:'字复生，号壮飞，浏阳人，清末维新派政治家、诗人。'},
-{year:1881,type:'work',title:'潼关',desc:'少年时途经潼关所作。',poem:'终古高云簇此城，秋风吹散马蹄声。\n河流大野犹嫌束，山入潼关不解平。',bg:'全诗以壮阔的意象展现少年谭嗣同不甘束缚、追求自由的豪情壮志。',use:["少年壮志","不畏束缚/追求自由","山河壮阔"],grade:'初中一年级'},
-{year:1898,type:'life',title:'遇害',desc:'戊戌变法失败后慷慨就义，年三十三岁。'}
-]},
-zhengxie:{name:'郑燮',dynasty:'qing',born:1693,died:1765,avatar:'郑',color:'#27ae60',events:[
-{year:1693,type:'life',title:'出生',desc:'字克柔，号板桥，兴化人，"扬州八怪"之一。'},
-{year:1730,type:'work',title:'竹石',desc:'题画诗名篇，以竹自喻。',poem:'咬定青山不放松，立根原在破岩中。\n千磨万击还坚劲，任尔东西南北风。',bg:'"咬定青山不放松"以"咬定"二字赋予竹子以人的意志，表达诗人刚正不阿、坚韧不拔的品格。',use:["坚韧不拔/意志坚定","不畏困难/挫折","咏物言志/品格"],grade:'小学五年级'},
-{year:1765,type:'life',title:'病逝',desc:'七十三岁卒于扬州。'}
-]},
-gongzizhen:{name:'龚自珍',dynasty:'qing',born:1792,died:1841,avatar:'龚',color:'#8e44ad',events:[
-{year:1792,type:'life',title:'出生',desc:'字璱人，号定庵，浙江仁和人，清代思想家、文学家。'},
-{year:1839,type:'work',title:'己亥杂诗（其五）',desc:'辞官南归途中所作。',poem:'浩荡离愁白日斜，吟鞭东指即天涯。\n落红不是无情物，化作春泥更护花。',bg:'以落花自喻，表达虽辞官但仍关心国家前途、愿意继续奉献的精神。',use:["奉献精神/牺牲自我","辞官/离别","新老交替/传承"],grade:'初中三年级'},
-{year:1841,type:'life',title:'病逝',desc:'四十九岁卒于丹阳云阳书院。'}
-]},
-yuankui:{name:'袁枚',dynasty:'qing',born:1716,died:1797,avatar:'袁',color:'#2ecc71',events:[
-{year:1716,type:'life',title:'出生',desc:'字子才，号简斋，钱塘人，清代诗人。'},
-{year:1740,type:'work',title:'所见',desc:'牧童骑牛唱歌的生动场景。',poem:'牧童骑黄牛，歌声振林樾。\n意欲捕鸣蝉，忽然闭口立。',bg:'全诗仅二十字，生动地捕捉了一个动态场景，牧童的天真可爱跃然纸上。',use:["童年/童趣","牧童/乡村生活","动静结合"],grade:'小学二年级'},
-{year:1797,type:'life',title:'病逝',desc:'八十二岁卒于南京。'}
-]},
-gaoding:{name:'高鼎',dynasty:'qing',born:1800,died:1870,avatar:'高',color:'#27ae60',events:[
-{year:1800,type:'life',title:'出生',desc:'字象一，又字拙庵，仁和人，清代诗人。'},
-{year:1830,type:'work',title:'村居',desc:'描写春天乡村儿童放风筝的欢乐场景。',poem:'草长莺飞二月天，拂堤杨柳醉春烟。\n儿童散学归来早，忙趁东风放纸鸢。',bg:'全诗充满生机和童趣，展现了乡村春天的美好和孩子们的快乐。',use:["春天/乡村美景","儿童/放风筝","童趣/快乐"],grade:'小学一年级'},
-{year:1870,type:'life',title:'辞世',desc:'约七十岁卒。'}
-]},
-wanghan:{name:'王翰',dynasty:'tang',born:687,died:726,avatar:'王',color:'#e74c3c',events:[
+]};
+P['he']={name:'贺知章',dynasty:'tang',born:659,died:744,avatar:'贺',color:'#48c9b0',events:[
+{year:659,type:'life',title:'出生',desc:'字季真，越州永兴人，唐代诗人、书法家。'},
+{year:725,type:'work',title:'咏柳',desc:'以碧玉比喻柳树，构思巧妙。',poem:'碧玉妆成一树高，万条垂下绿丝绦。\n不知细叶谁裁出，二月春风似剪刀。',bg:'以碧玉喻柳树的整体形态，将无形的春风比作剪刀裁出细叶。',use:["赞美春天的到来","描写自然之美","春天的生机勃勃"]},
+{year:744,type:'work',title:'回乡偶书',desc:'八十六岁告老还乡时所作。',poem:'少小离家老大回，乡音无改鬓毛衰。\n儿童相见不相识，笑问客从何处来。',bg:'贺知章年少离家赴长安为官，八十六岁才辞官回乡。',use:["游子归乡的感慨","物是人非/时光流逝","多年后重返故地"]},
+{year:744.5,type:'life',title:'辞世',desc:'回乡同年即病逝，享年八十六岁。'}
+]};
+P['wanghan']={name:'王翰',dynasty:'tang',born:687,died:726,avatar:'王',color:'#e74c3c',events:[
 {year:687,type:'life',title:'出生',desc:'字子羽，并州晋阳人，盛唐边塞诗人。'},
 {year:710,type:'work',title:'凉州词',desc:'边塞将士宴饮时所作。',poem:'葡萄美酒夜光杯，欲饮琵琶马上催。\n醉卧沙场君莫笑，古来征战几人回？',bg:'豪放中透着悲壮，是边塞诗中的经典之作。',use:["边塞/战争","豪迈/悲壮","珍惜当下"],grade:'小学四年级'},
 {year:726,type:'life',title:'辞世',desc:'约四十岁卒。'}
-]},
-fanzhongyan:{name:'范仲淹',dynasty:'song',born:989,died:1052,avatar:'范',color:'#27ae60',events:[
-{year:989,type:'life',title:'出生',desc:'字希文，苏州吴县人，北宋政治家、文学家。'},
-{year:1015,type:'life',title:'进士及第',desc:'二十七岁中进士。'},
-{year:1040,type:'life',title:'镇守西北',desc:'任陕西经略安抚副使，抵御西夏入侵。'},
-{year:1046,type:'work',title:'岳阳楼记',desc:'受友人滕子京之邀而作。',poem:'予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯。\n不以物喜，不以己悲。\n居庙堂之高则忧其民，处江湖之远则忧其君。\n先天下之忧而忧，后天下之乐而乐乎。',bg:'以"先天下之忧而忧，后天下之乐而乐"表达以天下为己任的胸怀，成为中国古代士大夫精神的最高宣言。',use:["以天下为己任的胸怀","先忧后乐的担当","不以物喜不以己悲"]},
-{year:1047,type:'work',title:'渔家傲·秋思',desc:'镇守西北边疆时所作。',poem:'塞下秋来风景异，衡阳雁去无留意。\n四面边声连角起，千嶂里，长烟落日孤城闭。\n浊酒一杯家万里，燕然未勒归无计。\n羌管悠悠霜满地，人不寐，将军白发征夫泪。',bg:'全词将边塞的苦寒与壮志难酬的悲愤融为一体，是宋词中最早表现边塞生活的名篇。',use:["边塞思乡","壮志未酬的悲壮","将士的辛苦与坚守"]},
-{year:1052,type:'life',title:'病逝',desc:'六十四岁病逝于赴任途中，谥号"文正"。'}
-]},
-liuyong:{name:'柳永',dynasty:'song',born:984,died:1053,avatar:'柳',color:'#2ecc71',events:[
-{year:984,type:'life',title:'出生',desc:'原名三变，字景庄，后改名永，字耆卿，北宋婉约词派开创者。'},
-{year:1025,type:'work',title:'雨霖铃',desc:'离开汴京时与恋人分别所作。',poem:'寒蝉凄切，对长亭晚，骤雨初歇。\n都门帐饮无绪，留恋处，兰舟催发。\n执手相看泪眼，竟无语凝噎。\n念去去千里烟波，暮霭沈沈楚天阔。\n多情自古伤离别，更那堪冷落清秋节！\n今宵酒醒何处？杨柳岸，晓风残月。',bg:'"执手相看泪眼，竟无语凝噎"写出离别时千言万语却说不出口的情态。"杨柳岸，晓风残月"被誉为"千古俊语"。',use:["离别的伤感","分手/分开的痛苦","别后的孤寂"]},
-{year:1034,type:'life',title:'进士及第',desc:'年近五十终于中进士。'},
-{year:1040,type:'work',title:'望海潮',desc:'描写杭州的繁华富庶。',poem:'东南形胜，三吴都会，钱塘自古繁华。\n烟柳画桥，风帘翠幕，参差十万人家。\n重湖叠巘清嘉，有三秋桂子，十里荷花。',bg:'"三秋桂子，十里荷花"成为形容杭州美景的千古名句。',use:["赞美城市繁华","描写都市盛景","杭州之美"]},
-{year:1053,type:'life',title:'病逝',desc:'约七十岁卒于润州。相传由歌妓集资安葬。'}
-]},
-ouyangxiu:{name:'欧阳修',dynasty:'song',born:1007,died:1072,avatar:'欧',color:'#229954',events:[
-{year:1007,type:'life',title:'出生',desc:'字永叔，号醉翁、六一居士，北宋文坛领袖，"唐宋八大家"之一。'},
-{year:1030,type:'life',title:'进士及第',desc:'二十四岁中进士。'},
-{year:1045,type:'work',title:'醉翁亭记',desc:'被贬滁州时所作。',poem:'环滁皆山也。其西南诸峰，林壑尤美。\n峰回路转，有亭翼然临于泉上者，醉翁亭也。\n醉翁之意不在酒，在乎山水之间也。\n山水之乐，得之心而寓之酒也。',bg:'"醉翁之意不在酒，在乎山水之间也"道出寄情山水的真意。',use:["寄情山水/享受当下","与民同乐","失意中的旷达"]},
-{year:1055,type:'work',title:'生查子·元夕',desc:'写元宵节夜晚对去年此时的回忆。',poem:'去年元夜时，花市灯如昼。\n月上柳梢头，人约黄昏后。\n今年元夜时，月与灯依旧。\n不见去年人，泪湿春衫袖。',bg:'以"去年"和"今年"的对比写物是人非的感伤。',use:["物是人非的感伤","怀念旧人/旧时光","节日触景生情"]},
-{year:1072,type:'life',title:'病逝',desc:'六十六岁卒于颍州。谥号"文忠"。'}
-]},
-wanganshi:{name:'王安石',dynasty:'song',born:1021,died:1086,avatar:'王',color:'#1e8449',events:[
-{year:1021,type:'life',title:'出生',desc:'字介甫，号半山，临川人，北宋政治家、文学家。'},
-{year:1042,type:'life',title:'进士及第',desc:'二十二岁中进士。'},
-{year:1069,type:'life',title:'推行变法',desc:'任参知政事，推行"熙宁变法"。'},
-{year:1073,type:'work',title:'泊船瓜洲',desc:'从金陵北上赴任途中停泊瓜洲时所作。',poem:'京口瓜洲一水间，钟山只隔数重山。\n春风又绿江南岸，明月何时照我还。',bg:'"春风又绿江南岸"中"绿"字经过反复推敲，成为炼字的经典范例。',use:["思乡/想回家","春风又绿/季节变化","离乡的无奈"]},
-{year:1075,type:'work',title:'元日',desc:'描写新年正月初一的民俗景象。',poem:'爆竹声中一岁除，春风送暖入屠苏。\n千门万户曈曈日，总把新桃换旧符。',bg:'表面写节日景象，实则暗含"除旧布新"的变法理念。',use:["新年祝福/辞旧迎新","改革创新的气象","春节的喜庆"]},
-{year:1086,type:'life',title:'病逝',desc:'六十六岁卒于金陵。'}
-]},
-/* 屈原 */
-quyuan:{name:'屈原',dynasty:'han',born:-340,died:-278,avatar:'屈',color:'#c0392b',events:[
-{year:-340,type:'life',title:'出生',desc:'名平，字原，战国时期楚国人，中国浪漫主义文学的奠基人。'},
-{year:-313,type:'life',title:'遭谗被疏',desc:'因主张联齐抗秦遭贵族排挤诽谤，被楚怀王疏远。'},
-{year:-295,type:'work',title:'离骚（节选）',desc:'中国最长的抒情诗，表达忧国忧民之情与追求理想的决心。',poem:'帝高阳之苗裔兮，朕皇考曰伯庸。\n摄提贞于孟陬兮，惟庚寅吾以降。\n长太息以掩涕兮，哀民生之多艰。\n亦余心之所善兮，虽九死其犹未悔。\n路漫漫其修远兮，吾将上下而求索。',bg:'屈原被放逐后所作，是中国文学史上第一首长篇抒情诗。"路漫漫其修远兮，吾将上下而求索"表达了诗人追求真理、矢志不渝的精神，成为千古名句。全诗以香草美人喻高洁品格，以神话传说寄政治理想，开创了中国浪漫主义诗歌的先河。',use:["追求理想/坚持不懈","忧国忧民","探索真理的精神"]},
-{year:-278,type:'life',title:'投江殉国',desc:'秦军攻破楚国郢都后，屈原悲愤交加，于五月初五投汨罗江自尽。后人以端午节纪念他。'}
-]},
-/* 李煜 */
-liyu:{name:'李煜',dynasty:'song',born:937,died:978,avatar:'李',color:'#c0392b',events:[
+]};
+P['wzh']={name:'王之涣',dynasty:'tang',born:688,died:742,avatar:'王',color:'#5dade2',events:[
+{year:688,type:'life',title:'出生',desc:'字季凌，并州晋阳人，盛唐边塞诗人。'},
+{year:720,type:'work',title:'登鹳雀楼',desc:'登山西永济鹳雀楼所作。',poem:'白日依山尽，黄河入海流。\n欲穷千里目，更上一层楼。',bg:'前两句写登楼所见的壮阔自然景观；后两句由景入理，表达不断进取的人生哲理。',use:["鼓励不断进步/登高望远","站得高看得远","追求更高目标"]},
+{year:730,type:'work',title:'凉州词',desc:'描写边塞苍凉景象与戍边将士的思乡之情。',poem:'黄河远上白云间，一片孤城万仞山。\n羌笛何须怨杨柳，春风不度玉门关。',bg:'以黄河远上白云间的壮阔开篇，衬托边塞孤城的荒凉。',use:["边塞的苍凉壮美","戍边将士的思乡","孤寂中的坚守"]}
+]};
+P['meng']={name:'孟浩然',dynasty:'tang',born:689,died:740,avatar:'孟',color:'#45b39d',events:[
+{year:689,type:'life',title:'出生',desc:'名浩，字浩然，襄州襄阳人，唐代山水田园诗派代表。'},
+{year:730,type:'work',title:'春晓',desc:'春日清晨醒来时的感受。',poem:'春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。',bg:'以极简的笔触写春日清晨的一瞬，蕴含对春天美好事物的珍惜之情。',use:["珍惜美好的春天","感叹时光易逝","春日清晨的慵懒"]},
+{year:733,type:'work',title:'过故人庄',desc:'应邀到农村老友家做客。',poem:'故人具鸡黍，邀我至田家。\n绿树村边合，青山郭外斜。\n开轩面场圃，把酒话桑麻。\n待到重阳日，还来就菊花。',bg:'写诗人应邀到农村朋友家做客的全过程。',use:["田园生活的惬意","老友情深/做客","乡村的宁静美好"]},
+{year:740,type:'life',title:'病逝',desc:'五十二岁因纵情宴饮、食鲜疾发而逝。'}
+]};
+P['wangcl']={name:'王昌龄',dynasty:'tang',born:698,died:757,avatar:'王',color:'#16a085',events:[
+{year:698,type:'life',title:'出生',desc:'字少伯，京兆长安人，七绝圣手。'},
+{year:730,type:'work',title:'出塞',desc:'唐代边塞诗代表作。',poem:'秦时明月汉时关，万里长征人未还。\n但使龙城飞将在，不教胡马度阴山。',bg:'以秦时明月汉时关开篇，展现边塞战争的悠久历史。',use:["保家卫国的壮志","边塞征战","期盼良将/人才"]},
+{year:735,type:'work',title:'芙蓉楼送辛渐',desc:'在芙蓉楼送别友人辛渐时所作。',poem:'寒雨连江夜入吴，平明送客楚山孤。\n洛阳亲友如相问，一片冰心在玉壶。',bg:'一片冰心在玉壶以冰心玉壶自喻品格高洁。',use:["送别友人","自证清白/品格高洁","冰清玉洁的操守"]},
+{year:757,type:'life',title:'遇害',desc:'安史之乱中返乡途中被杀。'}
+]};
+P['wangwei']={name:'王维',dynasty:'tang',born:701,died:761,avatar:'王',color:'#1abc9c',events:[
+{year:701,type:'life',title:'出生',desc:'字摩诘，号摩诘居士，诗佛。'},
+{year:726,type:'work',title:'九月九日忆山东兄弟',desc:'十七岁时客居长安，重阳节思念故乡兄弟所作。',poem:'独在异乡为异客，每逢佳节倍思亲。\n遥知兄弟登高处，遍插茱萸少一人。',bg:'王维十七岁独自在长安求学，重阳节思念远方兄弟。',use:["思念家人/思乡","独在异乡的感受","重阳节/节日思亲"]},
+{year:740,type:'work',title:'送元二使安西',desc:'送友人元二出使西域时所作。',poem:'渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。',bg:'清晨微雨润湿了尘土，诗人殷勤劝酒。',use:["送别友人","离别时的不舍","远行前的祝福"]},
+{year:750,type:'work',title:'山居秋暝',desc:'隐居辋川时所作。',poem:'空山新雨后，天气晚来秋。\n明月松间照，清泉石上流。\n竹喧归浣女，莲动下渔舟。\n随意春芳歇，王孙自可留。',bg:'写雨后秋天傍晚山中的清新景象。',use:["山水田园之美","归隐山林的志趣","秋天的宁静清新"]},
+{year:752,type:'work',title:'使至塞上',desc:'奉命出使边塞慰问将士途中所作。',poem:'单车欲问边，属国过居延。\n征蓬出汉塞，归雁入胡天。\n大漠孤烟直，长河落日圆。\n萧关逢候骑，都护在燕然。',bg:'大漠孤烟直，长河落日圆以极简的线条勾勒大漠的苍茫壮阔。',use:["边塞的壮阔风光","旅途中的感受","大漠风光"]},
+{year:761,type:'life',title:'辞世',desc:'六十一岁病逝。'}
+]};
+P['libai']={name:'李白',dynasty:'tang',born:701,died:762,avatar:'李',color:'#e94560',events:[
+{year:701,type:'life',title:'出生',desc:'字太白，号青莲居士，诗仙，唐代伟大的浪漫主义诗人。'},
+{year:726,type:'work',title:'静夜思',desc:'客居扬州时所作。',poem:'床前明月光，疑是地上霜。\n举头望明月，低头思故乡。',bg:'诗人在异乡旅舍中望月思乡。',use:["思乡/想家","月夜思亲","身在异乡的夜晚"]},
+{year:730,type:'work',title:'黄鹤楼送孟浩然之广陵',desc:'三十岁于黄鹤楼送别友人孟浩然。',poem:'故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。',bg:'烟花三月的美好时节，在黄鹤楼送别好友孟浩然东去扬州。',use:["送别友人","春日送行","目送远去的惆怅"]},
+{year:742,type:'work',title:'蜀道难',desc:'以雄奇笔力写蜀道之险。',poem:'蜀道之难，难于上青天！\n蚕丛及鱼凫，开国何茫然。\n尔来四万八千岁，不与秦塞通人烟。',bg:'以神话传说和夸张想象描写蜀道的艰险。',use:["形容路途艰险","面对巨大挑战","感叹事情之难"]},
+{year:744,type:'life',title:'赐金放还·遇杜甫',desc:'遭权贵谗毁被赐金放还，在洛阳与杜甫相遇。'},
+{year:744.5,type:'work',title:'行路难',desc:'离开长安时所作。',poem:'金樽清酒斗十千，玉盘珍羞直万钱。\n停杯投箸不能食，拔剑四顾心茫然。\n欲渡黄河冰塞川，将登太行雪满山。\n长风破浪会有时，直挂云帆济沧海。',bg:'被赐金放还离开长安，面对美酒佳肴却无法下咽。',use:["面对困境不放弃","人生路难但有信心","励志/自我鼓励"]},
+{year:745,type:'work',title:'望庐山瀑布',desc:'以夸张手法写庐山瀑布的壮美。',poem:'日照香炉生紫烟，遥看瀑布挂前川。\n飞流直下三千尺，疑是银河落九天。',bg:'三千尺极言瀑布之高，银河落九天以天上的银河比喻人间的瀑布。',use:["描写壮观自然景观","赞美大自然的鬼斧神工","瀑布/山水之美"]},
+{year:752,type:'work',title:'将进酒',desc:'与友人在嵩山宴饮时作。',poem:'君不见黄河之水天上来，奔流到海不复回。\n君不见高堂明镜悲白发，朝如青丝暮成雪。\n人生得意须尽欢，莫使金樽空对月。\n天生我材必有用，千金散尽还复来。',bg:'酒酣之际所作，既有对人生几何的感慨，更有天生我材必有用的自信。',use:["珍惜当下/及时行乐","自信/天生我材必有用","豪迈饮酒/朋友聚会"]},
+{year:759,type:'work',title:'早发白帝城',desc:'流放途中遇大赦，狂喜东归时所作。',poem:'朝辞白帝彩云间，千里江陵一日还。\n两岸猿声啼不住，轻舟已过万重山。',bg:'李白因永王案被流放夜郎，行至白帝城时忽遇大赦。',use:["劫后余生的喜悦","归心似箭/急切回家","轻快愉悦的心情"]},
+{year:762,type:'life',title:'病逝当涂',desc:'六十二岁病逝于安徽当涂。'}
+]};
+P['gaoshi']={name:'高适',dynasty:'tang',born:704,died:765,avatar:'高',color:'#2980b9',events:[
+{year:704,type:'life',title:'出生',desc:'字达夫，渤海蓨人，盛唐边塞诗派代表。'},
+{year:740,type:'work',title:'别董大（其一）',desc:'送别友人董庭兰。',poem:'千里黄云白日曛，北风吹雁雪纷纷。\n莫愁前路无知己，天下谁人不识君。',bg:'以豪迈的胸襟慰勉友人，一扫送别诗的悲凉格调。',use:["送别友人/鼓励","豪迈乐观","前路广阔/知己"],grade:'小学三年级'},
+{year:765,type:'life',title:'病逝',desc:'约六十一岁卒于广州。'}
+]};
+P['dufu']={name:'杜甫',dynasty:'tang',born:712,died:770,avatar:'杜',color:'#2471a3',events:[
+{year:712,type:'life',title:'出生',desc:'字子美，自号少陵野老，诗圣，其诗被誉为诗史。'},
+{year:736,type:'work',title:'望岳',desc:'二十五岁漫游齐赵时登泰山所作。',poem:'岱宗夫如何？齐鲁青未了。\n造化钟神秀，阴阳割昏晓。\n荡胸生曾云，决眦入归鸟。\n会当凌绝顶，一览众山小。',bg:'青年杜甫登临泰山，被其雄伟气势震撼。',use:["立志攀登高峰","少年壮志/雄心","登高望远/俯瞰一切"]},
+{year:744,type:'life',title:'洛阳遇李白',desc:'三十三岁与李白相遇于洛阳，同游梁宋。'},
+{year:755,type:'work',title:'春望',desc:'安史之乱中长安沦陷，杜甫被困城中。',poem:'国破山河在，城春草木深。\n感时花溅泪，恨别鸟惊心。\n烽火连三月，家书抵万金。\n白头搔更短，浑欲不胜簪。',bg:'756年长安被叛军占领，杜甫目睹昔日繁华帝都的满目疮痍。',use:["战争中的忧国思乡","国破家亡的悲痛","乱世中对亲人的牵挂"]},
+{year:761,type:'work',title:'春夜喜雨',desc:'在成都草堂时所作。',poem:'好雨知时节，当春乃发生。\n随风潜入夜，润物细无声。\n野径云俱黑，江船火独明。\n晓看红湿处，花重锦官城。',bg:'诗人在成都草堂安居时，一场及时的春雨让他欣喜。',use:["赞美春雨/及时雨","感恩默默奉献的人","好消息/及时到来的帮助"]},
+{year:761.5,type:'work',title:'茅屋为秋风所破歌',desc:'秋风暴雨中茅屋破败，推己及人。',poem:'八月秋高风怒号，卷我屋上三重茅。\n安得广厦千万间，大庇天下寒士俱欢颜！\n风雨不动安如山。',bg:'秋风吹破了草堂的屋顶，但诗人想到的不只是自己。',use:["心怀天下/推己及人","为弱势群体发声","即使困难也要帮助他人"]},
+{year:767,type:'work',title:'登高',desc:'在夔州所作，被誉为古今七律第一。',poem:'风急天高猿啸哀，渚清沙白鸟飞回。\n无边落木萧萧下，不尽长江滚滚来。\n万里悲秋常作客，百年多病独登台。\n艰难苦恨繁霜鬓，潦倒新停浊酒杯。',bg:'杜甫晚年漂泊至夔州，重阳节独自登高。',use:["秋天的感慨","人生漂泊/孤独","年华老去的悲凉"]},
+{year:770,type:'life',title:'病逝湘江',desc:'五十九岁冬，病逝于潭州往岳阳的舟中。'}
+]};
+P['censhen']={name:'岑参',dynasty:'tang',born:715,died:770,avatar:'岑',color:'#138d75',events:[
+{year:715,type:'life',title:'出生',desc:'江陵人，盛唐边塞诗派代表，与高适并称高岑。'},
+{year:754,type:'work',title:'白雪歌送武判官归京',desc:'在北庭都护府送别同僚武判官回长安时所作。',poem:'北风卷地白草折，胡天八月即飞雪。\n忽如一夜春风来，千树万树梨花开。\n散入珠帘湿罗幕，狐裘不暖锦衾薄。\n将军角弓不得控，都护铁衣冷难着。\n瀚海阑干百丈冰，愁云惨淡万里凝。\n中军置酒饮归客，胡琴琵琶与羌笛。\n纷纷暮雪下辕门，风掣红旗冻不翻。\n轮台东门送君去，去时雪满天山路。\n山回路转不见君，雪上空留马行处。',bg:'以忽如一夜春风来，千树万树梨花开将严寒的雪景比作春天的梨花盛放。',use:["边塞送别","雪景壮美/苦中作乐","冬日离别"]},
+{year:770,type:'life',title:'病逝',desc:'罢官后病逝于成都。'}
+]};
+P['zhangji']={name:'张继',dynasty:'tang',born:715,died:779,avatar:'张',color:'#3498db',events:[
+{year:715,type:'life',title:'出生',desc:'字懿孙，襄州襄阳人。'},
+{year:755,type:'work',title:'枫桥夜泊',desc:'夜泊苏州枫桥，听寒山钟声。',poem:'月落乌啼霜满天，江枫渔火对愁眠。\n姑苏城外寒山寺，夜半钟声到客船。',bg:'安史之乱后南逃途经苏州，以声衬静，以静写愁。',use:["旅途中的孤独","秋夜思乡","钟声/寺庙意境"],grade:'小学三年级'},
+{year:779,type:'life',title:'辞世',desc:'约卒于贞元年间。'}
+]};
+P['zhangzhihe']={name:'张志和',dynasty:'tang',born:730,died:810,avatar:'张',color:'#2ecc71',events:[
+{year:730,type:'life',title:'出生',desc:'字子同，婺州金华人，隐逸江湖自号烟波钓徒。'},
+{year:770,type:'work',title:'渔歌子',desc:'描写江南水乡春汛时的渔家生活。',poem:'西塞山前白鹭飞，桃花流水鳜鱼肥。\n青箬笠，绿蓑衣，斜风细雨不须归。',bg:'以明丽的色彩描绘江南水乡春汛美景。',use:["江南水乡美景","隐逸生活/自由自在","渔翁/垂钓意境"],grade:'小学四年级'},
+{year:810,type:'life',title:'辞世',desc:'约八十岁卒。'}
+]};
+P['weiyongwu']={name:'韦应物',dynasty:'tang',born:737,died:792,avatar:'韦',color:'#16a085',events:[
+{year:737,type:'life',title:'出生',desc:'京兆万年人，与王维、孟浩然、柳宗元并称王孟韦柳。'},
+{year:780,type:'work',title:'滁州西涧',desc:'任滁州刺史时游览西涧所作。',poem:'独怜幽草涧边生，上有黄鹂深树鸣。\n春潮带雨晚来急，野渡无人舟自横。',bg:'野渡无人舟自横以一只自在横漂的小舟，隐喻诗人超然物外的闲适心境。',use:["自然野趣/闲适","独处/自在","随遇而安"],grade:'小学四年级'},
+{year:792,type:'life',title:'病逝',desc:'五十六岁卒于苏州刺史任上。'}
+]};
+P['liyi']={name:'李益',dynasty:'tang',born:748,died:829,avatar:'李',color:'#2980b9',events:[
+{year:748,type:'life',title:'出生',desc:'字君虞，陇西姑臧人，唐代边塞诗人。'},
+{year:785,type:'work',title:'夜上受降城闻笛',desc:'月下登城闻笛声。',poem:'回乐烽前沙似雪，受降城外月如霜。\n不知何处吹芦管，一夜征人尽望乡。',bg:'以景衬情，将边塞的苍凉和将士的思乡写得淋漓尽致。',use:["边塞思乡","戍边将士的孤独","月夜/笛声"],grade:'小学四年级'},
+{year:829,type:'life',title:'辞世',desc:'约八十一岁卒。'}
+]};
+P['mengjiao']={name:'孟郊',dynasty:'tang',born:751,died:814,avatar:'孟',color:'#27ae60',events:[
+{year:751,type:'life',title:'出生',desc:'字东野，湖州武康人，与贾岛并称郊寒岛瘦。'},
+{year:803,type:'work',title:'游子吟',desc:'母亲为游子缝衣的温情场景。',poem:'慈母手中线，游子身上衣。\n临行密密缝，意恐迟迟归。\n谁言寸草心，报得三春晖。',bg:'以小草比喻子女微小的孝心，以春日暖阳比喻母亲深恩。',use:["感恩母爱","游子思亲","报答父母恩情"],grade:'小学二年级'},
+{year:814,type:'life',title:'病逝',desc:'六十三岁卒于郑州。'}
+]};
+P['hanyu']={name:'韩愈',dynasty:'tang',born:768,died:824,avatar:'韩',color:'#8e44ad',events:[
+{year:768,type:'life',title:'出生',desc:'字退之，河内河阳人，唐宋八大家之首。'},
+{year:800,type:'work',title:'早春呈水部张十八员外',desc:'描写初春细雨中的朦胧之美。',poem:'天街小雨润如酥，草色遥看近却无。\n最是一年春好处，绝胜烟柳满皇都。',bg:'以酥油比喻初春雨水的细腻润滑。',use:["早春/初春美景","希望/新生","珍惜美好时光"],grade:'小学三年级'},
+{year:824,type:'life',title:'病逝',desc:'五十七岁卒于长安。'}
+]};
+P['bai']={name:'白居易',dynasty:'tang',born:772,died:846,avatar:'白',color:'#3498db',events:[
+{year:772,type:'life',title:'出生',desc:'字乐天，号香山居士，中唐最伟大的现实主义诗人之一。'},
+{year:806,type:'work',title:'赋得古原草送别',desc:'十六岁时所作。',poem:'离离原上草，一岁一枯荣。\n野火烧不尽，春风吹又生。\n远芳侵古道，晴翠接荒城。\n又送王孙去，萋萋满别情。',bg:'野火烧不尽，春风吹又生以野草的顽强生命力闻名千古。',use:["生命力顽强/不屈不挠","送别/离别","鼓励坚持不懈"]},
+{year:816,type:'work',title:'琵琶行',desc:'被贬江州时偶遇一位琵琶女。',poem:'浔阳江头夜送客，枫叶荻花秋瑟瑟。\n大弦嘈嘈如急雨，小弦切切如私语。\n嘈嘈切切错杂弹，大珠小珠落玉盘。\n同是天涯沦落人，相逢何必曾相识！',bg:'白居易被贬为江州司马，秋夜偶遇琵琶女。',use:["同病相怜/知音难遇","天涯沦落人的共鸣","音乐之美"]},
+{year:846,type:'life',title:'病逝',desc:'七十五岁卒于洛阳香山。'}
+]};
+P['lishen']={name:'李绅',dynasty:'tang',born:772,died:846,avatar:'李',color:'#e74c3c',events:[
+{year:772,type:'life',title:'出生',desc:'字公垂，亳州谯县人，以悯农诗闻名。'},
+{year:800,type:'work',title:'悯农（其二）',desc:'悯惜农民劳动辛苦。',poem:'春种一粒粟，秋收万颗子。\n四海无闲田，农夫犹饿死。',bg:'以春种与秋收的对比，揭示农民辛勤劳作却依然饿死的社会现实。',use:["珍惜粮食/粒粒皆辛苦","同情劳动者","反思社会不公"],grade:'小学一年级'},
+{year:846,type:'life',title:'病逝',desc:'五十五岁卒于淮南节度使任上。'}
+]};
+P['liuyuxi']={name:'刘禹锡',dynasty:'tang',born:772,died:842,avatar:'刘',color:'#8e44ad',events:[
+{year:772,type:'life',title:'出生',desc:'字梦得，彭城人，有诗豪之称。'},
+{year:815,type:'work',title:'望洞庭',desc:'贬谪途中望洞庭湖。',poem:'湖光秋月两相和，潭面无风镜未磨。\n遥望洞庭山水翠，白银盘里一青螺。',bg:'以白银盘里一青螺将洞庭湖中的君山比作白银盘中的一颗青螺。',use:["描写湖面/月光","比喻新奇","乐观豁达的胸襟"],grade:'小学三年级'},
+{year:826,type:'work',title:'浪淘沙（其八）',desc:'以黄河比喻人生历程。',poem:'莫道谗言如浪深，莫言迁客似沙沉。\n千淘万漉虽辛苦，吹尽狂沙始到金。',bg:'以淘金比喻人生历练，表达历经磨难终见真金的信念。',use:["历经磨难终成功","坚持不懈","筛选/去粗取精"],grade:'小学四年级'},
+{year:828,type:'work',title:'乌衣巷',desc:'凭吊六朝古迹。',poem:'朱雀桥边野草花，乌衣巷口夕阳斜。\n旧时王谢堂前燕，飞入寻常百姓家。',bg:'以燕子为线索，写出豪门兴衰、世事无常的深刻感慨。',use:["物是人非/世事沧桑","怀古/历史感慨","豪门兴衰"],grade:'小学四年级'},
+{year:842,type:'life',title:'病逝',desc:'七十一岁卒于洛阳。'}
+]};
+P['liuzy']={name:'柳宗元',dynasty:'tang',born:773,died:819,avatar:'柳',color:'#2e86c1',events:[
+{year:773,type:'life',title:'出生',desc:'字子厚，河东人，唐宋八大家之一。'},
+{year:806,type:'work',title:'江雪',desc:'被贬永州期间所作。',poem:'千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。',bg:'全诗仅二十字，写出极致的孤独与清高。',use:["孤独中的坚守","清高/不随波逐流","独处/享受安静"]},
+{year:819,type:'life',title:'病逝柳州',desc:'在柳州任上去世，年仅四十七岁。'}
+]};
+P['dumu']={name:'杜牧',dynasty:'tang',born:803,died:852,avatar:'杜',color:'#5499c7',events:[
+{year:803,type:'life',title:'出生',desc:'字牧之，号樊川居士，与李商隐并称小李杜。'},
+{year:835,type:'work',title:'清明',desc:'清明时节行路遇雨。',poem:'清明时节雨纷纷，路上行人欲断魂。\n借问酒家何处有？牧童遥指杏花村。',bg:'清明时节细雨纷纷，赶路的人淋着雨心情惆怅。',use:["清明时节/扫墓踏青","春雨中的行路","想找地方歇脚/借酒消愁"]},
+{year:840,type:'work',title:'山行',desc:'秋天登山所见。',poem:'远上寒山石径斜，白云生处有人家。\n停车坐爱枫林晚，霜叶红于二月花。',bg:'霜叶红于二月花一反古人悲秋的传统，展现了对秋天的赞美。',use:["赞美秋天/秋景之美","反常之美","山中漫步的闲适"]},
+{year:843,type:'work',title:'泊秦淮',desc:'夜泊秦淮河畔，感怀六朝兴亡。',poem:'烟笼寒水月笼沙，夜泊秦淮近酒家。\n商女不知亡国恨，隔江犹唱后庭花。',bg:'诗人借古讽今，批评晚唐统治者不思进取、沉迷享乐。',use:["借古讽今/警醒世人","批评不思进取","忧国忧民"]},
+{year:852,type:'life',title:'病逝',desc:'五十岁卒于长安。'}
+]};
+P['lishangyin']={name:'李商隐',dynasty:'tang',born:813,died:858,avatar:'李',color:'#7d3c98',events:[
+{year:813,type:'life',title:'出生',desc:'字义山，号玉溪生，晚唐最杰出的诗人之一。'},
+{year:840,type:'work',title:'无题·相见时难别亦难',desc:'以爱情为主题。',poem:'相见时难别亦难，东风无力百花残。\n春蚕到死丝方尽，蜡炬成灰泪始干。\n晓镜但愁云鬓改，夜吟应觉月光寒。\n蓬山此去无多路，青鸟殷勤为探看。',bg:'春蚕到死丝方尽，蜡炬成灰泪始干以蚕丝和蜡泪比喻至死不渝的相思。',use:["至死不渝的爱情","奉献/鞠躬尽瘁","离别之苦/相思之深"]},
+{year:844,type:'work',title:'锦瑟',desc:'以锦瑟起兴，回忆青春年华。',poem:'锦瑟无端五十弦，一弦一柱思华年。\n庄生晓梦迷蝴蝶，望帝春心托杜鹃。\n沧海月明珠有泪，蓝田日暖玉生烟。\n此情可待成追忆？只是当时已惘然。',bg:'全诗用典精妙、意境朦胧。',use:["追忆青春往事","人生如梦的感慨","美好事物逝去后的惆怅"]},
+{year:845,type:'work',title:'夜雨寄北',desc:'客居巴蜀时写给远方亲友的诗。',poem:'君问归期未有期，巴山夜雨涨秋池。\n何当共剪西窗烛，却话巴山夜雨时。',bg:'以未来团聚的想象反衬当下分离的凄清。',use:["思念远方的人","期待重逢","雨夜思人"]},
+{year:858,type:'life',title:'病逝',desc:'约四十六岁病逝于郑州。'}
+]};
+P['liyu']={name:'李煜',dynasty:'song',born:937,died:978,avatar:'李',color:'#c0392b',events:[
 {year:937,type:'life',title:'出生',desc:'字重光，号钟隐，南唐后主，五代十国时期最著名的词人。'},
-{year:961,type:'life',title:'即位',desc:'二十五岁继承南唐国主之位，在位十五年。'},
-{year:975,type:'life',title:'国破降宋',desc:'南唐被北宋灭亡，李煜降宋，被封为"违命侯"，囚禁于汴京。'},
-{year:976,type:'work',title:'虞美人',desc:'亡国后所作，以春花秋月感叹故国之思，被誉为"词中之帝"的绝唱。',poem:'春花秋月何时了？往事知多少。\n小楼昨夜又东风，故国不堪回首月明中。\n雕栏玉砌应犹在，只是朱颜改。\n问君能有几多愁？恰似一江春水向东流。',bg:'李煜亡国后被囚禁于汴京，面对春花秋月的美景却感叹"往事知多少"。"问君能有几多愁？恰似一江春水向东流"以滔滔江水比喻无尽的愁绪，是千古传诵的名句。据传此词写成后不久，李煜即被宋太宗赐毒酒鸩杀。',use:["亡国之痛/故国之思","人生无常的感慨","愁绪如江水"]},
-{year:976.5,type:'work',title:'相见欢',desc:'亡国后所作，写深秋离愁与亡国之痛。',poem:'无言独上西楼，月如钩。\n寂寞梧桐深院锁清秋。\n剪不断，理还乱，是离愁。\n别是一般滋味在心头。',bg:'李煜被囚禁后，独自登上西楼，面对如钩残月和寂寞庭院。"剪不断，理还乱，是离愁"以丝线比喻愁绪的纷繁复杂，"别是一般滋味在心头"写出难以言说的复杂心境。全词以极简笔墨写深沉的亡国之痛。',use:["离愁别绪","难以言说的苦闷","孤独寂寞"]}
-]},
-};
+{year:976,type:'work',title:'虞美人',desc:'亡国后所作。',poem:'春花秋月何时了？往事知多少。\n小楼昨夜又东风，故国不堪回首月明中。\n雕栏玉砌应犹在，只是朱颜改。\n问君能有几多愁？恰似一江春水向东流。',bg:'李煜亡国后被囚禁于汴京，面对春花秋月的美景却感叹往事知多少。',use:["亡国之痛/故国之思","人生无常的感慨","愁绪如江水"]},
+{year:976.5,type:'work',title:'相见欢',desc:'亡国后所作，写深秋离愁与亡国之痛。',poem:'无言独上西楼，月如钩。\n寂寞梧桐深院锁清秋。\n剪不断，理还乱，是离愁。\n别是一般滋味在心头。',bg:'李煜被囚禁后，独自登上西楼，面对如钩残月和寂寞庭院。',use:["离愁别绪","难以言说的苦闷","孤独寂寞"]},
+{year:978,type:'life',title:'辞世',desc:'四十二岁卒于汴京。'}
+]};
+P['liuyong']={name:'柳永',dynasty:'song',born:984,died:1053,avatar:'柳',color:'#2ecc71',events:[
+{year:984,type:'life',title:'出生',desc:'原名三变，字景庄，后改名永，字耆卿，北宋婉约词派开创者。'},
+{year:1025,type:'work',title:'雨霖铃',desc:'离开汴京时与恋人分别所作。',poem:'寒蝉凄切，对长亭晚，骤雨初歇。\n都门帐饮无绪，留恋处，兰舟催发。\n执手相看泪眼，竟无语凝噎。\n念去去千里烟波，暮霭沈沈楚天阔。\n多情自古伤离别，更那堪冷落清秋节！\n今宵酒醒何处？杨柳岸，晓风残月。',bg:'执手相看泪眼，竟无语凝噎写出离别时千言万语却说不出口的情态。',use:["离别的伤感","分手/分开的痛苦","别后的孤寂"]},
+{year:1040,type:'work',title:'望海潮',desc:'描写杭州的繁华富庶。',poem:'东南形胜，三吴都会，钱塘自古繁华。\n烟柳画桥，风帘翠幕，参差十万人家。\n重湖叠巘清嘉，有三秋桂子，十里荷花。',bg:'三秋桂子，十里荷花成为形容杭州美景的千古名句。',use:["赞美城市繁华","描写都市盛景","杭州之美"]},
+{year:1053,type:'life',title:'病逝',desc:'约七十岁卒于润州。'}
+]};
+P['fanzhongyan']={name:'范仲淹',dynasty:'song',born:989,died:1052,avatar:'范',color:'#27ae60',events:[
+{year:989,type:'life',title:'出生',desc:'字希文，苏州吴县人，北宋政治家、文学家。'},
+{year:1046,type:'work',title:'岳阳楼记',desc:'受友人滕子京之邀而作。',poem:'予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯。\n不以物喜，不以己悲。\n居庙堂之高则忧其民，处江湖之远则忧其君。\n先天下之忧而忧，后天下之乐而乐乎。',bg:'以先天下之忧而忧，后天下之乐而乐表达以天下为己任的胸怀。',use:["以天下为己任的胸怀","先忧后乐的担当","不以物喜不以己悲"]},
+{year:1047,type:'work',title:'渔家傲·秋思',desc:'镇守西北边疆时所作。',poem:'塞下秋来风景异，衡阳雁去无留意。\n四面边声连角起，千嶂里，长烟落日孤城闭。\n浊酒一杯家万里，燕然未勒归无计。\n羌管悠悠霜满地，人不寐，将军白发征夫泪。',bg:'全词将边塞的苦寒与壮志难酬的悲愤融为一体。',use:["边塞思乡","壮志未酬的悲壮","将士的辛苦与坚守"]},
+{year:1052,type:'life',title:'病逝',desc:'六十四岁病逝于赴任途中，谥号文正。'}
+]};
+P['yanshu']={name:'晏殊',dynasty:'song',born:991,died:1055,avatar:'晏',color:'#27ae60',events:[
+{year:991,type:'life',title:'出生',desc:'字同叔，抚州临川人，北宋词人。'},
+{year:1030,type:'work',title:'浣溪沙',desc:'暮春时节感时伤逝。',poem:'一曲新词酒一杯，去年天气旧亭台。夕阳西下几时回？\n无可奈何花落去，似曾相识燕归来。小园香径独徘徊。',bg:'无可奈何花落去，似曾相识燕归来两句对仗工整、哲理深远。',use:["伤春/惜时","无可奈何的感慨","哲理/得失之间"],grade:'初中一年级'},
+{year:1055,type:'life',title:'病逝',desc:'六十五岁卒。'}
+]};
+P['ouyangxiu']={name:'欧阳修',dynasty:'song',born:1007,died:1072,avatar:'欧',color:'#229954',events:[
+{year:1007,type:'life',title:'出生',desc:'字永叔，号醉翁、六一居士，北宋文坛领袖，唐宋八大家之一。'},
+{year:1045,type:'work',title:'醉翁亭记',desc:'被贬滁州时所作。',poem:'环滁皆山也。其西南诸峰，林壑尤美。\n峰回路转，有亭翼然临于泉上者，醉翁亭也。\n醉翁之意不在酒，在乎山水之间也。\n山水之乐，得之心而寓之酒也。',bg:'醉翁之意不在酒，在乎山水之间也道出寄情山水的真意。',use:["寄情山水/享受当下","与民同乐","失意中的旷达"]},
+{year:1055,type:'work',title:'生查子·元夕',desc:'写元宵节夜晚对去年此时的回忆。',poem:'去年元夜时，花市灯如昼。\n月上柳梢头，人约黄昏后。\n今年元夜时，月与灯依旧。\n不见去年人，泪湿春衫袖。',bg:'以去年和今年的对比写物是人非的感伤。',use:["物是人非的感伤","怀念旧人/旧时光","节日触景生情"]},
+{year:1072,type:'life',title:'病逝',desc:'六十六岁卒于颍州。谥号文忠。'}
+]};
+P['wanganshi']={name:'王安石',dynasty:'song',born:1021,died:1086,avatar:'王',color:'#1e8449',events:[
+{year:1021,type:'life',title:'出生',desc:'字介甫，号半山，临川人，北宋政治家、文学家。'},
+{year:1073,type:'work',title:'泊船瓜洲',desc:'从金陵北上赴任途中停泊瓜洲时所作。',poem:'京口瓜洲一水间，钟山只隔数重山。\n春风又绿江南岸，明月何时照我还。',bg:'春风又绿江南岸中绿字经过反复推敲，成为炼字的经典范例。',use:["思乡/想回家","春风又绿/季节变化","离乡的无奈"]},
+{year:1075,type:'work',title:'元日',desc:'描写新年正月初一的民俗景象。',poem:'爆竹声中一岁除，春风送暖入屠苏。\n千门万户曈曈日，总把新桃换旧符。',bg:'表面写节日景象，实则暗含除旧布新的变法理念。',use:["新年祝福/辞旧迎新","改革创新的气象","春节的喜庆"]},
+{year:1086,type:'life',title:'病逝',desc:'六十六岁卒于金陵。'}
+]};
+P['sushi']={name:'苏轼',dynasty:'song',born:1037,died:1101,avatar:'苏',color:'#8e44ad',events:[
+{year:1037,type:'life',title:'出生',desc:'字子瞻，号东坡居士，北宋文坛领袖。'},
+{year:1073,type:'work',title:'饮湖上初晴后雨',desc:'在杭州任通判时描绘西湖晴雨之美。',poem:'水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡妆浓抹总相宜。',bg:'以美女西施比喻西湖，从此西湖也被称为西子湖。',use:["赞美西湖/杭州","晴雨皆美/各有各的好","自然之美不分条件"]},
+{year:1076,type:'work',title:'水调歌头·明月几时有',desc:'中秋之夜思念弟弟苏辙所作。',poem:'明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。\n我欲乘风归去，又恐琼楼玉宇，高处不胜寒。\n起舞弄清影，何似在人间。\n转朱阁，低绮户，照无眠。\n不应有恨，何事长向别时圆？\n人有悲欢离合，月有阴晴圆缺，此事古难全。\n但愿人长久，千里共婵娟。',bg:'苏轼与弟弟苏辙七年未见，中秋独饮思亲。',use:["中秋思念亲人","美好的祝愿","人生悲欢离合的释然"]},
+{year:1082,type:'work',title:'念奴娇·赤壁怀古',desc:'贬谪黄州期间游赤壁所作。',poem:'大江东去，浪淘尽，千古风流人物。\n故垒西边，人道是，三国周郎赤壁。\n乱石穿空，惊涛拍岸，卷起千堆雪。\n江山如画，一时多少豪杰。\n遥想公瑾当年，小乔初嫁了，雄姿英发。\n羽扇纶巾，谈笑间，樯橹灰飞烟灭。\n故国神游，多情应笑我，早生华发。\n人生如梦，一尊还酹江月。',bg:'借三国周瑜的英雄事迹抒发壮志难酬的感慨。',use:["怀古伤今","感叹人生如梦","壮志难酬的感慨"]},
+{year:1082.5,type:'work',title:'定风波',desc:'黄州期间出行遇雨所作。',poem:'莫听穿林打叶声，何妨吟啸且徐行。\n竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。\n料峭春风吹酒醒，微冷，山头斜照却相迎。\n回首向来萧瑟处，归去，也无风雨也无晴。',bg:'出行途中突遇大雨，苏轼却从容前行。',use:["面对逆境从容豁达","一蓑烟雨任平生","乐观面对困难"]},
+{year:1084,type:'work',title:'题西林壁',desc:'途经庐山时所作。',poem:'横看成岭侧成峰，远近高低各不同。\n不识庐山真面目，只缘身在此山中。',bg:'不识庐山真面目，只缘身在此山中以极通俗的语言道出深刻的哲理。',use:["当局者迷旁观者清","哲理/换个角度看问题","认知局限性"]},
+{year:1101,type:'life',title:'病逝常州',desc:'遇赦北归途中病逝于常州，享年六十五岁。'}
+]};
+P['huangtingjian']={name:'黄庭坚',dynasty:'song',born:1045,died:1105,avatar:'黄',color:'#2980b9',events:[
+{year:1045,type:'life',title:'出生',desc:'字鲁直，号山谷道人，洪州分宁人，苏门四学士之一。'},
+{year:1094,type:'work',title:'寄黄几复',desc:'贬谪期间思念友人。',poem:'我居北海君南海，寄雁传书谢不能。\n桃李春风一杯酒，江湖夜雨十年灯。',bg:'桃李春风一杯酒，江湖夜雨十年灯概括十年聚散，凝练深沉。',use:["友情/思念友人","人生聚散","读书/学问"],grade:'初中二年级'},
+{year:1105,type:'life',title:'病逝',desc:'六十一岁卒于宜州。'}
+]};
+P['qinguang']={name:'秦观',dynasty:'song',born:1049,died:1100,avatar:'秦',color:'#8e44ad',events:[
+{year:1049,type:'life',title:'出生',desc:'字少游，号太虚，扬州高邮人，苏门四学士之一。'},
+{year:1085,type:'work',title:'鹊桥仙·纤云弄巧',desc:'七夕咏牛郎织女。',poem:'纤云弄巧，飞星传恨，银汉迢迢暗度。\n金风玉露一相逢，便胜却人间无数。\n柔情似水，佳期如梦，忍顾鹊桥归路。\n两情若是久长时，又岂在朝朝暮暮。',bg:'以哲理超越离愁，两情若是久长时，又岂在朝朝暮暮是七夕词中的千古绝唱。',use:["七夕/爱情","远距离恋爱/思念","真挚不渝的爱情"],grade:'初中二年级'},
+{year:1100,type:'life',title:'病逝',desc:'五十二岁卒于藤州。'}
+]};
+P['liqingzhao']={name:'李清照',dynasty:'song',born:1084,died:1155,avatar:'李',color:'#e9a045',events:[
+{year:1084,type:'life',title:'出生',desc:'号易安居士，济南章丘人，被誉为千古第一才女。'},
+{year:1100,type:'work',title:'如梦令·昨夜雨疏风骤',desc:'十六岁时所作。',poem:'昨夜雨疏风骤，浓睡不消残酒。\n试问卷帘人，却道海棠依旧。\n知否？知否？应是绿肥红瘦。',bg:'绿肥红瘦以极精练的语言写出季节变化。',use:["惜春/伤春","对美好事物的敏感","春天将逝的惋惜"]},
+{year:1129.5,type:'work',title:'夏日绝句',desc:'借项羽故事抒发愤慨。',poem:'生当作人杰，死亦为鬼雄。\n至今思项羽，不肯过江东。',bg:'讽刺南宋朝廷在金兵面前仓皇南逃的行为。',use:["宁死不屈的气节","批评软弱逃避","巾帼不让须眉"]},
+{year:1136,type:'work',title:'声声慢',desc:'晚年巅峰之作。',poem:'寻寻觅觅，冷冷清清，凄凄惨惨戚戚。\n乍暖还寒时候，最难将息。\n三杯两盏淡酒，怎敌他晚来风急。\n雁过也，正伤心，却是旧时相识。\n满地黄花堆积，憔悴损，如今有谁堪摘？\n守着窗儿，独自怎生得黑。\n梧桐更兼细雨，到黄昏点点滴滴。\n这次第，怎一个愁字了得！',bg:'开篇连用七组叠字，十四字写尽了恍惚寻找、一无所获、孤独凄凉的心境。',use:["孤独愁苦到极致","失去一切后的空虚","秋天/阴雨天的心情低落"]},
+{year:1155,type:'life',title:'辞世',desc:'在孤寂抑郁中离世，约七十一岁。'}
+]};
+P['luyou']={name:'陆游',dynasty:'song',born:1125,died:1210,avatar:'陆',color:'#16a085',events:[
+{year:1125,type:'life',title:'出生',desc:'字务观，号放翁，南宋最伟大的爱国诗人。'},
+{year:1167,type:'work',title:'游山西村',desc:'罢官归乡后在山西村做客时所作。',poem:'莫笑农家腊酒浑，丰年留客足鸡豚。\n山重水复疑无路，柳暗花明又一村。\n箫鼓追随春社近，衣冠简朴古风存。\n从今若许闲乘月，拄杖无时夜叩门。',bg:'山重水复疑无路，柳暗花明又一村成为比喻绝处逢生的经典名句。',use:["绝处逢生/困境中看到希望","山重水复后的转机","乡村淳朴生活"]},
+{year:1192,type:'work',title:'十一月四日风雨大作',desc:'六十八岁闲居山阴时所作。',poem:'僵卧孤村不自哀，尚思为国戍轮台。\n夜阑卧听风吹雨，铁马冰河入梦来。',bg:'年迈的陆游想的仍然是为国戍守边疆。',use:["老骥伏枥/壮志不减","爱国情怀","梦中仍在奋斗"]},
+{year:1200,type:'work',title:'示儿',desc:'临终绝笔。',poem:'死去元知万事空，但悲不见九州同。\n王师北定中原日，家祭无忘告乃翁。',bg:'陆游八十五岁临终前所作。',use:["爱国/至死不渝","临终遗言/最后心愿","期盼统一/国家复兴"]},
+{year:1210,type:'life',title:'病逝',desc:'八十六岁病逝于山阴。'}
+]};
+P['fanchengda']={name:'范成大',dynasty:'song',born:1126,died:1193,avatar:'范',color:'#2980b9',events:[
+{year:1126,type:'life',title:'出生',desc:'字致能，号石湖居士，苏州吴县人。'},
+{year:1170,type:'work',title:'四时田园杂兴（其二十五）',desc:'描写初夏农村繁忙景象。',poem:'梅子金黄杏子肥，麦花雪白菜花稀。\n日长篱落无人过，惟有蜻蜓蛱蝶飞。',bg:'以白描手法展现农村宁静祥和的夏日景象。',use:["描写田园/农村生活","初夏景色","宁静的乡村"],grade:'小学二年级'},
+{year:1193,type:'life',title:'病逝',desc:'六十八岁卒于苏州石湖。'}
+]};
+P['yangwanli']={name:'杨万里',dynasty:'song',born:1127,died:1206,avatar:'杨',color:'#27ae60',events:[
+{year:1127,type:'life',title:'出生',desc:'字廷秀，吉州吉水人，中兴四大诗人之一。'},
+{year:1169,type:'work',title:'小池',desc:'以细腻笔触描绘初夏小池的生机。',poem:'泉眼无声惜细流，树阴照水爱晴柔。\n小荷才露尖尖角，早有蜻蜓立上头。',bg:'以细腻的观察力捕捉自然界的微小瞬间。',use:["描写初夏/小池","新生事物/朝气蓬勃","自然界的微小瞬间"],grade:'小学一年级'},
+{year:1176,type:'work',title:'晓出净慈寺送林子方',desc:'六月西湖荷花盛景。',poem:'毕竟西湖六月中，风光不与四时同。\n接天莲叶无穷碧，映日荷花别样红。',bg:'描绘六月西湖荷花盛开的壮丽景象。',use:["描写荷花/西湖美景","夏日风光","色彩鲜明的景色"],grade:'小学二年级'},
+{year:1206,type:'life',title:'病逝',desc:'八十岁卒于家中。'}
+]};
+P['zhuxi']={name:'朱熹',dynasty:'song',born:1130,died:1200,avatar:'朱',color:'#c0392b',events:[
+{year:1130,type:'life',title:'出生',desc:'字元晦，号晦庵，徽州婺源人，南宋理学集大成者。'},
+{year:1180,type:'work',title:'春日',desc:'春游胜景与哲理交融。',poem:'胜日寻芳泗水滨，无边光景一时新。\n等闲识得东风面，万紫千红总是春。',bg:'表面写春日踏青胜景，实则蕴含哲理。',use:["春天/百花盛开","求知悟道","万象更新"],grade:'小学一年级'},
+{year:1189,type:'work',title:'观书有感（其一）',desc:'以池塘喻读书。',poem:'半亩方塘一鉴开，天光云影共徘徊。\n问渠那得清如许？为有源头活水来。',bg:'比喻人需要不断学习新知识才能保持思想的清醒和活跃。',use:["读书/学习的重要性","保持思想活跃","源头活水/不断学习"],grade:'小学三年级'},
+{year:1200,type:'life',title:'病逝',desc:'七十一岁卒于福建。'}
+]};
+P['xinqiji']={name:'辛弃疾',dynasty:'song',born:1140,died:1207,avatar:'辛',color:'#d4ac0d',events:[
+{year:1140,type:'life',title:'出生',desc:'字幼安，号稼轩，南宋豪放派词人代表。'},
+{year:1174,type:'work',title:'水龙吟·登建康赏心亭',desc:'在建康赏心亭登高远望。',poem:'楚天千里清秋，水随天去秋无际。\n把吴钩看了，栏杆拍遍，无人会，登临意。\n可惜流年，忧愁风雨，树犹如此！\n倩何人唤取，红巾翠袖，揾英雄泪？',bg:'辛弃疾南归后一直不被重用。',use:["壮志难酬的悲愤","怀才不遇","无人理解的孤独"]},
+{year:1188,type:'work',title:'破阵子·为陈同甫赋壮词以寄之',desc:'写给好友陈亮的壮词。',poem:'醉里挑灯看剑，梦回吹角连营。\n八百里分麾下炙，五十弦翻塞外声，沙场秋点兵。\n马作的卢飞快，弓如霹雳弦惊。\n了却君王天下事，赢得生前身后名。\n可怜白发生！',bg:'前九句酣畅淋漓地写军中生活，最后一句可怜白发生戛然而止。',use:["追忆往昔荣光","理想与现实的落差","壮志未酬的不甘"]},
+{year:1203,type:'work',title:'西江月·夜行黄沙道中',desc:'闲居上饶时描写夏夜乡村景色。',poem:'明月别枝惊鹊，清风半夜鸣蝉。\n稻花香里说丰年，听取蛙声一片。\n七八个星天外，两三点雨山前。\n旧时茅店社林边，路转溪桥忽见。',bg:'以清新活泼的笔调描绘乡村夜景。',use:["乡村夏夜的美好","田园生活的宁静","丰收的喜悦"]},
+{year:1205,type:'work',title:'永遇乐·京口北固亭怀古',desc:'登京口北固亭怀古。',poem:'千古江山，英雄无觅孙仲谋处。\n舞榭歌台，风流总被雨打风吹去。\n斜阳草树，寻常巷陌，人道寄奴曾住。\n想当年，金戈铁马，气吞万里如虎。',bg:'辛弃疾六十六岁登京口北固亭借古讽今。',use:['怀古伤今','老当益壮','壮志难酬']},
+{year:1207,type:'life',title:'病逝',desc:'六十八岁病逝。临终大呼杀贼！杀贼！'}
+]};
+P['linsheng']={name:'林升',dynasty:'song',born:1150,died:1200,avatar:'林',color:'#e74c3c',events:[
+{year:1150,type:'life',title:'出生',desc:'字云友，号龙丘山樵，平阳人。'},
+{year:1176,type:'work',title:'题临安邸',desc:'讽刺南宋朝廷偏安一隅。',poem:'山外青山楼外楼，西湖歌舞几时休？\n暖风熏得游人醉，直把杭州作汴州。',bg:'诗人在临安一家旅店墙壁上题写此诗，讽刺统治者沉迷享乐。',use:["讽刺/警醒世人","忧国忧民","勿忘国耻"],grade:'小学三年级'},
+{year:1200,type:'life',title:'辞世',desc:'约卒于南宋时期。'}
+]};
+P['yeshaoweng']={name:'叶绍翁',dynasty:'song',born:1225,died:1276,avatar:'叶',color:'#8e44ad',events:[
+{year:1225,type:'life',title:'出生',desc:'字嗣宗，号靖逸，龙泉人。'},
+{year:1250,type:'work',title:'游园不值',desc:'访友不遇却见一枝红杏出墙。',poem:'应怜屐齿印苍苔，小扣柴扉久不开。\n春色满园关不住，一枝红杏出墙来。',bg:'春色满园关不住，一枝红杏出墙来比喻美好事物具有不可遏制的生命力。',use:["春天/生机不可阻挡","访友不遇的遗憾","意外收获"],grade:'小学二年级'},
+{year:1276,type:'life',title:'辞世',desc:'约卒于元军南下之际。'}
+]};
+P['mazhiyuan']={name:'马致远',dynasty:'yuan',born:1250,died:1321,avatar:'马',color:'#e67e22',events:[
+{year:1250,type:'life',title:'出生',desc:'字千里，号东篱，大都人，元代杂剧家、散曲家。'},
+{year:1290,type:'work',title:'天净沙·秋思',desc:'被誉为秋思之祖。',poem:'枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。',bg:'全曲仅二十八字，以九个意象并列叠加。',use:["游子思乡/漂泊","秋天/萧瑟","天涯游子"],grade:'初中一年级'},
+{year:1321,type:'life',title:'辞世',desc:'约七十一岁卒。'}
+]};
+P['zhangyanghao']={name:'张养浩',dynasty:'yuan',born:1270,died:1329,avatar:'张',color:'#e67e22',events:[
+{year:1270,type:'life',title:'出生',desc:'字希孟，号云庄，济南人，元代散曲家。'},
+{year:1329,type:'work',title:'山坡羊·潼关怀古',desc:'途经潼关凭吊古迹。',poem:'峰峦如聚，波涛如怒，山河表里潼关路。\n望西都，意踌躇。\n伤心秦汉经行处，宫阙万间都做了土。\n兴，百姓苦；亡，百姓苦！',bg:'兴，百姓苦；亡，百姓苦如洪钟大吕。',use:["历史兴亡/感慨","百姓苦难","忧国忧民"],grade:'初中三年级'},
+{year:1329,type:'life',title:'病逝',desc:'五十九岁卒于赈灾途中。'}
+]};
+P['wangmian']={name:'王冕',dynasty:'yuan',born:1287,died:1359,avatar:'王',color:'#8e44ad',events:[
+{year:1287,type:'life',title:'出生',desc:'字元章，号煮石山农，诸暨人，元代画家、诗人。'},
+{year:1320,type:'work',title:'墨梅',desc:'题画诗名篇，以梅自喻。',poem:'吾家洗砚池头树，朵朵花开淡墨痕。\n不要人夸好颜色，只留清气满乾坤。',bg:'不要人夸好颜色，只留清气满乾坤表达不慕虚荣、只求保持清白正气的品格。',use:["高洁品格/不慕虚荣","咏物言志","梅花/清廉"],grade:'小学四年级'},
+{year:1359,type:'life',title:'病逝',desc:'七十三岁卒。拒不出仕元朝。'}
+]};
+P['yuqian']={name:'于谦',dynasty:'ming',born:1398,died:1457,avatar:'于',color:'#e74c3c',events:[
+{year:1398,type:'life',title:'出生',desc:'字廷益，号节庵，浙江杭州人，明朝名臣。'},
+{year:1449,type:'work',title:'石灰吟',desc:'以石灰自喻，表达坚贞不屈的品格。',poem:'千锤万凿出深山，烈火焚烧若等闲。\n粉骨碎身浑不怕，要留清白在人间。',bg:'以石灰自喻，表达不畏艰险、坚贞不屈、清白做人的崇高品格。',use:["坚贞不屈/清白做人","不怕牺牲的精神","咏物言志"],grade:'小学四年级'},
+{year:1457,type:'life',title:'遇害',desc:'被冤杀于北京。后平反，谥号忠肃。'}
+]};
+P['nalanxingde']={name:'纳兰性德',dynasty:'qing',born:1655,died:1685,avatar:'纳',color:'#8e44ad',events:[
+{year:1655,type:'life',title:'出生',desc:'字容若，号楞伽山人，满洲正黄旗人，清代最著名词人。'},
+{year:1676,type:'work',title:'长相思·山一程',desc:'随康熙帝出关巡狩，途中思念故乡。',poem:'山一程，水一程，身向榆关那畔行，夜深千帐灯。\n风一更，雪一更，聒碎乡心梦不成，故园无此声。',bg:'全词语言朴素自然，感情真挚深沉。',use:["思乡/旅途思乡","远征/离乡","风雪/寒冷中的思念"],grade:'初中二年级'},
+{year:1685,type:'life',title:'病逝',desc:'三十岁卒于北京。被誉为清代第一词人。'}
+]};
+P['zhengxie']={name:'郑燮',dynasty:'qing',born:1693,died:1765,avatar:'郑',color:'#27ae60',events:[
+{year:1693,type:'life',title:'出生',desc:'字克柔，号板桥，兴化人，扬州八怪之一。'},
+{year:1730,type:'work',title:'竹石',desc:'题画诗名篇，以竹自喻。',poem:'咬定青山不放松，立根原在破岩中。\n千磨万击还坚劲，任尔东西南北风。',bg:'咬定青山不放松以咬定二字赋予竹子以人的意志。',use:["坚韧不拔/意志坚定","不畏困难/挫折","咏物言志/品格"],grade:'小学五年级'},
+{year:1765,type:'life',title:'病逝',desc:'七十三岁卒于扬州。'}
+]};
+P['yuankui']={name:'袁枚',dynasty:'qing',born:1716,died:1797,avatar:'袁',color:'#2ecc71',events:[
+{year:1716,type:'life',title:'出生',desc:'字子才，号简斋，钱塘人，清代诗人。'},
+{year:1740,type:'work',title:'所见',desc:'牧童骑牛唱歌的生动场景。',poem:'牧童骑黄牛，歌声振林樾。\n意欲捕鸣蝉，忽然闭口立。',bg:'全诗仅二十字，生动地捕捉了一个动态场景。',use:["童年/童趣","牧童/乡村生活","动静结合"],grade:'小学二年级'},
+{year:1797,type:'life',title:'病逝',desc:'八十二岁卒于南京。'}
+]};
+P['gongzizhen']={name:'龚自珍',dynasty:'qing',born:1792,died:1841,avatar:'龚',color:'#8e44ad',events:[
+{year:1792,type:'life',title:'出生',desc:'字璱人，号定庵，浙江仁和人，清代思想家、文学家。'},
+{year:1839,type:'work',title:'己亥杂诗（其五）',desc:'辞官南归途中所作。',poem:'浩荡离愁白日斜，吟鞭东指即天涯。\n落红不是无情物，化作春泥更护花。',bg:'以落花自喻，表达虽辞官但仍关心国家前途、愿意继续奉献的精神。',use:["奉献精神/牺牲自我","辞官/离别","新老交替/传承"],grade:'初中三年级'},
+{year:1841,type:'life',title:'病逝',desc:'四十九岁卒于丹阳云阳书院。'}
+]};
+P['gaoding']={name:'高鼎',dynasty:'qing',born:1800,died:1870,avatar:'高',color:'#27ae60',events:[
+{year:1800,type:'life',title:'出生',desc:'字象一，又字拙庵，仁和人，清代诗人。'},
+{year:1830,type:'work',title:'村居',desc:'描写春天乡村儿童放风筝的欢乐场景。',poem:'草长莺飞二月天，拂堤杨柳醉春烟。\n儿童散学归来早，忙趁东风放纸鸢。',bg:'全诗充满生机和童趣，展现了乡村春天的美好和孩子们的快乐。',use:["春天/乡村美景","儿童/放风筝","童趣/快乐"],grade:'小学一年级'},
+{year:1870,type:'life',title:'辞世',desc:'约七十岁卒。'}
+]};
+P['tansitong']={name:'谭嗣同',dynasty:'qing',born:1865,died:1898,avatar:'谭',color:'#e74c3c',events:[
+{year:1865,type:'life',title:'出生',desc:'字复生，号壮飞，浏阳人，清末维新派政治家、诗人。'},
+{year:1881,type:'work',title:'潼关',desc:'少年时途经潼关所作。',poem:'终古高云簇此城，秋风吹散马蹄声。\n河流大野犹嫌束，山入潼关不解平。',bg:'全诗以壮阔的意象展现少年谭嗣同不甘束缚、追求自由的豪情壮志。',use:["少年壮志","不畏束缚/追求自由","山河壮阔"],grade:'初中一年级'},
+{year:1898,type:'life',title:'遇害',desc:'戊戌变法失败后慷慨就义，年三十三岁。'}
+]};
 
-/* === SECTION: render === */
 var wrap=document.getElementById('tlWrap'),canvas=document.getElementById('tlCanvas'),
- yAxis=document.getElementById('yAxis'),bandsEl=document.getElementById('bands'),
- pTracks=document.getElementById('pTracks'),filterBar=document.getElementById('filterBar'),
- dynBar=document.getElementById('dynastyBar'),qnav=document.getElementById('quickNav'),
- detailOv=document.getElementById('detailOverlay'),dtlContent=document.getElementById('dtlContent'),
- searchInput=document.getElementById('searchInput'),searchResults=document.getElementById('searchResults');
+yAxis=document.getElementById('yAxis'),bandsEl=document.getElementById('bands'),
+pTracks=document.getElementById('pTracks'),filterBar=document.getElementById('filterBar'),
+dynBar=document.getElementById('dynastyBar'),qnav=document.getElementById('quickNav'),
+detailOv=document.getElementById('detailOverlay'),dtlContent=document.getElementById('dtlContent'),
+searchInput=document.getElementById('searchInput'),searchResults=document.getElementById('searchResults');
 
 var activeSet=new Set(), allKeys=[];
 Object.keys(P).forEach(function(k){allKeys.push(k);activeSet.add(k)});
 
 function renderAll(){
- var tw=y2x(YE)+60;
- canvas.style.minWidth='0';pTracks.style.width=tw+'px'; renderYearAxis(tw);
- renderBands(tw);
- renderFilters();
- renderDynastyBar();
- renderQuickNav();
- renderPoetTracks();
- buildSearchIndex();
- renderGradeFilters();
- renderEmotionFilters();
- renderYearFilter();
+var tw=y2x(YE)+60;
+canvas.style.minWidth='0';pTracks.style.width=tw+'px';
+renderYearAxis(tw);renderBands(tw);renderFilters();renderDynastyBar();
+renderQuickNav();renderPoetTracks();buildSearchIndex();
+renderGradeFilters();renderEmotionFilters();renderYearFilter();applyFilters();
 }
 
 function renderYearAxis(){
- var h='';
- for(var y=200;y<=YE;y+=10){
- var mj=y%100===0, x=y2x(y);
- h+='<div class="y-tick'+(mj?' mj':'')+'" style="left:'+x+'px"><div class="ln"></div><div class="lb">'+y+'</div></div>';
- }
- yAxis.innerHTML=h;
+var h='';
+for(var y=Math.ceil(YS/10)*10;y<=YE;y+=10){
+var mj=y%100===0, x=y2x(y);
+h+='<div class="y-tick'+(mj?' mj':'')+'" style="left:'+x+'px"><div class="ln"></div><div class="lb">'+y+'</div></div>';
+}
+yAxis.innerHTML=h;
 }
 
 function renderBands(tw){
- var h='';
- Object.keys(dynasties).forEach(function(k){
- var d=dynasties[k],x1=y2x(Math.max(d.start,YS)),x2=y2x(Math.min(d.end,YE));
- h+='<div class="dyn-band" style="left:'+x1+'px;width:'+(x2-x1)+'px;background:'+d.bg+'"><div class="dyn-band-lb" style="color:'+d.color+'">'+d.name+'</div></div>';
- });
- historyEvents.forEach(function(ev){
- var x1=y2x(ev.s),w=Math.max((ev.e-ev.s)*PPY,20);
- h+='<div class="hist-band" style="left:'+x1+'px;width:'+w+'px"><div class="hist-lb">'+ev.l+'</div></div>';
- });
- bandsEl.innerHTML=h;
- bandsEl.style.minWidth=tw+"px";
+var h='';
+Object.keys(dynasties).forEach(function(k){
+var d=dynasties[k],x1=y2x(Math.max(d.start,YS)),x2=y2x(Math.min(d.end,YE));
+h+='<div class="dyn-band" style="left:'+x1+'px;width:'+(x2-x1)+'px;background:'+d.bg+'"><div class="dyn-band-lb" style="color:'+d.color+'">'+d.name+'</div></div>';
+});
+historyEvents.forEach(function(ev,i){
+var x1=y2x(ev.s),w=Math.max((ev.e-ev.s)*PPY,20);
+h+='<div class="hist-band" style="left:'+x1+'px;width:'+w+'px" data-he-idx="'+i+'"><div class="hist-lb">'+ev.l+'</div></div>';
+});
+bandsEl.innerHTML=h;bandsEl.style.minWidth=tw+"px";
+bandsEl.removeEventListener('click',handleHistBandClick);
+bandsEl.addEventListener('click',handleHistBandClick);
+}
+
+function handleHistBandClick(e){
+var band=e.target.closest('.hist-band');if(!band)return;
+var idx=parseInt(band.dataset.heIdx);
+if(isNaN(idx)||!historyEvents[idx])return;
+showHistDetail(historyEvents[idx],idx);
+bandsEl.querySelectorAll('.hist-band').forEach(function(b){b.classList.remove('active')});
+band.classList.add('active');
 }
 
 function renderFilters(){
- var h='<button class="fbtn on" data-k="all">全部</button>';
- allKeys.forEach(function(k){
- var p=P[k];
- h+='<button class="fbtn on" data-k="'+k+'">'+p.name+'</button>';
- });
- filterBar.innerHTML=h;
- filterBar.addEventListener('click',function(e){
- var btn=e.target.closest('.fbtn');
- if(!btn)return;
- var k=btn.dataset.k;
- if(k==='all'){
- var allOn=btn.classList.contains('on');
- filterBar.querySelectorAll('.fbtn').forEach(function(b){
- if(allOn)b.classList.remove('on');else b.classList.add('on');
- if(b.dataset.k!=='all'){if(allOn)activeSet.delete(b.dataset.k);else activeSet.add(b.dataset.k)}
- });
- }else{
- btn.classList.toggle('on');
- if(btn.classList.contains('on'))activeSet.add(k);else activeSet.delete(k);
- var allBtn=filterBar.querySelector('[data-k="all"]');
- var allActive=allKeys.every(function(kk){return activeSet.has(kk)});
- if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
- }
- applyFilters();
- });
+var h='<button class="fbtn on" data-k="all">全部</button>';
+allKeys.forEach(function(k){var p=P[k];h+='<button class="fbtn on" data-k="'+k+'">'+p.name+'</button>';});
+filterBar.innerHTML=h;
+filterBar.addEventListener('click',function(e){
+var btn=e.target.closest('.fbtn');if(!btn)return;
+var k=btn.dataset.k;
+if(k==='all'){
+var allOn=btn.classList.contains('on');
+filterBar.querySelectorAll('.fbtn').forEach(function(b){
+if(allOn)b.classList.remove('on');else b.classList.add('on');
+if(b.dataset.k!=='all'){if(allOn)activeSet.delete(b.dataset.k);else activeSet.add(b.dataset.k)}
+});
+}else{
+btn.classList.toggle('on');
+if(btn.classList.contains('on'))activeSet.add(k);else activeSet.delete(k);
+var allBtn=filterBar.querySelector('[data-k="all"]');
+var allActive=allKeys.every(function(kk){return activeSet.has(kk)});
+if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
+}
+applyFilters();
+});
 }
 
 var selectedGrades={};
 var selectedEmotions={};
 var GRADES=['小学一年级','小学二年级','小学三年级','小学四年级','小学五年级','小学六年级','初中一年级','初中二年级','初中三年级','高中一年级','高中二年级','高中三年级'];
 var EMOTIONS=['思乡','送别','爱国','劝学','田园','山水','边塞','咏物','哲理','闺怨爱情'];
-
 var poemMeta={};
 function addPoemMeta(title,grade,emotion){poemMeta[title]={grade:grade,emotion:emotion}}
 addPoemMeta('咏鹅','小学一年级','咏物');addPoemMeta('悯农（其二）','小学一年级','劝学');
@@ -825,13 +683,12 @@ addPoemMeta('书愤','高中三年级','爱国');
 addPoemMeta('永遇乐·京口北固亭怀古','高中三年级','爱国');
 addPoemMeta('梦游天姥吟留别','高中一年级','山水');
 addPoemMeta('回乡偶书','小学六年级','思乡');
-
 addPoemMeta('咏柳','小学一年级','山水');
+addPoemMeta('桃花源记','初中一年级','田园');
 addPoemMeta('过故人庄','小学','田园');
 addPoemMeta('送元二使安西','小学','送别');
 addPoemMeta('山居秋暝','初中','山水');
 addPoemMeta('春夜喜雨','小学','田园');
-addPoemMeta('三吏三别·石壕吏','初中','爱国');
 addPoemMeta('江雪','小学','山水');
 addPoemMeta('泊秦淮','小学','爱国');
 addPoemMeta('饮湖上初晴后雨','小学','山水');
@@ -853,696 +710,389 @@ addPoemMeta('春夜洛城闻笛','初中','思乡');
 addPoemMeta('渡荆门送别','初中','送别');
 addPoemMeta('送友人','初中','送别');
 addPoemMeta('闻王昌龄左迁龙标遥有此寄','初中','送别');
+
 function renderGradeFilters(){
- var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年级：</span>';
- h+='<button class="fbtn on" data-grade="all">全部</button>';
- GRADES.forEach(function(g){h+='<button class="fbtn on" data-grade="'+g+'">'+g+'</button>';});
- document.getElementById('gradeBar').innerHTML=h;
- document.getElementById('gradeBar').style.display='block';
- document.getElementById('gradeBar').addEventListener('click',function(e){
- var btn=e.target.closest('.fbtn');if(!btn)return;
- var g=btn.dataset.grade;
- if(g==='all'){
- var allOn=btn.classList.contains('on');
- document.querySelectorAll('#gradeBar .fbtn').forEach(function(b){
- if(allOn)b.classList.remove('on');else b.classList.add('on');
- if(b.dataset.grade!=='all'){if(allOn)delete selectedGrades[b.dataset.grade];else selectedGrades[b.dataset.grade]=true}
- });
- }else{
- btn.classList.toggle('on');
- if(btn.classList.contains('on'))selectedGrades[g]=true;else delete selectedGrades[g];
- var allBtn=document.querySelector('#gradeBar .fbtn[data-grade="all"]');
- var allActive=GRADES.every(function(gg){return selectedGrades[gg]});
- if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
- }
- applyFilters();
- });
+var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年级：</span>';
+h+='<button class="fbtn on" data-grade="all">全部</button>';
+GRADES.forEach(function(g){h+='<button class="fbtn" data-grade="'+g+'">'+g+'</button>';});
+document.getElementById('gradeBar').innerHTML=h;
+document.getElementById('gradeBar').style.display='block';
+document.getElementById('gradeBar').addEventListener('click',function(e){
+var btn=e.target.closest('.fbtn');if(!btn)return;
+var g=btn.dataset.grade;
+if(g==='all'){
+var allOn=btn.classList.contains('on');
+document.querySelectorAll('#gradeBar .fbtn').forEach(function(b){
+if(allOn)b.classList.remove('on');else b.classList.add('on');
+if(b.dataset.grade!=='all'){if(allOn)delete selectedGrades[b.dataset.grade];else selectedGrades[b.dataset.grade]=true}
+});
+}else{
+btn.classList.toggle('on');
+if(btn.classList.contains('on'))selectedGrades[g]=true;else delete selectedGrades[g];
+var allBtn=document.querySelector('#gradeBar .fbtn[data-grade="all"]');
+var allActive=GRADES.every(function(gg){return selectedGrades[gg]});
+if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
+}
+applyFilters();
+});
 }
 
 function renderEmotionFilters(){
- var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">情感：</span>';
- h+='<button class="fbtn on" data-emotion="all">全部</button>';
- EMOTIONS.forEach(function(e){h+='<button class="fbtn on" data-emotion="'+e+'">'+e+'</button>';});
- document.getElementById('emotionBar').innerHTML=h;
- document.getElementById('emotionBar').style.display='block';
- document.getElementById('emotionBar').addEventListener('click',function(e){
- var btn=e.target.closest('.fbtn');if(!btn)return;
- var em=btn.dataset.emotion;
- if(em==='all'){
- var allOn=btn.classList.contains('on');
- document.querySelectorAll('#emotionBar .fbtn').forEach(function(b){
- if(allOn)b.classList.remove('on');else b.classList.add('on');
- if(b.dataset.emotion!=='all'){if(allOn)delete selectedEmotions[b.dataset.emotion];else selectedEmotions[b.dataset.emotion]=true}
- });
- }else{
- btn.classList.toggle('on');
- if(btn.classList.contains('on'))selectedEmotions[em]=true;else delete selectedEmotions[em];
- var allBtn=document.querySelector('#emotionBar .fbtn[data-emotion="all"]');
- var allActive=EMOTIONS.every(function(ee){return selectedEmotions[ee]});
- if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
- }
- applyFilters();
- });
+var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">情感：</span>';
+h+='<button class="fbtn on" data-emotion="all">全部</button>';
+EMOTIONS.forEach(function(e){h+='<button class="fbtn" data-emotion="'+e+'">'+e+'</button>';});
+document.getElementById('emotionBar').innerHTML=h;
+document.getElementById('emotionBar').style.display='block';
+document.getElementById('emotionBar').addEventListener('click',function(e){
+var btn=e.target.closest('.fbtn');if(!btn)return;
+var em=btn.dataset.emotion;
+if(em==='all'){
+var allOn=btn.classList.contains('on');
+document.querySelectorAll('#emotionBar .fbtn').forEach(function(b){
+if(allOn)b.classList.remove('on');else b.classList.add('on');
+if(b.dataset.emotion!=='all'){if(allOn)delete selectedEmotions[b.dataset.emotion];else selectedEmotions[b.dataset.emotion]=true}
+});
+}else{
+btn.classList.toggle('on');
+if(btn.classList.contains('on'))selectedEmotions[em]=true;else delete selectedEmotions[em];
+var allBtn=document.querySelector('#emotionBar .fbtn[data-emotion="all"]');
+var allActive=EMOTIONS.every(function(ee){return selectedEmotions[ee]});
+if(allActive)allBtn.classList.add('on');else allBtn.classList.remove('on');
+}
+applyFilters();
+});
 }
 
-
-var yearRangeStart = null;
-var yearRangeEnd = null;
-
+var yearRangeStart=null;var yearRangeEnd=null;
 function renderYearFilter(){
- var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年份范围：</span>';
- h+='<div class="year-inputs">';
- h+='<label>起始年</label><input type="number" id="yearStart" placeholder="如 618" min="-500" max="1900">';
- h+='<label>终止年</label><input type="number" id="yearEnd" placeholder="如 907" min="-500" max="1900">';
- h+='<button id="yearApplyBtn">筛选</button>';
- h+='<button id="yearResetBtn">重置</button>';
- h+='<span class="year-hint" id="yearHint"></span>';
- h+='</div>';
- document.getElementById('yearBar').innerHTML=h;
- document.getElementById('yearBar').style.display='block';
-
- document.getElementById('yearApplyBtn').addEventListener('click',function(){
-  var s=parseInt(document.getElementById('yearStart').value);
-  var e=parseInt(document.getElementById('yearEnd').value);
-  if(isNaN(s)||isNaN(e)||s>e){
-   document.getElementById('yearHint').textContent='请输入有效的年份范围（起始年<=终止年）';
-   return;
-  }
-  yearRangeStart=s;yearRangeEnd=e;
-  document.getElementById('yearHint').textContent='筛选: '+s+'年 - '+e+'年';
-  applyFilters();
- });
-
- document.getElementById('yearResetBtn').addEventListener('click',function(){
-  yearRangeStart=null;yearRangeEnd=null;
-  document.getElementById('yearStart').value='';
-  document.getElementById('yearEnd').value='';
-  document.getElementById('yearHint').textContent='';
-  applyFilters();
- });
-
- document.getElementById('yearStart').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('yearApplyBtn').click()});
- document.getElementById('yearEnd').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('yearApplyBtn').click()});
+var h='<span style="font-size:11px;color:var(--dim);line-height:26px;margin-right:6px">年份范围：</span>';
+h+='<div class="year-inputs">';
+h+='<label>起始年</label><input type="number" id="yearStart" placeholder="如 618" min="-500" max="1900">';
+h+='<label>终止年</label><input type="number" id="yearEnd" placeholder="如 907" min="-500" max="1900">';
+h+='<button id="yearApplyBtn">筛选</button>';
+h+='<button id="yearResetBtn">重置</button>';
+h+='<span class="year-hint" id="yearHint"></span>';
+h+='</div>';
+document.getElementById('yearBar').innerHTML=h;
+document.getElementById('yearBar').style.display='block';
+document.getElementById('yearApplyBtn').addEventListener('click',function(){
+var s=parseInt(document.getElementById('yearStart').value);
+var e=parseInt(document.getElementById('yearEnd').value);
+if(isNaN(s)||isNaN(e)||s>e){document.getElementById('yearHint').textContent='请输入有效的年份范围';return;}
+yearRangeStart=s;yearRangeEnd=e;
+document.getElementById('yearHint').textContent='筛选: '+s+'年 - '+e+'年';
+applyFilters();
+});
+document.getElementById('yearResetBtn').addEventListener('click',function(){
+yearRangeStart=null;yearRangeEnd=null;
+document.getElementById('yearStart').value='';
+document.getElementById('yearEnd').value='';
+document.getElementById('yearHint').textContent='';
+applyFilters();
+});
 }
 
 function getFilteredPoems(){
- var keyword=document.getElementById('searchInput').value.trim().toLowerCase();
- var filtered=[];
- allKeys.forEach(function(k){
- if(!activeSet.has(k))return;
- var p=P[k];
- p.events.forEach(function(ev,i){
- var match=true;
- if(match&&keyword){
- var txt=(ev.title+' '+ev.desc+' '+ev.poem+' '+ev.bg+' '+p.name).toLowerCase();
- if(txt.indexOf(keyword)===-1)match=false;
- }
- if(!match)return;
- var evGrade='',evEmotion='';
- if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[ev.title].emotion||'';}
- var gradeBtns=document.querySelectorAll('#gradeBar .fbtn');
- var gradeFilterActive=false,gradeSelected=[];
- gradeBtns.forEach(function(b){if(b.dataset.grade!=='all'&&b.classList.contains('on')){gradeSelected.push(b.dataset.grade);gradeFilterActive=true;}});
- if(gradeFilterActive&&gradeSelected.length>0&&!gradeSelected.includes(evGrade))match=false;
- if(!match)return;
- var emotionBtns=document.querySelectorAll('#emotionBar .fbtn');
- var emotionFilterActive=false,emotionSelected=[];
- emotionBtns.forEach(function(b){if(b.dataset.emotion!=='all'&&b.classList.contains('on')){emotionSelected.push(b.dataset.emotion);emotionFilterActive=true;}});
- if(emotionFilterActive&&emotionSelected.length>0&&!emotionSelected.includes(evEmotion))match=false;
- if(!match)return;
- // 年份范围筛选
- if(yearRangeStart!==null&&yearRangeEnd!==null){
-  var evYear=Math.floor(ev.year);
-  if(evYear<yearRangeStart||evYear>yearRangeEnd)match=false;
- }
- if(match)filtered.push({poetKey:k,eventIdx:i,poet:p,event:ev,grade:evGrade,emotion:evEmotion});
- });
- });
- return filtered;
+var keyword=document.getElementById('searchInput').value.trim().toLowerCase();
+var filtered=[];
+allKeys.forEach(function(k){
+if(!activeSet.has(k))return;
+var p=P[k];
+p.events.forEach(function(ev,i){
+var match=true;
+if(match&&keyword){
+var txt=(ev.title+' '+ev.desc+' '+(ev.poem||'')+' '+(ev.bg||'')+' '+p.name).toLowerCase();
+if(txt.indexOf(keyword)===-1)match=false;
+}
+if(!match)return;
+var evGrade='',evEmotion='';
+if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[ev.title].emotion||'';}
+if(evGrade==='小学')evGrade='小学一年级';
+else if(evGrade==='初中')evGrade='初中一年级';
+else if(evGrade==='高中')evGrade='高中一年级';
+var gradeBtns=document.querySelectorAll('#gradeBar .fbtn');
+var gradeFilterActive=false,gradeSelected=[];
+gradeBtns.forEach(function(b){if(b.dataset.grade!=='all'&&b.classList.contains('on')){gradeSelected.push(b.dataset.grade);gradeFilterActive=true;}});
+if(gradeFilterActive&&gradeSelected.length>0){if(evGrade===''||!gradeSelected.includes(evGrade))match=false;}
+if(!match)return;
+var emotionBtns=document.querySelectorAll('#emotionBar .fbtn');
+var emotionFilterActive=false,emotionSelected=[];
+emotionBtns.forEach(function(b){if(b.dataset.emotion!=='all'&&b.classList.contains('on')){emotionSelected.push(b.dataset.emotion);emotionFilterActive=true;}});
+if(emotionFilterActive&&emotionSelected.length>0){if(evEmotion===''||!emotionSelected.includes(evEmotion))match=false;}
+if(!match)return;
+if(yearRangeStart!==null&&yearRangeEnd!==null){
+var evYear=Math.floor(ev.year);
+if(evYear<yearRangeStart||evYear>yearRangeEnd)match=false;
+}
+if(match)filtered.push({poetKey:k,eventIdx:i,poet:p,event:ev,grade:evGrade,emotion:evEmotion});
+});
+});
+return filtered;
 }
 
 function renderDynastyBar(){
- var h='<span>朝代：</span>';
- Object.keys(dynasties).forEach(function(k){var d=dynasties[k];h+='<span class="dyn-tag" style="background:'+d.bg+';color:'+d.color+'">'+d.name+' '+d.start+'–'+d.end+'</span>';});
- h+='<span style="margin-left:8px">● 生平(时间线上) ◆ 作品(时间线下方菱形)</span>';
- dynBar.innerHTML=h;
+var h='<span>朝代：</span>';
+Object.keys(dynasties).forEach(function(k){var d=dynasties[k];h+='<span class="dyn-tag" style="background:'+d.bg+';color:'+d.color+'">'+d.name+' '+d.start+'–'+d.end+'</span>';});
+h+='<span style="margin-left:8px">● 生平(时间线上) ◆ 作品(时间线下方菱形)</span>';
+dynBar.innerHTML=h;
 }
 
 function renderQuickNav(){
- var qn=[{y:155,l:'155 曹操'},{y:365,l:'365 陶渊明'},{y:701,l:'701 李白/王维'},{y:712,l:'712 杜甫'},{y:744,l:'744 李杜相遇'},{y:755,l:'755 安史之乱'},{y:772,l:'772 白居易'},{y:1037,l:'1037 苏轼'},{y:1084,l:'1084 李清照'},{y:1125,l:'1125 陆游'}];
- var h='<span style="font-size:11px;color:var(--dim);line-height:26px">快速跳转：</span>';
- qn.forEach(function(q){h+='<button class="qnav-btn" data-y="'+q.y+'">'+q.l+'</button>';});
- qnav.innerHTML=h;
- qnav.addEventListener('click',function(e){var btn=e.target.closest('.qnav-btn');if(btn)canvas.scrollTo({left:vY2X(+btn.dataset.y)-80,behavior:'smooth'});});
+var qn=[{y:-300,l:'前300 屈原'},{y:155,l:'155 曹操'},{y:365,l:'365 陶渊明'},{y:701,l:'701 李白/王维'},{y:712,l:'712 杜甫'},{y:744,l:'744 李杜相遇'},{y:755,l:'755 安史之乱'},{y:1037,l:'1037 苏轼'},{y:1084,l:'1084 李清照'},{y:1125,l:'1125 陆游'}];
+var h='<span style="font-size:11px;color:var(--dim);line-height:26px">快速跳转：</span>';
+qn.forEach(function(q){h+='<button class="qnav-btn" data-y="'+q.y+'">'+q.l+'</button>';});
+qnav.innerHTML=h;
+qnav.addEventListener('click',function(e){var btn=e.target.closest('.qnav-btn');if(btn)canvas.scrollTo({left:y2x(+btn.dataset.y)-80,behavior:'smooth'});});
 }
 
 function renderPoetTracks(){
- var h='';
- allKeys.forEach(function(k){
-  var p=P[k],d=dynasties[p.dynasty];
-  var bl=y2x(p.born),bw=(p.died-p.born)*PPY;
-  h+='<div class="p-row" data-k="'+k+'">';
-  h+='<div class="life-bar" style="left:'+bl+'px;width:'+bw+'px;background:'+p.color+'"></div>';
-  h+='<div class="timeline-line"></div>';
-  var lifeEvents=[];var workEvents=[];  p.events.forEach(function(ev,i){   if(ev.type==='work')workEvents.push({ev:ev,idx:i});   else lifeEvents.push({ev:ev,idx:i});  });
-  h+='<div class="ev-layer ev-layer-life">';
-  lifeEvents.forEach(function(item){
-   var ev=item.ev,i=item.idx;
-   var x=y2x(ev.year);
-   var st='border-color:'+p.color+';background:transparent';
-   h+='<div class="ev-dot life" style="left:'+(x-5)+'px;top:5px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
-  });
-  h+='</div>';
-  h+='<div class="ev-layer ev-layer-work">';
-  workEvents.forEach(function(item){
-   var ev=item.ev,i=item.idx;
-   var x=y2x(ev.year);
-   var st='background:'+p.color+'cc';
-   h+='<div class="ev-dot work" style="left:'+(x-4)+'px;top:22px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
-  });
-  h+='</div>';
-  h+='</div>';
- });
- pTracks.innerHTML=h;
-}function getVisibleRange(){
- var mn=Infinity,mx=-Infinity;
- /* 只选中一个诗人时，只显示该诗人的在世年份 */
- if(activeSet.size===1){
-  var sk=Array.from(activeSet)[0];
-  var sp=P[sk];
-  mn=sp.born;mx=sp.died;
- }else{
-  allKeys.forEach(function(k){
-   if(!activeSet.has(k))return;var p=P[k];
-   if(p.born<mn)mn=p.born;if(p.died>mx)mx=p.died;
-   p.events.forEach(function(ev){var ey=Math.floor(ev.year);if(ey<mn)mn=ey;if(ey>mx)mx=ey});
-  });
- }
- if(mn===Infinity)return{ys:YS,ye:YE};
- return{ys:Math.max(YS,mn-10),ye:Math.min(YE,mx+10)};
+var h='';
+allKeys.forEach(function(k){
+var p=P[k],d=dynasties[p.dynasty];
+var bl=y2x(p.born),bw=(p.died-p.born)*PPY;
+h+='<div class="p-row" data-k="'+k+'">';
+h+='<div class="life-bar" style="left:'+bl+'px;width:'+bw+'px;background:'+p.color+'"></div>';
+var lifeEvents=[];var workEvents=[];
+p.events.forEach(function(ev,i){if(ev.type==='work')workEvents.push({ev:ev,idx:i});else lifeEvents.push({ev:ev,idx:i});});
+h+='<div class="ev-layer ev-layer-life">';
+lifeEvents.forEach(function(item){
+var ev=item.ev,i=item.idx;var x=y2x(ev.year);
+var st='border-color:'+p.color+';background:transparent';
+h+='<div class="ev-dot life" style="left:'+(x-5)+'px;top:5px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
+});
+h+='</div>';
+h+='<div class="ev-layer ev-layer-work">';
+workEvents.forEach(function(item){
+var ev=item.ev,i=item.idx;var x=y2x(ev.year);
+var st='background:'+p.color+'cc';
+h+='<div class="ev-dot work" style="left:'+(x-4)+'px;top:22px;'+st+'" data-k="'+k+'" data-i="'+i+'"></div>';
+});
+h+='</div>';
+h+='</div>';
+});
+pTracks.innerHTML=h;
 }
-function vY2X(y){var r=getVisibleRange();return BL+(y-r.ys)*PPY}
 
-function reflowTimeline(){ var r=getVisibleRange();var tw=vY2X(r.ye)+60;canvas.style.minWidth='0';pTracks.style.width=tw+'px'; var step=10;var span=r.ye-r.ys;if(span>600)step=50;else if(span>300)step=20; var yh='',start=Math.ceil(r.ys/step)*step; for(var y=start;y<=r.ye;y+=step){var mj=y%100===0,x=vY2X(y);yh+='<div class="y-tick'+(mj?' mj':'')+'" style="left:'+x+'px"><div class="ln"></div><div class="lb">'+y+'</div></div>';} yAxis.innerHTML=yh; var bh=''; Object.keys(dynasties).forEach(function(dk){ var d=dynasties[dk],s1=Math.max(d.start,r.ys),s2=Math.min(d.end,r.ye); if(s1>=s2)return;var x1=vY2X(s1),x2=vY2X(s2); bh+='<div class="dyn-band" style="left:'+x1+'px;width:'+(x2-x1)+'px;background:'+d.bg+'"><div class="dyn-band-lb" style="color:'+d.color+'">'+d.name+'</div></div>'; }); historyEvents.forEach(function(ev){ var s1=Math.max(ev.s,r.ys),s2=Math.max(ev.e,ev.s);s2=Math.min(s2,r.ye); if(s1>r.ye||s2<r.ys)return;var x1=vY2X(s1),w=Math.max((s2-s1)*PPY,20); bh+='<div class="hist-band" style="left:'+x1+'px;width:'+w+'px"><div class="hist-lb">'+ev.l+'</div></div>'; }); bandsEl.innerHTML=bh; allKeys.forEach(function(k){ var p=P[k],row=pTracks.querySelector('[data-k="'+k+'"]');if(!row)return; var bar=row.querySelector('.life-bar'); if(bar){bar.style.left=vY2X(p.born)+'px';bar.style.width=((p.died-p.born)*PPY)+'px'} p.events.forEach(function(ev,i){ if(ev.type==='work'){
-  var dot=row.querySelector('.ev-dot.work[data-i="'+i+'"]');
-  if(dot){dot.style.left=(vY2X(ev.year)-4)+'px'}
- }else{
-  var dot=row.querySelector('.ev-dot.life[data-i="'+i+'"]');
-  if(dot){dot.style.left=(vY2X(ev.year)-5)+'px'}
- } }); });};
-
-function renderWorkEvents(){}
+function getVisibleRange(){
+var mn=Infinity,mx=-Infinity;
+if(activeSet.size===1){
+var sk=Array.from(activeSet)[0];var sp=P[sk];mn=sp.born;mx=sp.died;
+}else{
+allKeys.forEach(function(k){
+if(!activeSet.has(k))return;var p=P[k];
+if(p.born<mn)mn=p.born;if(p.died>mx)mx=p.died;
+p.events.forEach(function(ev){var ey=Math.floor(ev.year);if(ey<mn)mn=ey;if(ey>mx)mx=ey});
+});
+}
+if(mn===Infinity)return{ys:YS,ye:YE};
+return{ys:Math.max(YS,mn-10),ye:Math.min(YE,mx+10)};
+}
 
 function applyFilters(){
- var filtered=getFilteredPoems();
- var visibleEventKeys=new Set();
- filtered.forEach(function(item){visibleEventKeys.add(item.poetKey+'|'+item.eventIdx);});
- pTracks.querySelectorAll('.p-row').forEach(function(r){
- var k=r.dataset.k;var poet=P[k];var hasVisible=false;
- poet.events.forEach(function(ev,i){if(visibleEventKeys.has(k+'|'+i))hasVisible=true;});
- if(hasVisible&&activeSet.has(k)){r.classList.remove('dim');}else{r.classList.add('dim');}
- });
- reflowTimeline();
- window.syncAuthorColumn();
+var filtered=getFilteredPoems();
+var visibleEventKeys=new Set();
+filtered.forEach(function(item){visibleEventKeys.add(item.poetKey+'|'+item.eventIdx);});
+pTracks.querySelectorAll('.ev-dot').forEach(function(dot){
+var k=dot.dataset.k;var i=+dot.dataset.i;
+if(!visibleEventKeys.has(k+'|'+i)){dot.style.display='none';}else{dot.style.display='';}
+});
+pTracks.querySelectorAll('.p-row').forEach(function(r){
+var k=r.dataset.k;var poet=P[k];var hasVisible=false;
+poet.events.forEach(function(ev,i){if(visibleEventKeys.has(k+'|'+i))hasVisible=true;});
+if(activeSet.has(k)&&hasVisible){r.classList.remove('dim');}else{r.classList.add('dim');}
+});
+window.syncAuthorColumn();
 }
 
-/* === SECTION: search === */
 var searchIdx=[];
 function buildSearchIndex(){
- searchIdx=[];
- allKeys.forEach(function(k){
- var p=P[k];
- searchIdx.push({type:'poet',key:k,text:p.name+' '+p.born+'-'+p.died+' '+dynasties[p.dynasty].name,poet:p.name,year:p.born});
- p.events.forEach(function(ev,i){
- var txt=ev.title+' '+(ev.desc||'')+' '+(ev.poem||'')+' '+(ev.bg||'');
- searchIdx.push({type:'event',key:k,idx:i,poet:p.name,year:Math.floor(ev.year),title:ev.title,text:txt,poem:ev.poem||'',bg:ev.bg||'',desc:ev.desc||''});
- });
- });
+searchIdx=[];
+allKeys.forEach(function(k){
+var p=P[k];
+searchIdx.push({type:'poet',key:k,text:p.name+' '+p.born+'-'+p.died+' '+dynasties[p.dynasty].name,poet:p.name,year:p.born});
+p.events.forEach(function(ev,i){
+var txt=ev.title+' '+(ev.desc||'')+' '+(ev.poem||'')+' '+(ev.bg||'');
+searchIdx.push({type:'event',key:k,idx:i,poet:p.name,year:Math.floor(ev.year),title:ev.title,text:txt,poem:ev.poem||'',bg:ev.bg||'',desc:ev.desc||''});
+});
+});
 }
 
 var searchTimer;
 searchInput.addEventListener('input',function(){clearTimeout(searchTimer);searchTimer=setTimeout(doSearch,150);});
 searchInput.addEventListener('focus',doSearch);
-document.addEventListener('click',function(e){if(!e.target.closest('.search-box')){searchResults.classList.remove('show');stopAllSpeaking();}});
+document.addEventListener('click',function(e){if(!e.target.closest('.search-box')){searchResults.classList.remove('show');}});
 
 function doSearch(){
- var q=searchInput.value.trim().toLowerCase();
- if(!q){searchResults.classList.remove('show');stopAllSpeaking();return}
- var hits=[];
- for(var si=0;si<searchIdx.length&&hits.length<30;si++){
- if(searchIdx[si].text.toLowerCase().indexOf(q)>=0)hits.push({item:searchIdx[si],origIdx:si});
- }
- if(!hits.length){searchResults.innerHTML='<div class="sr-item" style="color:var(--dim)">未找到匹配结果</div>';searchResults.classList.add('show');return}
- var h='';
- hits.forEach(function(hitObj){
- var item=hitObj.item,origIdx=hitObj.origIdx;
- if(item.type==='poet'){
- h+='<div class="sr-item" data-k="'+item.key+'" data-y="'+item.year+'"><div class="sr-title">👤 '+hl(item.text,q)+'</div><div class="sr-poet">跳转至诗人</div></div>';
- }else{
- var poemPreview=item.poem?item.poem.split('\n').slice(0,2).join(' '):'';
- h+='<div class="sr-item" data-k="'+item.key+'" data-i="'+item.idx+'" data-y="'+item.year+'" data-orig="'+origIdx+'">';
- h+='<div class="sr-title">'+hl(item.title,q)+'</div>';
- h+='<div class="sr-poet">'+item.poet+' · '+Math.floor(item.year)+'年</div>';
- if(poemPreview)h+='<div class="sr-poem">'+hl(poemPreview,q)+'</div>';
- h+='<div class="sr-actions">';
- h+='<button class="sr-speak-btn" data-action="speak" data-hit-idx="'+origIdx+'"><span class="speak-icon">🔊</span> 朗读诗词</button>';
- h+='<button class="sr-speak-btn" data-action="speak-all" data-hit-idx="'+origIdx+'"><span class="speak-icon">📖</span> 朗读全文</button>';
- h+='</div>';
- h+='</div>';
- }
- });
- searchResults.innerHTML=h+'<div class="sr-stop-all" id="srStopAll"><button id="srStopBtn">⏹ 停止朗读</button></div>';
- searchResults.classList.add('show');
- updateStopBtnVisibility();
+var q=searchInput.value.trim().toLowerCase();
+if(!q){searchResults.classList.remove('show');return;}
+var hits=[];
+for(var si=0;si<searchIdx.length&&hits.length<30;si++){
+if(searchIdx[si].text.toLowerCase().indexOf(q)>=0)hits.push({item:searchIdx[si],origIdx:si});
+}
+if(!hits.length){searchResults.innerHTML='<div class="sr-item" style="color:var(--dim)">未找到匹配结果</div>';searchResults.classList.add('show');return;}
+var h='';
+hits.forEach(function(hitObj){
+var item=hitObj.item,origIdx=hitObj.origIdx;
+if(item.type==='poet'){
+h+='<div class="sr-item" data-k="'+item.key+'" data-y="'+item.year+'"><div class="sr-title">👤 '+hl(item.text,q)+'</div><div class="sr-poet">跳转至诗人</div></div>';
+}else{
+var poemPreview=item.poem?item.poem.split('\n').slice(0,2).join(' '):'';
+h+='<div class="sr-item" data-k="'+item.key+'" data-i="'+item.idx+'" data-y="'+item.year+'" data-orig="'+origIdx+'">';
+h+='<div class="sr-title">'+hl(item.title,q)+'</div>';
+h+='<div class="sr-poet">'+item.poet+' · '+Math.floor(item.year)+'年</div>';
+if(poemPreview)h+='<div class="sr-poem">'+hl(poemPreview,q)+'</div>';
+h+='</div>';
+}
+});
+searchResults.innerHTML=h;
+searchResults.classList.add('show');
 }
 
 function hl(text,q){
- var idx=text.toLowerCase().indexOf(q);
- if(idx<0)return escHtml(text);
- return escHtml(text.slice(0,idx))+'<span class="sr-hl">'+escHtml(text.slice(idx,idx+q.length))+'</span>'+escHtml(text.slice(idx+q.length));
+var idx=text.toLowerCase().indexOf(q);
+if(idx<0)return escHtml(text);
+return escHtml(text.slice(0,idx))+'<span class="sr-hl">'+escHtml(text.slice(idx,idx+q.length))+'</span>'+escHtml(text.slice(idx+q.length));
 }
-function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 searchResults.addEventListener('click',function(e){
- var speakBtn=e.target.closest('[data-action]');
- if(speakBtn){
- e.stopPropagation();
- var action=speakBtn.dataset.action;
- var hitIdx=+speakBtn.dataset.hitIdx;
- if(action==='speak') speakSingle(hitIdx,speakBtn);
- else if(action==='speak-all') speakAll(hitIdx,speakBtn);
- return;
- }
- if(e.target.id==='srStopBtn'||e.target.closest('#srStopBtn')){
- e.stopPropagation();
- stopAllSpeaking();
- return;
- }
- var item=e.target.closest('.sr-item');
- if(!item)return;
- var k=item.dataset.k, y=+item.dataset.y;
- canvas.scrollTo({left:vY2X(y)-200,behavior:'smooth'});
- searchResults.classList.remove('show');
- searchInput.value='';
- stopAllSpeaking();
- pTracks.querySelectorAll('.p-row').forEach(function(r){r.classList.remove('hl')});
- var row=pTracks.querySelector('[data-k="'+k+'"]');
- if(row){row.classList.add('hl');setTimeout(function(){row.classList.remove('hl')},3000)}
- if(item.dataset.i!==undefined){
- var idx=+item.dataset.i;
- setTimeout(function(){
- showDetail(k,idx);
- if(row){
- document.querySelectorAll('.ev-dot.pulse').forEach(function(d){d.classList.remove('pulse')});
- var targetDot=row.querySelector('.ev-dot[data-i="'+idx+'"]');
- if(targetDot){targetDot.classList.add('pulse');setTimeout(function(){targetDot.classList.remove('pulse')},3000);}
- }
- },400);
- }
+var item=e.target.closest('.sr-item');if(!item)return;
+var k=item.dataset.k, y=+item.dataset.y;
+canvas.scrollTo({left:y2x(y)-200,behavior:'smooth'});
+searchResults.classList.remove('show');searchInput.value='';
+pTracks.querySelectorAll('.p-row').forEach(function(r){r.classList.remove('hl')});
+var row=pTracks.querySelector('[data-k="'+k+'"]');
+if(row){row.classList.add('hl');setTimeout(function(){row.classList.remove('hl')},3000);}
+if(item.dataset.i!==undefined){
+var idx=+item.dataset.i;
+setTimeout(function(){showDetail(k,idx);},400);
+}
 });
 
-/* === SECTION: TTS Engine === */
-var currentUtterance=null;
-var currentSpeakBtn=null;
-var speakingQueue=[];
-var isSpeaking=false;
-var ttsReady=false;
-var ttsVoices=[];
-
-/* --- TTS Debug Log --- */
-function ttsLog(msg){
- try{console.log('[TTS] '+msg);}catch(e){}
-}
-
-/* --- 语音加载 --- */
-function loadVoices(){
- if(!window.speechSynthesis)return;
- ttsVoices=speechSynthesis.getVoices();
- if(ttsVoices.length>0){
- ttsReady=true;
- ttsLog('语音已加载: '+ttsVoices.length+' 个');
- var zh=ttsVoices.filter(function(v){return v.lang&&(v.lang.indexOf('zh')===0||v.lang.indexOf('cmn')===0);});
- ttsLog('中文语音: '+zh.length+' 个'+(zh.length?': '+zh.map(function(v){return v.name}).join(', '):''));
- }
-}
-if(window.speechSynthesis){
- loadVoices();
- speechSynthesis.onvoiceschanged=loadVoices;
- /* Chrome bug: voices 异步加载，需要主动触发 */
- setTimeout(loadVoices,100);
- setTimeout(loadVoices,500);
- setTimeout(loadVoices,1000);
-}
-
-/* --- 获取中文语音 --- */
-function getZhVoice(){
- if(!ttsVoices.length)ttsVoices=speechSynthesis.getVoices();
- for(var i=0;i<ttsVoices.length;i++){
- var lang=ttsVoices[i].lang||'';
- if(lang.indexOf('zh')===0||lang.indexOf('cmn')===0)return ttsVoices[i];
- }
- return null;
-}
-
-/* --- 停止朗读 --- */
-function stopAllSpeaking(){
- try{speechSynthesis.cancel();}catch(e){}
- currentUtterance=null;
- isSpeaking=false;
- speakingQueue=[];
- document.querySelectorAll('.sr-speak-btn.speaking').forEach(function(b){
- b.classList.remove('speaking');
- var action=b.dataset.action;
- if(action==='speak')b.innerHTML='<span class="speak-icon">🔊</span> 朗读诗词';
- else if(action==='speak-all')b.innerHTML='<span class="speak-icon">📖</span> 朗读全文';
- else b.innerHTML='<span class="speak-icon">🔊</span> 朗读';
- });
- document.querySelectorAll('.dtl-speak-btn.speaking').forEach(function(b){
- b.classList.remove('speaking');
- b.innerHTML='<span class="speak-icon">🔊</span> 朗读诗词';
- });
- updateStopBtnVisibility();
- ttsLog('已停止朗读');
-}
-
-function updateStopBtnVisibility(){
- var stopEl=document.getElementById('srStopAll');
- if(stopEl){
- if(isSpeaking)stopEl.classList.add('show');
- else stopEl.classList.remove('show');
- }
-}
-
-/* --- 重置按钮状态 --- */
-function resetBtnState(btn){
- if(!btn)return;
- btn.classList.remove('speaking');
- var action=btn.dataset.action;
- if(action==='speak')btn.innerHTML='<span class="speak-icon">🔊</span> 朗读诗词';
- else if(action==='speak-all')btn.innerHTML='<span class="speak-icon">📖</span> 朗读全文';
- else btn.innerHTML='<span class="speak-icon">🔊</span> 朗读';
-}
-
-/* --- 核心朗读函数 --- */
-function speakText(text,btn,onEnd){
- /* 先停止之前的朗读 */
- try{speechSynthesis.cancel();}catch(e){}
- currentUtterance=null;
- isSpeaking=false;
-
- if(!text){ttsLog('❌ 朗读文本为空');return;}
- if(!window.speechSynthesis){ttsLog('❌ 浏览器不支持 speechSynthesis');alert('当前浏览器不支持语音朗读功能');return;}
-
- /* Chrome bug: cancel() 后立即 speak() 可能静默失败，需要延迟 */
- setTimeout(function(){ _doSpeak(text,btn,onEnd); },80);
-}
-
-function _doSpeak(text,btn,onEnd){
- /* 清理文本 */
- var cleanText=text.replace(/\\n/g,'，').replace(/\n/g,'，').replace(/[\s]+/g,' ');
- ttsLog('准备朗读: "'+cleanText.substring(0,40)+'..." (共'+cleanText.length+'字)');
-
- var u=new SpeechSynthesisUtterance(cleanText);
- u.lang='zh-CN';
- u.rate=0.85;
- u.pitch=1.0;
- u.volume=1.0;
-
- var zhVoice=getZhVoice();
- if(zhVoice){
- u.voice=zhVoice;
- ttsLog('使用语音: '+zhVoice.name+' ('+zhVoice.lang+')');
- }else{
- ttsLog('⚠️ 未找到中文语音，使用默认');
- }
-
- currentUtterance=u;
- currentSpeakBtn=btn;
- isSpeaking=true;
- if(btn){
- btn.classList.add('speaking');
- btn.innerHTML='<span class="speak-icon">⏸</span> 朗读中…';
- }
- updateStopBtnVisibility();
-
- u.onstart=function(){
- ttsLog('✅ onstart: 朗读已开始');
- };
- u.onend=function(){
- ttsLog('✅ onend: 朗读已结束');
- isSpeaking=false;
- currentUtterance=null;
- resetBtnState(btn);
- currentSpeakBtn=null;
- updateStopBtnVisibility();
- if(speakingQueue.length>0){
- var next=speakingQueue.shift();
- speakText(next.text,next.btn,next.onEnd);
- }else if(onEnd){onEnd();}
- };
- u.onerror=function(e){
- ttsLog('❌ onerror: '+e.error);
- isSpeaking=false;
- currentUtterance=null;
- speakingQueue=[];
- resetBtnState(btn);
- currentSpeakBtn=null;
- updateStopBtnVisibility();
- };
-
- try{
- speechSynthesis.speak(u);
- ttsLog('speechSynthesis.speak() 已调用');
- /* Chrome workaround: 如果 3 秒内 onstart 未触发，尝试重播 */
- setTimeout(function(){
- if(currentUtterance===u&&!isSpeaking){
- ttsLog('⚠️ 朗读可能未开始，尝试重播');
- try{speechSynthesis.cancel();}catch(ex){}
- setTimeout(function(){
- if(currentUtterance===u){
- speechSynthesis.speak(u);
- ttsLog('重播已调用');
- }
- },50);
- }
- },3000);
- }catch(err){
- ttsLog('❌ speak() 抛出异常: '+err.message);
- isSpeaking=false;
- currentUtterance=null;
- resetBtnState(btn);
- updateStopBtnVisibility();
- }
-}
-
-/* --- 搜索结果朗读 --- */
-function speakSingle(hitIdx,btn){
- ttsLog('speakSingle hitIdx='+hitIdx);
- var item=searchIdx[hitIdx];
- if(!item){ttsLog('❌ searchIdx['+hitIdx+'] 不存在');return;}
- ttsLog('找到条目: '+item.title+' ('+item.poet+')');
- var text='';
- if(item.title)text+=item.title+'。';
- if(item.poet)text+=item.poet+'。';
- if(item.poem)text+=item.poem;
- if(!text&&item.desc)text=item.desc;
- ttsLog('朗读文本长度: '+text.length);
- speakText(text,btn);
-}
-
-function speakAll(hitIdx,btn){
- ttsLog('speakAll hitIdx='+hitIdx);
- var item=searchIdx[hitIdx];
- if(!item){ttsLog('❌ searchIdx['+hitIdx+'] 不存在');return;}
- ttsLog('找到条目: '+item.title+' ('+item.poet+')');
- var text='';
- if(item.title)text+=item.title+'。';
- if(item.poet)text+=item.poet+'作。';
- if(item.poem)text+=item.poem+'。';
- if(item.bg)text+=item.bg;
- if(!text&&item.desc)text=item.desc;
- ttsLog('朗读文本长度: '+text.length);
- speakText(text,btn);
-}
-
-function speakDetail(btn){
- var dtlData=btn.dataset.speakText;
- if(!dtlData){ttsLog('❌ detail speakText 为空');return;}
- speakText(dtlData,btn);
-}
-
-/* --- 搜索框关闭时自动停止朗读 --- */
-var srObserver=new MutationObserver(function(mutations){
- mutations.forEach(function(m){
- if(m.target.id==='searchResults'&&m.attributeName==='class'){
- if(!m.target.classList.contains('show'))stopAllSpeaking();
- }
- });
-});
-srObserver.observe(searchResults,{attributes:true});
-
-/* === SECTION: detail === */
 function showDetail(k,idx){
- var p=P[k],ev=p.events[idx];
- if(!ev)return;
- var d=dynasties[p.dynasty];
- var h='<div class="dtl-year">'+Math.floor(ev.year)+'年 · '+p.name+' · '+d.name+'</div>';
- h+='<div class="dtl-title" style="color:'+p.color+'">'+escHtml(ev.title)+'</div>';
- var evGrade='',evEmotion='';
- if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[ev.title].emotion||'';}
- if(evGrade){h+='<div style="margin:4px 0 8px"><span style="display:inline-block;padding:2px 8px;background:rgba(233,160,69,.15);border-radius:12px;font-size:11px;color:#e9a045;border:1px solid rgba(233,160,69,.3)">📚 '+escHtml(evGrade)+'</span></div>';}
- if(evEmotion){
- var emoColor='#999';
- if(evEmotion==='思乡')emoColor='#e67e22';else if(evEmotion==='送别')emoColor='#9b59b6';else if(evEmotion==='爱国')emoColor='#e74c3c';
- else if(evEmotion==='劝学')emoColor='#f39c12';else if(evEmotion==='田园')emoColor='#27ae60';else if(evEmotion==='山水')emoColor='#1abc9c';
- else if(evEmotion==='边塞')emoColor='#8d6e63';else if(evEmotion==='咏物')emoColor='#5d4037';else if(evEmotion==='哲理')emoColor='#7f8c8d';
- else if(evEmotion==='闺怨爱情')emoColor='#c0392b';
- h+='<div style="margin:4px 0 8px"><span style="display:inline-block;padding:2px 8px;background:'+emoColor+'22;border-radius:12px;font-size:11px;color:'+emoColor+';border:1px solid '+emoColor+'66">'+evEmotion+'</span></div>';
- }
- if(ev.desc)h+='<div class="dtl-desc">'+escHtml(ev.desc)+'</div>';
- if(ev.poem){
- var speakTextContent='';
- if(ev.title)speakTextContent+=ev.title+'。';
- speakTextContent+=p.name+'作。';
- speakTextContent+=ev.poem;
- if(ev.bg)speakTextContent+='。'+ev.bg;
- h+='<div class="dtl-speak-bar">';
- h+='<button class="dtl-speak-btn" onclick="speakDetail(this)" data-speak-text="'+escHtml(speakTextContent).replace(/"/g,'&quot;')+'"><span class="speak-icon">🔊</span> 朗读诗词</button>';
- h+='<span class="dtl-speak-hint">点击朗读诗词原文及创作背景</span>';
- h+='</div>';
- }
- if(ev.poem){h+='<div class="dtl-poem" style="border-color:'+p.color+'">'+escHtml(ev.poem)+'</div>';}
- if(ev.bg){h+='<div class="dtl-section"><div class="dtl-label">📖 创作背景</div><div class="dtl-body">'+escHtml(ev.bg)+'</div></div>';}
- if(ev.use&&ev.use.length){
- h+='<div class="dtl-use"><div class="dtl-label">💡 可以用在</div>';
- ev.use.forEach(function(u){h+='<span class="dtl-use-item">'+escHtml(u)+'</span>';});
- h+='</div>';
- }
- dtlContent.innerHTML=h;
- detailOv.classList.add('show');
+var p=P[k],ev=p.events[idx];if(!ev)return;
+var d=dynasties[p.dynasty];
+var h='<div class="dtl-year">'+Math.floor(ev.year)+'年 · '+p.name+' · '+d.name+'</div>';
+h+='<div class="dtl-title" style="color:'+p.color+'">'+escHtml(ev.title)+'</div>';
+var evGrade='',evEmotion='';
+if(poemMeta[ev.title]){evGrade=poemMeta[ev.title].grade||'';evEmotion=poemMeta[ev.title].emotion||'';}
+if(evGrade==='小学')evGrade='小学一年级';
+else if(evGrade==='初中')evGrade='初中一年级';
+else if(evGrade==='高中')evGrade='高中一年级';
+if(evGrade){h+='<div style="margin:4px 0 8px"><span style="display:inline-block;padding:2px 8px;background:rgba(233,160,69,.15);border-radius:12px;font-size:11px;color:#e9a045;border:1px solid rgba(233,160,69,.3)">📚 '+escHtml(evGrade)+'</span></div>';}
+if(evEmotion){
+var emoColor='#999';
+if(evEmotion==='思乡')emoColor='#e67e22';else if(evEmotion==='送别')emoColor='#9b59b6';else if(evEmotion==='爱国')emoColor='#e74c3c';
+else if(evEmotion==='劝学')emoColor='#f39c12';else if(evEmotion==='田园')emoColor='#27ae60';else if(evEmotion==='山水')emoColor='#1abc9c';
+else if(evEmotion==='边塞')emoColor='#8d6e63';else if(evEmotion==='咏物')emoColor='#5d4037';else if(evEmotion==='哲理')emoColor='#7f8c8d';
+else if(evEmotion==='闺怨爱情')emoColor='#c0392b';
+h+='<div style="margin:4px 0 8px"><span style="display:inline-block;padding:2px 8px;background:'+emoColor+'22;border-radius:12px;font-size:11px;color:'+emoColor+';border:1px solid '+emoColor+'66">'+evEmotion+'</span></div>';
+}
+if(ev.desc)h+='<div class="dtl-desc">'+escHtml(ev.desc)+'</div>';
+if(ev.poem){h+='<div class="dtl-poem" style="border-color:'+p.color+'">'+escHtml(ev.poem)+'</div>';}
+if(ev.bg){h+='<div class="dtl-section"><div class="dtl-label">📖 创作背景</div><div class="dtl-body">'+escHtml(ev.bg)+'</div></div>';}
+if(ev.use&&ev.use.length){
+h+='<div class="dtl-use"><div class="dtl-label">💡 可以用在</div>';
+ev.use.forEach(function(u){h+='<span class="dtl-use-item">'+escHtml(u)+'</span>';});
+h+='</div>';
+}
+dtlContent.innerHTML=h;detailOv.classList.add('show');
 }
 
-document.getElementById('dtlClose').addEventListener('click',function(){detailOv.classList.remove('show');stopAllSpeaking();});
-detailOv.addEventListener('click',function(e){if(e.target===detailOv){detailOv.classList.remove('show');stopAllSpeaking();}});
-
+document.getElementById('dtlClose').addEventListener('click',function(){detailOv.classList.remove('show');});
+detailOv.addEventListener('click',function(e){if(e.target===detailOv){detailOv.classList.remove('show');}});
 pTracks.addEventListener('click',function(e){
- var dot=e.target.closest('.ev-dot');
- if(!dot)return;
- showDetail(dot.dataset.k,+dot.dataset.i);
+var dot=e.target.closest('.ev-dot');if(!dot)return;
+showDetail(dot.dataset.k,+dot.dataset.i);
 });
 
-/* === SECTION: nav === */
 document.getElementById('navL').addEventListener('click',function(){canvas.scrollBy({left:-500,behavior:'smooth'})});
 document.getElementById('navR').addEventListener('click',function(){canvas.scrollBy({left:500,behavior:'smooth'})});
 
-
-/* === 点击作者头像跳转到对应诗人行 === */
-window.scrollToAuthor = function(key) {
-    var row = pTracks.querySelector('[data-k="' + key + '"]');
-    if (!row) return;
-    // 如果该行被过滤隐藏了，不做跳转
-    if (row.classList.contains('dim')) return;
-    
-    // 获取该行第一个生平事件圆点的位置
-    var dot = row.querySelector('.ev-dot.life');
-    if (!dot) {
-        dot = row.querySelector('.ev-dot.work');
-    }
-    if (!dot) return;
-    
-    // 获取dot的left值（像素）
-    var dotLeft = parseFloat(dot.style.left);
-    if (isNaN(dotLeft)) return;
-    
-    // 平滑滚动到该位置（减去20px偏移让作者列不完全贴边）
-    canvas.scrollTo({left: dotLeft - 20, behavior: 'smooth'});
-    
-    // 高亮该行
-    row.classList.add('hl');
-    setTimeout(function(){row.classList.remove('hl')}, 2000);
+window.scrollToAuthor=function(key){
+var row=pTracks.querySelector('[data-k="'+key+'"]');if(!row)return;
+if(row.classList.contains('dim'))return;
+var dot=row.querySelector('.ev-dot.life');if(!dot)dot=row.querySelector('.ev-dot.work');if(!dot)return;
+var dotLeft=parseFloat(dot.style.left);if(isNaN(dotLeft))return;
+canvas.scrollTo({left:dotLeft-20,behavior:'smooth'});
+row.classList.add('hl');setTimeout(function(){row.classList.remove('hl')},2000);
 };
 
-/* === JS 作者列同步 === */
-(function() {
-    var authorCol = document.getElementById('authorCol');
-    var pTracks = document.getElementById('pTracks');
-    if (!authorCol || !pTracks) return;
-    window.syncAuthorColumn = function() {
-        var rows = pTracks.querySelectorAll('.p-row');
-        var html = '';
-        rows.forEach(function(row) {
-            var k = row.dataset.k;
-            var p = P[k];
-            if (!p) return;
-            var d = dynasties[p.dynasty];
-            var dim = row.classList.contains('dim') ? 'display:none;' : '';
-            html += '<div class="p-hdr" data-k="' + k + '" style="' + dim + '" onclick="scrollToAuthor(\'' + k + '\')">';
-            html += '<div class="p-avatar" style="background:linear-gradient(135deg,' + p.color + ',' + p.color + 'cc)">' + p.avatar + '</div>';
-            html += '<span class="p-name" style="color:' + p.color + '">' + p.name + '</span>';
-            html += '<span class="p-dynasty" style="background:' + d.bg + ';color:' + d.color + '">' + d.name + '</span>';
-            html += '<span class="p-meta">' + p.born + '–' + p.died + '</span>';
-            html += '</div>';
-        });
-        var _sc = authorCol.scrollTop;
-        authorCol.innerHTML = html;
-        // 恢复筛选前的滚动位置，避免跳动
-        try{authorCol.scrollTop = _sc || 0;}catch(e){}
-    };
-    window.syncAuthorColumn();
-    if (typeof MutationObserver !== 'undefined') {
-        var observer = new MutationObserver(function() {
-            window.syncAuthorColumn();
-        });
-        observer.observe(pTracks, { childList: true, subtree: true });
-    }
-    window.addEventListener('resize', function() {
-        window.syncAuthorColumn();
-    });
-})();
-
-
-/* === JS 作者列与时间轴滚动同步 === */
-(function() {
-    var authorCol = document.getElementById('authorCol');
-    var tlCanvas = document.getElementById('tlCanvas');
-    if (!authorCol || !tlCanvas) return;
-    
-    var syncing = false;
-    
-    // 时间轴滚动时同步作者列
-    tlCanvas.addEventListener('scroll', function() {
-        if (syncing) return;
-        syncing = true;
-        authorCol.scrollTop = tlCanvas.scrollTop;
-        syncing = false;
-    });
-    
-    // 作者列滚动时同步时间轴
-    authorCol.addEventListener('scroll', function() {
-        if (syncing) return;
-        syncing = true;
-        tlCanvas.scrollTop = authorCol.scrollTop;
-        syncing = false;
-    });
-    
-    // 窗口大小改变时重新同步
-    window.addEventListener('resize', function() {
-        // 确保滚动位置不超出范围
-        authorCol.scrollTop = Math.min(authorCol.scrollTop, tlCanvas.scrollHeight - tlCanvas.clientHeight);
-        tlCanvas.scrollTop = Math.min(tlCanvas.scrollTop, authorCol.scrollHeight - authorCol.clientHeight);
-    });
-})();
-
-/* === SECTION: init === */
-renderAll();
+(function(){
+var authorCol=document.getElementById('authorCol');
+var pTracksEl=document.getElementById('pTracks');
+if(!authorCol||!pTracksEl)return;
+window.syncAuthorColumn=function(){
+var rows=pTracksEl.querySelectorAll('.p-row');var html='';
+rows.forEach(function(row){
+var k=row.dataset.k;var p=P[k];if(!p)return;
+var d=dynasties[p.dynasty];
+var dim=row.classList.contains('dim')?'display:none;':'';
+html+='<div class="p-hdr" data-k="'+k+'" style="'+dim+'" onclick="scrollToAuthor(\''+k+'\')">';
+html+='<div class="p-avatar" style="background:linear-gradient(135deg,'+p.color+','+p.color+'cc)">'+p.avatar+'</div>';
+html+='<span class="p-name" style="color:'+p.color+'">'+p.name+'</span>';
+html+='<span class="p-dynasty" style="background:'+d.bg+';color:'+d.color+'">'+d.name+'</span>';
+html+='<span class="p-meta">'+p.born+'–'+p.died+'</span>';
+html+='</div>';
+});
+authorCol.innerHTML=html;
+};
 window.syncAuthorColumn();
+})();
+
+(function(){
+var authorCol=document.getElementById('authorCol');
+var tlCanvas=document.getElementById('tlCanvas');
+if(!authorCol||!tlCanvas)return;
+var syncing=false;
+tlCanvas.addEventListener('scroll',function(){if(syncing)return;syncing=true;authorCol.scrollTop=tlCanvas.scrollTop;syncing=false;});
+authorCol.addEventListener('scroll',function(){if(syncing)return;syncing=true;tlCanvas.scrollTop=authorCol.scrollTop;syncing=false;});
+})();
+
+function showHistDetail(ev,idx){
+var html='';
+html+='<div class="hist-detail-years">'+Math.floor(ev.s);
+if(ev.e!==ev.s)html+=' \u2013 '+Math.floor(ev.e);
+html+='</div>';
+html+='<div class="hist-detail-title">'+ev.l+'</div>';
+html+='<div class="hist-detail-desc">'+ev.d+'</div>';
+var activePoets=[];var activePoems=[];
+Object.keys(P).forEach(function(k){
+var p=P[k];
+if(p.born<=ev.e&&p.died>=ev.s){activePoets.push(p);}
+p.events.forEach(function(ev2){
+if(ev2.type==='work'&&!isNaN(ev2.year)&&ev2.year>=ev.s&&ev2.year<=ev.e){
+activePoems.push({poet:p.name,title:ev2.title,year:Math.floor(ev2.year)});
+}
+});
+});
+if(activePoets.length){
+html+='<div class="hist-detail-section"><div class="hist-detail-label">📅 活跃诗人</div><div>';
+activePoets.forEach(function(p){html+='<span class="hist-detail-poet">'+p.name+' ('+p.born+'-'+p.died+')</span>';});
+html+='</div></div>';
+}
+if(activePoems.length){
+html+='<div class="hist-detail-section"><div class="hist-detail-label">📖 同期作品</div><div>';
+activePoems.forEach(function(pm){html+='<span class="hist-detail-poem">'+pm.poet+'\u00b7'+pm.title+'</span>';});
+html+='</div></div>';
+}
+document.getElementById('histDetailContent').innerHTML=html;
+document.getElementById('histDetailOverlay').classList.add('show');
+}
+
+document.getElementById('histDetailClose').addEventListener('click',function(){
+document.getElementById('histDetailOverlay').classList.remove('show');
+bandsEl.querySelectorAll('.hist-band').forEach(function(b){b.classList.remove('active');});
+});
+document.getElementById('histDetailOverlay').addEventListener('click',function(e){
+if(e.target===this){this.classList.remove('show');bandsEl.querySelectorAll('.hist-band').forEach(function(b){b.classList.remove('active');});}
+});
+
+renderAll();
 canvas.scrollTo({left:y2x(680)-40,behavior:'auto'});
-// 设置pTracks宽度以支持横向滚动
-var tracksEl=document.getElementById('pTracks');
-if(tracksEl){tracksEl.style.width=(y2x(YE)-y2x(YS)+150)+'px';}
-canvas.style.minWidth='0';
-window.addEventListener('resize',function(){
-    var t=document.getElementById('pTracks');
-    if(t){t.style.width=(y2x(YE)-y2x(YS)+150)+'px';}
-    canvas.style.minWidth='0';
-});</script></body></html>
+</script>
+</body>
+</html>
+
+
+
