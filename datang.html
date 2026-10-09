@@ -4,12 +4,14 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>历史的相遇</title>
+<title>诗词长河</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -53,6 +55,10 @@ body{min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;heigh
 .fbtn[data-grade].on{background:#5B9BD5;border-color:#3A7BBF;color:#fff}
 .fbtn[data-emotion]{border-color:#E8956A;color:#E8956A}
 .fbtn[data-emotion].on{background:#E8956A;border-color:#C97A4F;color:#fff}
+.fbtn[data-k]{border-color:#e94560;color:#e94560}
+.fbtn[data-k].on{background:#e94560;border-color:#c9304c;color:#fff}
+.fbtn[data-author]{border-color:#e94560;color:#e94560}
+.fbtn[data-author].on{background:#e94560;border-color:#c9304c;color:#fff}
 .dyn-bar{padding:6px 20px;display:flex;gap:12px;font-size:11px;color:var(--dim);border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);flex-wrap:wrap;align-items:center}
 .dyn-tag{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
 .tl-wrap{overflow:hidden;display:flex;position:relative;flex:1;min-height:0}
@@ -253,7 +259,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-even
 <body>
 <div class="hdr">
  <button class="menu-btn" id="menuBtn" title="筛选菜单">☰</button>
- <h1>历史的相遇</h1>
+ <h1>诗词长河</h1>
  <button class="read-toggle-btn" id="readToggle" title="朗读开关">🔊</button>
  <div class="search-box">
  <span class="icon">🔍</span>
@@ -284,6 +290,11 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-even
    <div class="filter-section">
     <div class="filter-section-title">情感</div>
     <div class="filter-scroll" id="emotionBarModal"></div>
+   </div>
+   <!-- 作者筛选 -->
+   <div class="filter-section">
+    <div class="filter-section-title">作者</div>
+    <div class="filter-scroll" id="authorBarModal"></div>
    </div>
    <!-- 时间起止日期筛选 -->
    <div class="filter-section">
@@ -1236,6 +1247,33 @@ var availableVoices = [];
 
 // Fix: Properly load voices - in Chrome getVoices() returns empty array initially
 // Voices are loaded asynchronously and fire a 'voiceschanged' event
+// 移动端语音解锁：iOS Safari 和 Android Chrome 需要用户手势触发
+var speechInitialized = false;
+function initSpeechOnGesture() {
+ if (speechInitialized) return;
+ try {
+  if (window.speechSynthesis) {
+   var utterance = new SpeechSynthesisUtterance('');
+   window.speechSynthesis.speak(utterance);
+   window.speechSynthesis.cancel();
+   speechInitialized = true;
+  }
+ } catch(e) {
+  speechInitialized = false;
+ }
+}
+// 页面加载时尝试预初始化
+if (window.speechSynthesis) {
+ document.addEventListener('touchstart', function initOnce() {
+  initSpeechOnGesture();
+  document.removeEventListener('touchstart', initOnce);
+ }, { once: true });
+ document.addEventListener('click', function initOnce2() {
+  initSpeechOnGesture();
+  document.removeEventListener('click', initOnce2);
+ }, { once: true });
+}
+
 function loadVoices() {
     availableVoices = window.speechSynthesis.getVoices();
     if (availableVoices.length > 0) {
@@ -1376,7 +1414,11 @@ function speakText(text) {
 
 function stopSpeaking() {
     if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
+        try {
+            window.speechSynthesis.cancel();
+        } catch(e) {
+            console.warn("stopSpeaking error:", e);
+        }
     }
     isSpeaking = false;
     document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
@@ -1601,7 +1643,55 @@ canvas.scrollTo({left:y2x(680)-40,behavior:'auto'});
   }
  }
  
- // 年份筛选（弹框版本）
+ // 作者筛选（弹框版本）
+  var authorBarModal = document.getElementById('authorBarModal');
+  if(authorBarModal){
+   // 构建作者按钮列表
+   var authorList = [];
+   Object.keys(P).forEach(function(k){
+    authorList.push({key:k, name:P[k].name});
+   });
+   authorList.sort(function(a,b){ return a.name.localeCompare(b.name, 'zh'); });
+   
+   var h = '<button class="fbtn on" data-author="all">全部</button>';
+   authorList.forEach(function(a){
+    h += '<button class="fbtn on" data-author="' + a.key + '">' + a.name + '</button>';
+   });
+   authorBarModal.innerHTML = h;
+   
+   var _authorFilterBound = false;
+   if(!_authorFilterBound){
+    _authorFilterBound = true;
+    authorBarModal.addEventListener('click', function(e){
+     var btn = e.target.closest('.fbtn');
+     if(!btn) return;
+     var author = btn.dataset.author;
+     if(author === 'all'){
+      var allOn = btn.classList.contains('on');
+      authorBarModal.querySelectorAll('.fbtn').forEach(function(b){
+       if(allOn) b.classList.remove('on');
+       else b.classList.add('on');
+       if(b.dataset.author !== 'all'){
+        if(allOn) activeSet.delete(b.dataset.author);
+        else activeSet.add(b.dataset.author);
+       }
+      });
+     } else {
+      btn.classList.toggle('on');
+      if(btn.classList.contains('on')){
+       activeSet.add(author);
+      } else {
+       activeSet.delete(author);
+       var allBtn = authorBarModal.querySelector('[data-author="all"]');
+       if(allBtn) allBtn.classList.remove('on');
+      }
+     }
+     applyFilters();
+    });
+   }
+  }
+  
+  // 年份筛选（弹框版本）
  var modalYearApply = document.getElementById('modalYearApplyBtn');
  var modalYearReset = document.getElementById('modalYearResetBtn');
  if(modalYearApply){
