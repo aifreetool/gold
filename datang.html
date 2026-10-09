@@ -1244,71 +1244,156 @@ var currentUtterance = null;
 var isSpeaking = false;
 var voicesLoaded = false;
 var availableVoices = [];
-
-// Fix: Properly load voices - in Chrome getVoices() returns empty array initially
-// Voices are loaded asynchronously and fire a 'voiceschanged' event
-// 移动端语音解锁：iOS Safari 和 Android Chrome 需要用户手势触发
 var speechInitialized = false;
-function initSpeechOnGesture() {
- if (speechInitialized) return;
- try {
-  if (window.speechSynthesis) {
-   var utterance = new SpeechSynthesisUtterance('');
-   window.speechSynthesis.speak(utterance);
-   window.speechSynthesis.cancel();
-   speechInitialized = true;
-  }
- } catch(e) {
-  speechInitialized = false;
- }
-}
-// 页面加载时尝试预初始化
-if (window.speechSynthesis) {
- document.addEventListener('touchstart', function initOnce() {
-  initSpeechOnGesture();
-  document.removeEventListener('touchstart', initOnce);
- }, { once: true });
- document.addEventListener('click', function initOnce2() {
-  initSpeechOnGesture();
-  document.removeEventListener('click', initOnce2);
- }, { once: true });
-}
+var speechInitAttempts = 0;
+var maxSpeechInitAttempts = 5;
+
+// Android/移动端语音合成兼容性修复
+// OPPO FindX8 等安卓手机需要用户手势触发语音合成，且需要正确处理 voices 加载
 
 function loadVoices() {
-    availableVoices = window.speechSynthesis.getVoices();
-    if (availableVoices.length > 0) {
-        voicesLoaded = true;
+    try {
+        var voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+            availableVoices = Array.prototype.slice.call(voices);
+            voicesLoaded = true;
+            console.log('语音合成：已加载 ' + voices.length + ' 个语音');
+            // 打印可用语音信息便于调试
+            var zhVoices = availableVoices.filter(function(v) {
+                return v.lang && v.lang.indexOf('zh') !== -1;
+            });
+            if (zhVoices.length > 0) {
+                console.log('语音合成：找到中文语音: ' + zhVoices.map(function(v) { return v.name; }).join(', '));
+            } else {
+                console.warn('语音合成：未找到中文语音，将使用默认语音');
+            }
+        } else {
+            console.log('语音合成：getVoices() 返回空数组，等待 voiceschanged 事件');
+        }
+    } catch(e) {
+        console.warn('语音合成：加载语音失败', e);
     }
 }
 
-// Try to load voices immediately (some browsers have them ready)
+// 页面加载时尝试预加载语音
 if (window.speechSynthesis) {
+    // 立即尝试加载
     loadVoices();
-    // Fix: Register listener for when voices become available
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+    
+    // 注册 voiceschanged 事件监听器（使用 addEventListener 避免覆盖）
+    window.speechSynthesis.addEventListener('voiceschanged', function() {
+        loadVoices();
+    });
+    
+    // 移动端语音解锁：iOS Safari 和 Android Chrome 需要用户手势触发
+    // 在首次用户交互时尝试解锁语音合成引擎
+    function unlockSpeechOnGesture() {
+        if (speechInitialized) return;
+        speechInitAttempts++;
+        if (speechInitAttempts > maxSpeechInitAttempts) {
+            console.warn('语音合成：已达到最大初始化尝试次数');
+            return;
+        }
+        try {
+            if (window.speechSynthesis) {
+                // 使用短文本而非空字符串，某些安卓浏览器需要非空文本才能正确初始化
+                var unlockText = new SpeechSynthesisUtterance('ok');
+                unlockText.lang = 'zh-CN';
+                unlockText.rate = 1.0;
+                unlockText.pitch = 1.0;
+                
+                // 先 cancel 任何正在进行的语音
+                window.speechSynthesis.cancel();
+                
+                // 尝试播放（不真正发出声音，只是初始化引擎）
+                window.speechSynthesis.speak(unlockText);
+                
+                // 立即取消，只为了初始化引擎
+                setTimeout(function() {
+                    try {
+                        window.speechSynthesis.cancel();
+                    } catch(e) {
+                        console.warn('语音合成：取消初始化语音时出错', e);
+                    }
+                }, 50);
+                
+                speechInitialized = true;
+                console.log('语音合成：已初始化（用户手势触发）');
+            }
+        } catch(e) {
+            console.warn('语音合成：初始化失败，将在下次用户交互时重试', e);
+            speechInitialized = false;
+        }
+    }
+    
+    // 绑定首次用户交互事件（touchstart 优先于 click 在移动端触发）
+    document.addEventListener('touchstart', function initOnce() {
+        unlockSpeechOnGesture();
+        document.removeEventListener('touchstart', initOnce);
+    }, { once: true, passive: true });
+    
+    document.addEventListener('click', function initOnce2() {
+        unlockSpeechOnGesture();
+        document.removeEventListener('click', initOnce2);
+    }, { once: true });
+    
+    // 如果 2 秒后仍未初始化（用户尚未交互），尝试自动初始化
+    setTimeout(function() {
+        if (!speechInitialized) {
+            unlockSpeechOnGesture();
+        }
+    }, 1000);
 }
 
+/**
+ * 朗读文本 - 兼容 Android 浏览器的增强版本
+ * @param {string} text - 要朗读的文本
+ */
 function speakText(text) {
-    if (!text) return;
+    if (!text) {
+        console.warn('语音合成：文本为空');
+        return;
+    }
     
-    // Fix: Check if browser supports speech synthesis
+    // 检查浏览器是否支持语音合成
     if (!window.speechSynthesis) {
         alert('您的浏览器不支持语音朗读功能，请使用Chrome、Edge或Safari等现代浏览器。');
         return;
     }
     
-    // Stop any current speech
-    window.speechSynthesis.cancel();
+    // 先停止当前正在播放的语音
+    try {
+        window.speechSynthesis.cancel();
+    } catch(e) {
+        console.warn('语音合成：停止当前语音时出错', e);
+    }
     
+    // 确保语音已初始化（如果用户尚未交互，尝试初始化）
+    if (!speechInitialized) {
+        speechInitAttempts++;
+        if (speechInitAttempts <= maxSpeechInitAttempts) {
+            try {
+                var testUtterance = new SpeechSynthesisUtterance('test');
+                testUtterance.lang = 'zh-CN';
+                window.speechSynthesis.speak(testUtterance);
+                window.speechSynthesis.cancel();
+                speechInitialized = true;
+            } catch(e) {
+                console.warn('语音合成：延迟初始化失败', e);
+            }
+        }
+    }
+    
+    // 创建语音实例
     var utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'zh-CN';
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
     
-    // Fix: Try to find a Chinese voice, with fallback to any available voice
+    // 尝试选择中文语音
     var chineseVoiceFound = false;
     
-    // First try: use voices we already loaded via voiceschanged event
+    // 第一次尝试：使用已缓存的 voices
     if (voicesLoaded && availableVoices.length > 0) {
         for (var i = 0; i < availableVoices.length; i++) {
             if (availableVoices[i].lang && availableVoices[i].lang.indexOf('zh') !== -1) {
@@ -1319,35 +1404,46 @@ function speakText(text) {
         }
     }
     
-    // Second try: if voices not loaded yet, try getVoices() again
+    // 第二次尝试：直接获取 voices
     if (!chineseVoiceFound) {
-        var voices = window.speechSynthesis.getVoices();
-        for (var i = 0; i < voices.length; i++) {
-            if (voices[i].lang && voices[i].lang.indexOf('zh') !== -1) {
-                utterance.voice = voices[i];
-                chineseVoiceFound = true;
-                break;
+        try {
+            var voices = window.speechSynthesis.getVoices();
+            if (voices && voices.length > 0) {
+                for (var i = 0; i < voices.length; i++) {
+                    if (voices[i].lang && voices[i].lang.indexOf('zh') !== -1) {
+                        utterance.voice = voices[i];
+                        chineseVoiceFound = true;
+                        break;
+                    }
+                }
             }
+        } catch(e) {
+            console.warn('语音合成：获取语音列表失败', e);
         }
     }
     
-    // Fix: If no Chinese voice found, try any available voice 
-    // (browser may still be able to synthesize Chinese with any voice)
+    // 第三次尝试：使用任意可用语音
     if (!chineseVoiceFound) {
-        var allVoices = window.speechSynthesis.getVoices();
-        if (allVoices.length > 0) {
-            utterance.voice = allVoices[0];
+        try {
+            var allVoices = window.speechSynthesis.getVoices();
+            if (allVoices && allVoices.length > 0) {
+                utterance.voice = allVoices[0];
+                console.log('语音合成：使用默认语音: ' + (allVoices[0].name || 'unknown'));
+            }
+        } catch(e) {
+            console.warn('语音合成：获取默认语音失败', e);
         }
     }
     
+    // 设置语音事件回调
     utterance.onstart = function() {
         isSpeaking = true;
-        // Update all speak buttons to speaking state
+        // 更新所有朗读按钮状态
         document.querySelectorAll('.dtl-speak-btn, .sr-speak-btn').forEach(function(btn) {
             btn.classList.add('speaking');
             btn.innerHTML = '\u23F8 停止朗读';
         });
-        // Show stop all button
+        // 显示停止全部按钮
         var stopAll = document.getElementById('srStopAll');
         if (stopAll) stopAll.classList.add('show');
     };
@@ -1360,6 +1456,7 @@ function speakText(text) {
         });
         var stopAll = document.getElementById('srStopAll');
         if (stopAll) stopAll.classList.remove('show');
+        currentUtterance = null;
     };
     
     utterance.onerror = function(event) {
@@ -1370,54 +1467,105 @@ function speakText(text) {
         });
         var stopAll = document.getElementById('srStopAll');
         if (stopAll) stopAll.classList.remove('show');
+        currentUtterance = null;
         
-        // Fix: Show user-friendly error message in console
+        // Android 特定错误处理
         if (event.error === 'no-speech') {
-            console.warn('语音合成：没有可用的语音引擎。请检查系统语音设置。');
-        } else if (event.error === 'network') {
-            console.warn('语音合成：网络错误。');
-        } else {
-            console.warn('语音合成错误：', event.error);
-        }
-    };
-    
-    // Fix: Handle case where voices may not be ready yet
-    // Some browsers need a small delay after user gesture to initialize speech synthesis
-    var trySpeak = function() {
-        // Reload voices one more time right before speaking
-        var freshVoices = window.speechSynthesis.getVoices();
-        if (freshVoices.length > 0 && !chineseVoiceFound) {
-            for (var i = 0; i < freshVoices.length; i++) {
-                if (freshVoices[i].lang && freshVoices[i].lang.indexOf('zh') !== -1) {
-                    utterance.voice = freshVoices[i];
-                    break;
+            console.warn('语音合成：没有可用的语音引擎。请检查系统设置中是否启用了语音合成。');
+            // 安卓手机可能需要在系统设置中启用"TTS 输出"或"文字转语音"
+            if (!window.speechSynthesis.paused) {
+                console.warn('语音合成：尝试重新初始化语音引擎...');
+                speechInitialized = false;
+                speechInitAttempts++;
+                if (speechInitAttempts <= maxSpeechInitAttempts) {
+                    setTimeout(function() {
+                        try {
+                            var retryUtterance = new SpeechSynthesisUtterance('retry');
+                            retryUtterance.lang = 'zh-CN';
+                            window.speechSynthesis.speak(retryUtterance);
+                            window.speechSynthesis.cancel();
+                            speechInitialized = true;
+                            console.log('语音合成：重新初始化成功');
+                        } catch(e) {
+                            console.warn('语音合成：重新初始化失败', e);
+                        }
+                    }, 500);
                 }
             }
+        } else if (event.error === 'network') {
+            console.warn('语音合成：网络错误，请检查网络连接。');
+        } else if (event.error === 'speech-unavailable') {
+            console.warn('语音合成：语音服务不可用，请检查系统语音设置。');
+        } else {
+            console.warn('语音合成错误：' + event.error + ' | 详细信息：' + event.message);
         }
-        window.speechSynthesis.speak(utterance);
-        currentUtterance = utterance;
     };
     
-    // Fix: In some browsers (Chrome), we need to wait for voices to load
-    if (!voicesLoaded && availableVoices.length === 0) {
-        // Voices not loaded yet, wait for the event
-        window.speechSynthesis.onvoiceschanged = function() {
+    // Android 兼容性：使用 setTimeout 确保在用户手势上下文之外也能正常播放
+    // 某些安卓浏览器（如 OPPO FindX8 的 Chrome）需要在事件循环的下一个 tick 中调用 speak
+    function trySpeak() {
+        // 再次尝试获取语音（某些浏览器在 speak 之前需要重新获取）
+        try {
+            var freshVoices = window.speechSynthesis.getVoices();
+            if (freshVoices && freshVoices.length > 0 && !chineseVoiceFound) {
+                for (var i = 0; i < freshVoices.length; i++) {
+                    if (freshVoices[i].lang && freshVoices[i].lang.indexOf('zh') !== -1) {
+                        utterance.voice = freshVoices[i];
+                        break;
+                    }
+                }
+            }
+        } catch(e) {
+            console.warn('语音合成：获取语音失败', e);
+        }
+        
+        // 实际调用 speak
+        try {
+            window.speechSynthesis.speak(utterance);
+            currentUtterance = utterance;
+            console.log('语音合成：开始朗读');
+        } catch(e) {
+            console.warn('语音合成：speak 调用失败', e);
+            // 如果直接 speak 失败，尝试等待 voices 加载后重试
+            if (!voicesLoaded) {
+                console.log('语音合成：语音未加载，等待 voiceschanged 事件后重试');
+                window.speechSynthesis.addEventListener('voiceschanged', function onVoicesChanged() {
+                    window.speechSynthesis.removeEventListener('voiceschanged', onVoicesChanged);
+                    loadVoices();
+                    // 递归调用自身进行重试
+                    speakText(text);
+                });
+            }
+        }
+    }
+    
+    // 判断是否需要等待 voices 加载
+    if (!voicesLoaded && (!window.speechSynthesis.getVoices || window.speechSynthesis.getVoices().length === 0)) {
+        // Voices 未加载，等待 voiceschanged 事件
+        var voicesChangedHandler = function() {
+            window.speechSynthesis.removeEventListener('voiceschanged', voicesChangedHandler);
             loadVoices();
             trySpeak();
         };
-        // Also try immediately in case event already fired
-        setTimeout(trySpeak, 100);
+        window.speechSynthesis.addEventListener('voiceschanged', voicesChangedHandler);
+        // 同时设置超时兜底
+        setTimeout(trySpeak, 200);
     } else {
-        trySpeak();
+        // Voices 已就绪，直接播放
+        // 对于安卓浏览器，添加微小延迟确保引擎就绪
+        setTimeout(trySpeak, 0);
     }
 }
 
+/**
+ * 停止语音朗读
+ */
 function stopSpeaking() {
     if (window.speechSynthesis) {
         try {
             window.speechSynthesis.cancel();
         } catch(e) {
-            console.warn("stopSpeaking error:", e);
+            console.warn('语音合成：停止播放时出错', e);
         }
     }
     isSpeaking = false;
@@ -1427,6 +1575,7 @@ function stopSpeaking() {
     });
     var stopAll = document.getElementById('srStopAll');
     if (stopAll) stopAll.classList.remove('show');
+    currentUtterance = null;
 }
 /* ===== Intro Toggle ===== */
 function toggleIntro() {
